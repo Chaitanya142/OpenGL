@@ -1,0 +1,67 @@
+
+/////////////////////////////////////////////////////////////////////////////////// Programs on Numbers //////////////////////////////////////////////////////////////////////////////
+
+
+1. Write a Program to print multiple lines on console.
+
+2. Write a program to add 2 numbers and print on console.
+
+3. Write a program to multiply 3 numbers and print on console.
+
+4. Write a program to print maximum of two numbers.
+
+5. Write a program to accept n nos from user and print all Odd numbers from those n Nos.
+
+6. Write a program to accept n nos from user and print all Even numbers from those n Nos.
+
+7. Write a program to accept numbers from user and show number line.
+Note - Start number Line with negative i.e number given by user and print it starting from negative to positive.
+Eg - -4 -3 -2 -1 0 1 2 3 4
+
+8. Write a program to print ten multiples of a number accepted from user.
+Eg -  2 then 2 4 6 8 10 12 14 16 18 20 
+
+9. Write a program to accept n numbers from user and print addition of n numbers.
+
+10.Write a program to accept n numbers from user and print maximum of n numbers.
+Eg - 4 8 7 9 10 6 output - 10
+
+11.Write a program to accept n numbers from user and print second last maximum number.
+Eg - 4 8 7 9 10 6 output - 9
+
+12.Write a program to check whether number is perfect number or not.
+Eg - 6 output 6 is a perfect number.
+Perfect number - a perfect number is a positive integer that is equal to the sum of its proper positive divisors, 
+that is, the sum of its positive divisors excluding the number itself 
+
+13.Write a program to accept n numbers from user and check whether number is perfect number or not from that range.
+
+14.Write a program to check whether number is prime number or not.
+Eg - 5 output 5 is a prime number.
+
+15.Write a program to accept n numbers from user and check whether number is prime number or not from that range.
+
+16. Write a program to accept 2 numbers from user and find power of that number.
+Eg - 2 4 output - 16
+
+17. Write a program to accept number from user and check whether number is armstrong number or not.
+Eg - 153 output - 153 is a armstrong number
+
+18. Write a program to accept number from user find factorial of a number.
+Eg - 5 output - 120
+
+For Digits Programs- 
+no % 10 gives single digit eg - For 553, no % 10 gives 3
+no / 10 reduces number by one eg - For 553, no / 10 gives 55
+
+19. Write a program to accept number from user and count number of digits of a given number.
+Eg - 1538 output - 4
+
+20. Write a program to accept number from user and reverse that number.
+Eg - 1538 output - 8351
+
+21. Write a program to accept number from user and find generic root of that number.
+Generic root - Generic root of a number is addition of digit of that number till we get single digit addition.
+
+22.Accept a number from user and check whether addition of digits of that number is even or not.
+
