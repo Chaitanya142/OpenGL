@@ -96,7 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdLi
 	SetForegroundWindow(hwnd);
 	SetFocus(hwnd);
 	//Game Loop
-	SendMessage(hwnd, WM_PAINT, 0, 0);
+	//SendMessage(hwnd, WM_PAINT, 0, 0);
 	while (bDone == false) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
