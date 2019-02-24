@@ -20,7 +20,6 @@ HDC ghdc = NULL;
 HGLRC ghrc = NULL;
 bool gbActiveWindow = false;
 FILE *gpFile = NULL;
-int displayMode = 0;
 int currentWidth = WIN_WIDTH;
 int currentHeight = WIN_HEIGHT;
 //Method Declaration
@@ -167,46 +166,46 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		switch (wParam) {
 		case 0x30:
 		case VK_NUMPAD0:
-			displayMode = 0;
+			glViewport(0, 0, (GLsizei)currentWidth, (GLsizei)currentHeight);
 			break;
 		case 0x31:
 		case VK_NUMPAD1:
-			displayMode = 1;
+			glViewport(0, 0, (GLsizei)currentWidth / 2, (GLsizei)currentHeight / 2);
 			break;
 		case 0x32:
 		case VK_NUMPAD2:
-			displayMode = 2;
+			glViewport((GLsizei)currentWidth / 2, 0, (GLsizei)currentWidth / 2, (GLsizei)currentHeight / 2);
 			break;
 		case 0x33:
 		case VK_NUMPAD3:
-			displayMode = 3;
+			glViewport((GLsizei)currentWidth / 2, (GLsizei)currentHeight / 2, (GLsizei)currentWidth / 2, (GLsizei)currentHeight / 2);
 			break;
 		case 0x34:
 		case VK_NUMPAD4:
-			displayMode = 4;
+			glViewport(0, (GLsizei)currentHeight / 2, (GLsizei)currentWidth / 2, (GLsizei)currentHeight / 2);
 			break;
 		case 0x35:
-		case VK_NUMPAD5:
-			displayMode = 5;
+		case VK_NUMPAD5:		
+			glViewport(0, 0, (GLsizei)currentWidth / 2, (GLsizei)currentHeight);
 			break;
 		case 0x36:
 		case VK_NUMPAD6:
-			displayMode = 6;
+			glViewport((GLsizei)currentWidth / 2, 0, (GLsizei)currentWidth / 2, (GLsizei)currentHeight);
 			break;
 		case 0x37:
 		case VK_NUMPAD7:
-			displayMode = 7;
+			glViewport(0, 0, (GLsizei)currentWidth, (GLsizei)currentHeight / 2);
 			break;
 		case 0x38:
 		case VK_NUMPAD8:
-			displayMode = 8;
+			glViewport(0, (GLsizei)currentHeight / 2, (GLsizei)currentWidth, (GLsizei)currentHeight / 2);
 			break;
 		case 0x39:
-		case VK_NUMPAD9:
-			displayMode = 9;
+		case VK_NUMPAD9:	
+			glViewport((GLsizei)currentWidth / 4, (GLsizei)currentHeight / 4, (GLsizei)currentWidth / 2, (GLsizei)currentHeight / 2);
 			break;
 		}
-		Resize(currentWidth, currentHeight);
+
 		break;
 	case WM_DESTROY:
 		UnInitialize();
@@ -299,40 +298,9 @@ int Initialize(void) {
 void Resize(int width, int height) {
 	if (height == 0)
 		height = 1;
-	switch (displayMode)
-	{
-	case 0:
-		glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-		break;
-	case 1:
-		glViewport(0, 0, (GLsizei)width / 2, (GLsizei)height / 2);
-		break;
-	case 2:
-		glViewport((GLsizei)width / 2, 0, (GLsizei)width / 2, (GLsizei)height / 2);
-		break;
-	case 3:
-		glViewport((GLsizei)width / 2, (GLsizei)height / 2, (GLsizei)width / 2, (GLsizei)height / 2);
-		break;
-	case 4:
-		glViewport(0, (GLsizei)height / 2, (GLsizei)width / 2, (GLsizei)height / 2);
-		break;
-	case 5:
-		glViewport(0, 0, (GLsizei)width / 2, (GLsizei)height);
-		break;
-	case 6:
-		glViewport((GLsizei)width / 2, 0, (GLsizei)width / 2, (GLsizei)height);
-		break;
-	case 7:
-		glViewport(0, 0, (GLsizei)width, (GLsizei)height / 2);
-		break;
-	case 8:
-		glViewport(0, (GLsizei)height / 2, (GLsizei)width, (GLsizei)height / 2);
-		break;
-	case 9:
-		glViewport((GLsizei)width / 4, (GLsizei)height / 4, (GLsizei)width / 2, (GLsizei)height / 2);
-		break;
-	}
 
+
+	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 	/*glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0f,
