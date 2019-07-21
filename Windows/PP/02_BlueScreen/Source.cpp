@@ -263,16 +263,14 @@ int Initialize(void) {
 	gVertexShaderObject = glCreateShader(GL_VERTEX_SHADER);
 
 	//Vertex Shader Code
-	const GLchar* vertextShaderSourceCode[] =
-	{ 
+	const GLchar* vertextShaderSourceCode =
 		"void main(void)" \
 		"{" \
-		"gl_Position=vec4(0.0,0.0,0.0,0.0);" \
-		"}" 
-	};
+		"}";
+
 
 	//Shader object and source code mapping
-	glShaderSource(gVertexShaderObject, 1, &vertextShaderSourceCode[0], NULL);
+	glShaderSource(gVertexShaderObject, 1, &vertextShaderSourceCode, NULL);
 
 	//Compile Shader
 	glCompileShader(gVertexShaderObject);
@@ -283,7 +281,7 @@ int Initialize(void) {
 	GLchar * szInfoLog = NULL;
 
 	glGetShaderiv(gVertexShaderObject, GL_COMPILE_STATUS, &iShaderCompileStatus);
-
+	/*
 	if (iShaderCompileStatus == GL_FALSE) {
 		glGetShaderiv(gVertexShaderObject, GL_INFO_LOG_LENGTH, &iInfoLogLength);
 		if (iInfoLogLength > 0) {
@@ -301,20 +299,20 @@ int Initialize(void) {
 				exit(0);
 			}
 		}
-	}
+	}*/
 
 	//Fragement Shader
 	//Define Shader Object
 	gFragementShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
 
 	//Fragement Shader Code
-	const GLchar* fragementShaderSourceCode[] =
-	{ "void main(void)" \
+	const GLchar* fragementShaderSourceCode =
+	 "void main(void)" \
 		"{" \
-		"}" };
+		"}" ;
 
 	//Shader object and source code mapping
-	glShaderSource(gFragementShaderObject, 1, &fragementShaderSourceCode[0], NULL);
+	glShaderSource(gFragementShaderObject, 1, &fragementShaderSourceCode, NULL);
 
 	//Compile Shader
 	glCompileShader(gFragementShaderObject);
@@ -326,6 +324,7 @@ int Initialize(void) {
 
 	glGetShaderiv(gFragementShaderObject, GL_COMPILE_STATUS, &iShaderCompileStatus);
 
+	/*
 	if (iShaderCompileStatus == GL_FALSE) {
 		glGetShaderiv(gFragementShaderObject, GL_INFO_LOG_LENGTH, &iInfoLogLength);
 		if (iInfoLogLength > 0) {
@@ -344,7 +343,7 @@ int Initialize(void) {
 			}
 		}
 	}
-
+	*/
 	//Program Object
 	gShaderProgramObject = glCreateProgram();
 	//Attach Shaders
@@ -359,7 +358,7 @@ int Initialize(void) {
 	
 	glGetProgramiv(gShaderProgramObject, GL_LINK_STATUS, &iShaderLinkStatus);
 
-	if (iShaderLinkStatus == GL_FALSE) {
+	/*if (iShaderLinkStatus == GL_FALSE) {
 		glGetProgramiv(gShaderProgramObject, GL_INFO_LOG_LENGTH, &iInfoLogLength);
 		if (iInfoLogLength > 0) {
 			szInfoLog = (GLchar *)malloc(iInfoLogLength);
@@ -376,7 +375,7 @@ int Initialize(void) {
 				exit(0);
 			}
 		}
-	}
+	}*/
 
 
 	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
