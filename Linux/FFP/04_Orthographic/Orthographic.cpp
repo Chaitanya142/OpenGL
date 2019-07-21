@@ -249,8 +249,8 @@ void Resize(int width, int height) {
 	if (width <= height) {
 		glOrtho(-100.0f,
 				100.0f,
-				(-100.0f*(GLfloat)width/(GLfloat)height),
-				(100.0f*(GLfloat)width / (GLfloat)height),
+				(-100.0f*(GLfloat)height / (GLfloat)width),
+				(100.0f*(GLfloat)height / (GLfloat)width),
 				-100.0f,
 				100.0f
 				);

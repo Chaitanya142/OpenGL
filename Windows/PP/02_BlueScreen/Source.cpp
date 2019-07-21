@@ -431,7 +431,7 @@ void UnInitialize(void) {
 			SWP_NOZORDER | SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOOWNERZORDER);
 		//ShowCursor(TRUE);
 	}
-	glUseProgram(0);
+	glUseProgram(gShaderProgramObject);
 	glDetachShader(gShaderProgramObject,gFragementShaderObject);
 	glDetachShader(gShaderProgramObject, gVertexShaderObject);
 
