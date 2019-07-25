@@ -20,12 +20,26 @@ HDC ghdc = NULL;
 HGLRC ghrc = NULL;
 bool gbActiveWindow = false;
 FILE *gpFile = NULL;
-GLfloat angle_Cube = 0.0f;
+//GLfloat angle_Cube = 0.0f;
 
 bool bLight = false;
-GLfloat lightAmbient[] = { 0.5f,0.5f,0.5f,1.0f };
-GLfloat lightDiffuse[] = { 1.0f,1.0f,1.0f,1.0f };
-GLfloat lightPosition[] = { 0.0f,0.0f,2.0f,1.0f };
+
+GLfloat LightAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+GLfloat LightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat LightSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat LightPosition[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat LightSpotDirection[] = { 0.0f, 0.0f, -1.0f };
+GLfloat LightSpotCutoff[] = { 45.0f, 45.0f, 1.0f };
+GLfloat LightExponent[] = { 0.2f, 0.2f, 1.0f };
+GLfloat LightQuadraticAttenuation[] = { 0.5f, 0.5f, 0.5f, 0.0f };
+GLfloat LightLinearAttenuation[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+GLfloat LightConstantAttenuation[] = { 0.1f, 0.1f, 0.2f, 1.0f };
+
+GLfloat MaterialAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat MaterialSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat MaterialShininess[] = { 128.0f };
+
 
 //Method Declaration
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -266,11 +280,18 @@ int Initialize(void) {
 	glDepthFunc(GL_LEQUAL);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);
+	glLightfv(GL_LIGHT0, GL_LINEAR_ATTENUATION, LightLinearAttenuation);
+
 	glEnable(GL_LIGHT0);
 
+	glMaterialfv(GL_FRONT, GL_AMBIENT, MaterialAmbient);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, MaterialDiffuse);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, MaterialSpecular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, MaterialShininess);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	Resize(WIN_WIDTH, WIN_HEIGHT);
@@ -289,27 +310,33 @@ void Resize(int width, int height) {
 		100.0f);
 
 }
+
+
+GLUquadric *gluQuadric = NULL;
 //Function Display
 void Display(void) {
 
-	void DrawCube(float offset);
-
+	//void DrawCube(float offset);
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
-
 	glLoadIdentity();
-	glTranslatef(0.0f, 0.0f, -5.0f);
-	glRotatef(angle_Cube, 1.0f, 1.0f, 1.0f);
+	
+	glTranslatef(0.0f, 0.0f, -2.0f);
 
-	DrawCube(1.0f);
+	//DrawCube(0.5f);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	gluQuadric = gluNewQuadric();
+	gluSphere(gluQuadric, 0.20f, 30, 30);
 
 	SwapBuffers(ghdc);
 }
 void Update(void)
 {
-	angle_Cube = angle_Cube + 0.2f;
-	if (angle_Cube > 360.0f)
-		angle_Cube = 0.0f;
+	//angle_Cube = angle_Cube + 0.01f;
+	//if (angle_Cube > 360.0f)
+	//	angle_Cube = 0.0f;
 
 }
 void UnInitialize(void) {
@@ -340,6 +367,11 @@ void UnInitialize(void) {
 		fprintf_s(gpFile, "Log File Closed Successfully");
 		fclose(gpFile);
 		gpFile = NULL;
+	}
+	if (gluQuadric)
+	{
+		gluDeleteQuadric(gluQuadric);
+		gluQuadric = NULL;
 	}
 }
 
