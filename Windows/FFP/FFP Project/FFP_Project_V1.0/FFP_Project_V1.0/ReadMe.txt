@@ -1,0 +1,1 @@
+Convert .jpeg files to .bmp

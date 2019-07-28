@@ -1,0 +1,263 @@
+Log File Created Successfully
+Opened Locations FileDEL,New Delhi,28.5665,77.103104;
+BOM,Mumbai,19.0886993408,72.8678970337;
+BLR,Bangalore,13.1979,77.706299;
+MAA,Chennai,12.990005493164,80.1692962646484;
+GOI,Vasco da Gama,15.3808002472,73.8313980103;
+KCZ,Kochi,10.152,76.401901;
+CCU,Kolkata,22.6546993255615,88.4467010498046;
+BPM,Hyderabad,17.2313175201,78.4298553467;
+AMD,Ahmedabad,23.0771999359,72.6346969603999;
+JAI,Jaipur,26.8242,75.812202;
+PNQ,Pune,18.5820999145507,73.9197006225585;
+ATQ,Amritsar,31.7096004486,74.7973022461;
+BDQ,Vadodara,22.336201,73.226303;
+IXE,Mangalore,12.9612998962,74.8900985718;
+BMP,Hyderabad,17.4531002045,78.4675979614;
+VNS,Varanasi,25.4524002075,82.8592987061;
+CCJ,Calicut,11.1367998123,75.9552993774;
+BBI,Bhubaneswar,20.2444000243999,85.8178024292;
+CJB,Coimbatore,11.029999733,77.0434036255;
+GAU,Guwahati,26.1061000823974,91.5858993530273;
+IDR,Indore,22.7217998505,75.8011016846;
+JDH,Jodhpur,26.2511005401611,73.0488967895507;Opened Locations FileDEL,AMD;
+DEL,BBI;
+DEL,BDQ;
+DEL,BLR;
+DEL,BOM;
+DEL,CCU;
+DEL,CJB;
+DEL,GAU;
+DEL,GOI;
+DEL,IDR;
+DEL,MAA;
+DEL,PNQ;
+DEL,VNS;
+DEL,ATQ;
+DEL,JAI;
+DEL,JDH;
+BOM,AMD;
+BOM,BBI;
+BOM,BDQ;
+BOM,BLR;
+BOM,CCU;
+BOM,CJB;
+BOM,DEL;
+BOM,GAU;
+BOM,GOI;
+BOM,IDR;
+BOM,JAI;
+BOM,MAA;
+BOM,CCJ;
+BOM,IXE;
+BOM,JDH;
+BOM,PNQ;
+BOM,VNS;
+BOM,ATQ;
+BLR,AMD;
+BLR,BBI;
+BLR,BOM;
+BLR,CCU;
+BLR,DEL;
+BLR,GAU;
+BLR,GOI;
+BLR,JAI;
+BLR,MAA;
+BLR,PNQ;
+BLR,CJB;
+BLR,IDR;
+BLR,IXE;
+BLR,CCJ;
+MAA,AMD;
+MAA,BLR;
+MAA,BOM;
+MAA,CCU;
+MAA,CJB;
+MAA,DEL;
+MAA,PNQ;
+MAA,GOI;
+MAA,CCJ;
+GOI,AMD;
+GOI,BLR;
+GOI,BOM;
+GOI,DEL;
+GOI,MAA;
+GOI,PNQ;
+CCU,AMD;
+CCU,BBI;
+CCU,BLR;
+CCU,BOM;
+CCU,DEL;
+CCU,GAU;
+CCU,JAI;
+CCU,MAA;
+CCU,PNQ;
+CCU,VNS;
+AMD,BLR;
+AMD,BOM;
+AMD,CCU;
+AMD,DEL;
+AMD,GOI;
+AMD,JAI;
+AMD,MAA;
+AMD,PNQ;
+JAI,AMD;
+JAI,BLR;
+JAI,BOM;
+JAI,CCU;
+JAI,DEL;
+PNQ,AMD;
+PNQ,BLR;
+PNQ,CCU;
+PNQ,DEL;
+PNQ,MAA;
+PNQ,BOM;
+PNQ,IDR;
+PNQ,GOI;
+ATQ,DEL;
+ATQ,BOM;
+BDQ,BOM;
+BDQ,DEL;
+IXE,BLR;
+IXE,BOM;
+VNS,DEL;
+VNS,CCU;
+VNS,BOM;
+CCJ,BOM;
+CCJ,CJB;
+CCJ,IXE;
+CCJ,BLR;
+CCJ,MAA;
+BBI,BLR;
+BBI,BOM;
+BBI,CCU;
+BBI,DEL;
+CJB,BOM;
+CJB,DEL;
+CJB,MAA;
+CJB,BLR;
+CJB,CCJ;
+GAU,BLR;
+GAU,BOM;
+GAU,CCU;
+GAU,DEL;
+IDR,BOM;
+IDR,DEL;
+IDR,BLR;
+IDR,PNQ;
+JDH,BOM;
+JDH,DEL;
+DEL,KCZ;
+DEL,BPM;
+DEL,BMP;Initialization Succeeded
+AirportIndex: 0 Latitude: 28.566500 Longitude: 77.103104 glx: -0.295020 gly: -1.288441 glz: -0.719659 wx: 175.969833 wy: 71.442841 wz: 0.795854
+AirportIndex: 1 Latitude: 19.088699 Longitude: 72.867897 glx: -0.418959 gly: -1.359137 glz: -0.492183 wx: 16.598869 wy: 425.550842 wz: 0.802020
+AirportIndex: 2 Latitude: 13.197900 Longitude: 77.706299 glx: -0.311985 gly: -1.431649 glz: -0.343614 wx: 183.312531 wy: 652.435852 wz: 0.803945
+AirportIndex: 3 Latitude: 12.990005 Longitude: 80.169296 glx: -0.250384 gly: -1.444953 glz: -0.338296 wx: 271.760376 wy: 666.039673 wz: 0.802490
+AirportIndex: 4 Latitude: 15.380800 Longitude: 73.831398 glx: -0.404080 gly: -1.393701 glz: -0.399176 wx: 48.733475 wy: 562.473206 wz: 0.805004
+AirportIndex: 5 Latitude: 10.152000 Longitude: 76.401901 glx: -0.348300 gly: -1.439911 glz: -0.265272 wx: 143.492676 wy: 742.252869 wz: 0.811580
+AirportIndex: 6 Latitude: 22.654699 Longitude: 88.446701 glx: -0.037648 gly: -1.388368 glz: -0.579691 wx: 575.010193 wy: 304.748016 wz: 0.792306
+AirportIndex: 7 Latitude: 17.231318 Longitude: 78.429855 glx: -0.288305 gly: -1.408241 glz: -0.445826 wx: 206.467575 wy: 512.964172 wz: 0.796861
+AirportIndex: 8 Latitude: 23.077200 Longitude: 72.634697 glx: -0.413241 gly: -1.321459 glz: -0.589917 wx: 15.227151 wy: 274.816742 wz: 0.800160
+AirportIndex: 9 Latitude: 26.824200 Longitude: 75.812202 glx: -0.329184 gly: -1.302088 glz: -0.679138 wx: 128.092438 wy: 136.988586 wz: 0.796070
+AirportIndex: 10 Latitude: 18.582100 Longitude: 73.919701 glx: -0.395129 gly: -1.370727 glz: -0.479588 wx: 50.426937 wy: 448.439819 wz: 0.800810
+AirportIndex: 11 Latitude: 31.709600 Longitude: 74.797302 glx: -0.335749 gly: -1.235532 glz: -0.791049 wx: 116.023636 wy: -44.839294 wz: 0.802028
+AirportIndex: 12 Latitude: 22.336201 Longitude: 73.226303 glx: -0.401743 gly: -1.332850 glz: -0.571961 wx: 32.230877 wy: 304.755707 wz: 0.799376
+AirportIndex: 13 Latitude: 12.961300 Longitude: 74.890099 glx: -0.382315 gly: -1.415949 glz: -0.337561 wx: 87.101509 wy: 648.481689 wz: 0.807605
+AirportIndex: 14 Latitude: 17.453100 Longitude: 78.467598 glx: -0.287031 gly: -1.406729 glz: -0.451387 wx: 207.799500 wy: 504.839844 wz: 0.796551
+AirportIndex: 15 Latitude: 25.452400 Longitude: 82.859299 glx: -0.168923 gly: -1.348389 glz: -0.646790 wx: 371.089355 wy: 196.124664 wz: 0.790540
+AirportIndex: 16 Latitude: 11.136800 Longitude: 75.955299 glx: -0.358354 gly: -1.432517 glz: -0.290694 wx: 126.314308 wy: 710.813110 wz: 0.809929
+AirportIndex: 17 Latitude: 20.244400 Longitude: 85.817802 glx: -0.102976 gly: -1.408269 glz: -0.520768 wx: 480.435059 wy: 402.864868 wz: 0.791921
+AirportIndex: 18 Latitude: 11.030000 Longitude: 77.043404 glx: -0.331207 gly: -1.439589 glz: -0.287941 wx: 163.532394 wy: 718.796509 wz: 0.808985
+AirportIndex: 19 Latitude: 26.106100 Longitude: 91.585899 glx: 0.037403 gly: -1.350943 glz: -0.662252 wx: 676.646729 wy: 164.616913 wz: 0.795833
+AirportIndex: 20 Latitude: 22.721800 Longitude: 75.801102 glx: -0.340510 gly: -1.345789 glz: -0.581317 wx: 117.778900 wy: 296.535645 wz: 0.795502
+AirportIndex: 21 Latitude: 26.251101 Longitude: 73.048897 glx: -0.393536 gly: -1.291138 glz: -0.665671 wx: 38.056992 wy: 154.923920 wz: 0.799735
+AirportIndex: 0 Latitude: 28.566500 Longitude: 77.103104 glx: -0.295020 gly: -1.288441 glz: -0.719659 wx: 175.969833 wy: 71.442841 wz: 0.795854
+AirportIndex: 1 Latitude: 19.088699 Longitude: 72.867897 glx: -0.418959 gly: -1.359137 glz: -0.492183 wx: 16.598869 wy: 425.550842 wz: 0.802020
+AirportIndex: 2 Latitude: 13.197900 Longitude: 77.706299 glx: -0.311985 gly: -1.431649 glz: -0.343614 wx: 183.312531 wy: 652.435852 wz: 0.803945
+AirportIndex: 3 Latitude: 12.990005 Longitude: 80.169296 glx: -0.250384 gly: -1.444953 glz: -0.338296 wx: 271.760376 wy: 666.039673 wz: 0.802490
+AirportIndex: 4 Latitude: 15.380800 Longitude: 73.831398 glx: -0.404080 gly: -1.393701 glz: -0.399176 wx: 48.733475 wy: 562.473206 wz: 0.805004
+AirportIndex: 5 Latitude: 10.152000 Longitude: 76.401901 glx: -0.348300 gly: -1.439911 glz: -0.265272 wx: 143.492676 wy: 742.252869 wz: 0.811580
+AirportIndex: 6 Latitude: 22.654699 Longitude: 88.446701 glx: -0.037648 gly: -1.388368 glz: -0.579691 wx: 575.010193 wy: 304.748016 wz: 0.792306
+AirportIndex: 7 Latitude: 17.231318 Longitude: 78.429855 glx: -0.288305 gly: -1.408241 glz: -0.445826 wx: 206.467575 wy: 512.964172 wz: 0.796861
+AirportIndex: 8 Latitude: 23.077200 Longitude: 72.634697 glx: -0.413241 gly: -1.321459 glz: -0.589917 wx: 15.227151 wy: 274.816742 wz: 0.800160
+AirportIndex: 9 Latitude: 26.824200 Longitude: 75.812202 glx: -0.329184 gly: -1.302088 glz: -0.679138 wx: 128.092438 wy: 136.988586 wz: 0.796070
+AirportIndex: 10 Latitude: 18.582100 Longitude: 73.919701 glx: -0.395129 gly: -1.370727 glz: -0.479588 wx: 50.426937 wy: 448.439819 wz: 0.800810
+AirportIndex: 11 Latitude: 31.709600 Longitude: 74.797302 glx: -0.335749 gly: -1.235532 glz: -0.791049 wx: 116.023636 wy: -44.839294 wz: 0.802028
+AirportIndex: 12 Latitude: 22.336201 Longitude: 73.226303 glx: -0.401743 gly: -1.332850 glz: -0.571961 wx: 32.230877 wy: 304.755707 wz: 0.799376
+AirportIndex: 13 Latitude: 12.961300 Longitude: 74.890099 glx: -0.382315 gly: -1.415949 glz: -0.337561 wx: 87.101509 wy: 648.481689 wz: 0.807605
+AirportIndex: 14 Latitude: 17.453100 Longitude: 78.467598 glx: -0.287031 gly: -1.406729 glz: -0.451387 wx: 207.799500 wy: 504.839844 wz: 0.796551
+AirportIndex: 15 Latitude: 25.452400 Longitude: 82.859299 glx: -0.168923 gly: -1.348389 glz: -0.646790 wx: 371.089355 wy: 196.124664 wz: 0.790540
+AirportIndex: 16 Latitude: 11.136800 Longitude: 75.955299 glx: -0.358354 gly: -1.432517 glz: -0.290694 wx: 126.314308 wy: 710.813110 wz: 0.809929
+AirportIndex: 17 Latitude: 20.244400 Longitude: 85.817802 glx: -0.102976 gly: -1.408269 glz: -0.520768 wx: 480.435059 wy: 402.864868 wz: 0.791921
+AirportIndex: 18 Latitude: 11.030000 Longitude: 77.043404 glx: -0.331207 gly: -1.439589 glz: -0.287941 wx: 163.532394 wy: 718.796509 wz: 0.808985
+AirportIndex: 19 Latitude: 26.106100 Longitude: 91.585899 glx: 0.037403 gly: -1.350943 glz: -0.662252 wx: 676.646729 wy: 164.616913 wz: 0.795833
+AirportIndex: 20 Latitude: 22.721800 Longitude: 75.801102 glx: -0.340510 gly: -1.345789 glz: -0.581317 wx: 117.778900 wy: 296.535645 wz: 0.795502
+AirportIndex: 21 Latitude: 26.251101 Longitude: 73.048897 glx: -0.393536 gly: -1.291138 glz: -0.665671 wx: 38.056992 wy: 154.923920 wz: 0.799735
+AirportIndex: 0 Latitude: 28.566500 Longitude: 77.103104 glx: -0.295020 gly: -1.288441 glz: -0.719659 wx: 175.969833 wy: 71.442841 wz: 0.795854
+AirportIndex: 1 Latitude: 19.088699 Longitude: 72.867897 glx: -0.418959 gly: -1.359137 glz: -0.492183 wx: 16.598869 wy: 425.550842 wz: 0.802020
+AirportIndex: 2 Latitude: 13.197900 Longitude: 77.706299 glx: -0.311985 gly: -1.431649 glz: -0.343614 wx: 183.312531 wy: 652.435852 wz: 0.803945
+AirportIndex: 3 Latitude: 12.990005 Longitude: 80.169296 glx: -0.250384 gly: -1.444953 glz: -0.338296 wx: 271.760376 wy: 666.039673 wz: 0.802490
+AirportIndex: 4 Latitude: 15.380800 Longitude: 73.831398 glx: -0.404080 gly: -1.393701 glz: -0.399176 wx: 48.733475 wy: 562.473206 wz: 0.805004
+AirportIndex: 5 Latitude: 10.152000 Longitude: 76.401901 glx: -0.348300 gly: -1.439911 glz: -0.265272 wx: 143.492676 wy: 742.252869 wz: 0.811580
+AirportIndex: 6 Latitude: 22.654699 Longitude: 88.446701 glx: -0.037648 gly: -1.388368 glz: -0.579691 wx: 575.010193 wy: 304.748016 wz: 0.792306
+AirportIndex: 7 Latitude: 17.231318 Longitude: 78.429855 glx: -0.288305 gly: -1.408241 glz: -0.445826 wx: 206.467575 wy: 512.964172 wz: 0.796861
+AirportIndex: 8 Latitude: 23.077200 Longitude: 72.634697 glx: -0.413241 gly: -1.321459 glz: -0.589917 wx: 15.227151 wy: 274.816742 wz: 0.800160
+AirportIndex: 9 Latitude: 26.824200 Longitude: 75.812202 glx: -0.329184 gly: -1.302088 glz: -0.679138 wx: 128.092438 wy: 136.988586 wz: 0.796070
+AirportIndex: 10 Latitude: 18.582100 Longitude: 73.919701 glx: -0.395129 gly: -1.370727 glz: -0.479588 wx: 50.426937 wy: 448.439819 wz: 0.800810
+AirportIndex: 11 Latitude: 31.709600 Longitude: 74.797302 glx: -0.335749 gly: -1.235532 glz: -0.791049 wx: 116.023636 wy: -44.839294 wz: 0.802028
+AirportIndex: 12 Latitude: 22.336201 Longitude: 73.226303 glx: -0.401743 gly: -1.332850 glz: -0.571961 wx: 32.230877 wy: 304.755707 wz: 0.799376
+AirportIndex: 13 Latitude: 12.961300 Longitude: 74.890099 glx: -0.382315 gly: -1.415949 glz: -0.337561 wx: 87.101509 wy: 648.481689 wz: 0.807605
+AirportIndex: 14 Latitude: 17.453100 Longitude: 78.467598 glx: -0.287031 gly: -1.406729 glz: -0.451387 wx: 207.799500 wy: 504.839844 wz: 0.796551
+AirportIndex: 15 Latitude: 25.452400 Longitude: 82.859299 glx: -0.168923 gly: -1.348389 glz: -0.646790 wx: 371.089355 wy: 196.124664 wz: 0.790540
+AirportIndex: 16 Latitude: 11.136800 Longitude: 75.955299 glx: -0.358354 gly: -1.432517 glz: -0.290694 wx: 126.314308 wy: 710.813110 wz: 0.809929
+AirportIndex: 17 Latitude: 20.244400 Longitude: 85.817802 glx: -0.102976 gly: -1.408269 glz: -0.520768 wx: 480.435059 wy: 402.864868 wz: 0.791921
+AirportIndex: 18 Latitude: 11.030000 Longitude: 77.043404 glx: -0.331207 gly: -1.439589 glz: -0.287941 wx: 163.532394 wy: 718.796509 wz: 0.808985
+AirportIndex: 19 Latitude: 26.106100 Longitude: 91.585899 glx: 0.037403 gly: -1.350943 glz: -0.662252 wx: 676.646729 wy: 164.616913 wz: 0.795833
+AirportIndex: 20 Latitude: 22.721800 Longitude: 75.801102 glx: -0.340510 gly: -1.345789 glz: -0.581317 wx: 117.778900 wy: 296.535645 wz: 0.795502
+AirportIndex: 21 Latitude: 26.251101 Longitude: 73.048897 glx: -0.393536 gly: -1.291138 glz: -0.665671 wx: 38.056992 wy: 154.923920 wz: 0.799735
+AirportIndex: 0 Latitude: 28.566500 Longitude: 77.103104 glx: -0.295020 gly: -1.288441 glz: -0.719659 wx: 175.969833 wy: 71.442841 wz: 0.795854
+AirportIndex: 1 Latitude: 19.088699 Longitude: 72.867897 glx: -0.418959 gly: -1.359137 glz: -0.492183 wx: 16.598869 wy: 425.550842 wz: 0.802020
+AirportIndex: 2 Latitude: 13.197900 Longitude: 77.706299 glx: -0.311985 gly: -1.431649 glz: -0.343614 wx: 183.312531 wy: 652.435852 wz: 0.803945
+AirportIndex: 3 Latitude: 12.990005 Longitude: 80.169296 glx: -0.250384 gly: -1.444953 glz: -0.338296 wx: 271.760376 wy: 666.039673 wz: 0.802490
+AirportIndex: 4 Latitude: 15.380800 Longitude: 73.831398 glx: -0.404080 gly: -1.393701 glz: -0.399176 wx: 48.733475 wy: 562.473206 wz: 0.805004
+AirportIndex: 5 Latitude: 10.152000 Longitude: 76.401901 glx: -0.348300 gly: -1.439911 glz: -0.265272 wx: 143.492676 wy: 742.252869 wz: 0.811580
+AirportIndex: 6 Latitude: 22.654699 Longitude: 88.446701 glx: -0.037648 gly: -1.388368 glz: -0.579691 wx: 575.010193 wy: 304.748016 wz: 0.792306
+AirportIndex: 7 Latitude: 17.231318 Longitude: 78.429855 glx: -0.288305 gly: -1.408241 glz: -0.445826 wx: 206.467575 wy: 512.964172 wz: 0.796861
+AirportIndex: 8 Latitude: 23.077200 Longitude: 72.634697 glx: -0.413241 gly: -1.321459 glz: -0.589917 wx: 15.227151 wy: 274.816742 wz: 0.800160
+AirportIndex: 9 Latitude: 26.824200 Longitude: 75.812202 glx: -0.329184 gly: -1.302088 glz: -0.679138 wx: 128.092438 wy: 136.988586 wz: 0.796070
+AirportIndex: 10 Latitude: 18.582100 Longitude: 73.919701 glx: -0.395129 gly: -1.370727 glz: -0.479588 wx: 50.426937 wy: 448.439819 wz: 0.800810
+AirportIndex: 11 Latitude: 31.709600 Longitude: 74.797302 glx: -0.335749 gly: -1.235532 glz: -0.791049 wx: 116.023636 wy: -44.839294 wz: 0.802028
+AirportIndex: 12 Latitude: 22.336201 Longitude: 73.226303 glx: -0.401743 gly: -1.332850 glz: -0.571961 wx: 32.230877 wy: 304.755707 wz: 0.799376
+AirportIndex: 13 Latitude: 12.961300 Longitude: 74.890099 glx: -0.382315 gly: -1.415949 glz: -0.337561 wx: 87.101509 wy: 648.481689 wz: 0.807605
+AirportIndex: 14 Latitude: 17.453100 Longitude: 78.467598 glx: -0.287031 gly: -1.406729 glz: -0.451387 wx: 207.799500 wy: 504.839844 wz: 0.796551
+AirportIndex: 15 Latitude: 25.452400 Longitude: 82.859299 glx: -0.168923 gly: -1.348389 glz: -0.646790 wx: 371.089355 wy: 196.124664 wz: 0.790540
+AirportIndex: 16 Latitude: 11.136800 Longitude: 75.955299 glx: -0.358354 gly: -1.432517 glz: -0.290694 wx: 126.314308 wy: 710.813110 wz: 0.809929
+AirportIndex: 17 Latitude: 20.244400 Longitude: 85.817802 glx: -0.102976 gly: -1.408269 glz: -0.520768 wx: 480.435059 wy: 402.864868 wz: 0.791921
+AirportIndex: 18 Latitude: 11.030000 Longitude: 77.043404 glx: -0.331207 gly: -1.439589 glz: -0.287941 wx: 163.532394 wy: 718.796509 wz: 0.808985
+AirportIndex: 19 Latitude: 26.106100 Longitude: 91.585899 glx: 0.037403 gly: -1.350943 glz: -0.662252 wx: 676.646729 wy: 164.616913 wz: 0.795833
+AirportIndex: 20 Latitude: 22.721800 Longitude: 75.801102 glx: -0.340510 gly: -1.345789 glz: -0.581317 wx: 117.778900 wy: 296.535645 wz: 0.795502
+AirportIndex: 21 Latitude: 26.251101 Longitude: 73.048897 glx: -0.393536 gly: -1.291138 glz: -0.665671 wx: 38.056992 wy: 154.923920 wz: 0.799735
+AirportIndex: 0 Latitude: 28.566500 Longitude: 77.103104 glx: -0.295020 gly: -1.288441 glz: -0.719659 wx: 175.969833 wy: 71.442841 wz: 0.795854
+AirportIndex: 1 Latitude: 19.088699 Longitude: 72.867897 glx: -0.418959 gly: -1.359137 glz: -0.492183 wx: 16.598869 wy: 425.550842 wz: 0.802020
+AirportIndex: 2 Latitude: 13.197900 Longitude: 77.706299 glx: -0.311985 gly: -1.431649 glz: -0.343614 wx: 183.312531 wy: 652.435852 wz: 0.803945
+AirportIndex: 3 Latitude: 12.990005 Longitude: 80.169296 glx: -0.250384 gly: -1.444953 glz: -0.338296 wx: 271.760376 wy: 666.039673 wz: 0.802490
+AirportIndex: 4 Latitude: 15.380800 Longitude: 73.831398 glx: -0.404080 gly: -1.393701 glz: -0.399176 wx: 48.733475 wy: 562.473206 wz: 0.805004
+AirportIndex: 5 Latitude: 10.152000 Longitude: 76.401901 glx: -0.348300 gly: -1.439911 glz: -0.265272 wx: 143.492676 wy: 742.252869 wz: 0.811580
+AirportIndex: 6 Latitude: 22.654699 Longitude: 88.446701 glx: -0.037648 gly: -1.388368 glz: -0.579691 wx: 575.010193 wy: 304.748016 wz: 0.792306
+AirportIndex: 7 Latitude: 17.231318 Longitude: 78.429855 glx: -0.288305 gly: -1.408241 glz: -0.445826 wx: 206.467575 wy: 512.964172 wz: 0.796861
+AirportIndex: 8 Latitude: 23.077200 Longitude: 72.634697 glx: -0.413241 gly: -1.321459 glz: -0.589917 wx: 15.227151 wy: 274.816742 wz: 0.800160
+AirportIndex: 9 Latitude: 26.824200 Longitude: 75.812202 glx: -0.329184 gly: -1.302088 glz: -0.679138 wx: 128.092438 wy: 136.988586 wz: 0.796070
+AirportIndex: 10 Latitude: 18.582100 Longitude: 73.919701 glx: -0.395129 gly: -1.370727 glz: -0.479588 wx: 50.426937 wy: 448.439819 wz: 0.800810
+AirportIndex: 11 Latitude: 31.709600 Longitude: 74.797302 glx: -0.335749 gly: -1.235532 glz: -0.791049 wx: 116.023636 wy: -44.839294 wz: 0.802028
+AirportIndex: 12 Latitude: 22.336201 Longitude: 73.226303 glx: -0.401743 gly: -1.332850 glz: -0.571961 wx: 32.230877 wy: 304.755707 wz: 0.799376
+AirportIndex: 13 Latitude: 12.961300 Longitude: 74.890099 glx: -0.382315 gly: -1.415949 glz: -0.337561 wx: 87.101509 wy: 648.481689 wz: 0.807605
+AirportIndex: 14 Latitude: 17.453100 Longitude: 78.467598 glx: -0.287031 gly: -1.406729 glz: -0.451387 wx: 207.799500 wy: 504.839844 wz: 0.796551
+AirportIndex: 15 Latitude: 25.452400 Longitude: 82.859299 glx: -0.168923 gly: -1.348389 glz: -0.646790 wx: 371.089355 wy: 196.124664 wz: 0.790540
+AirportIndex: 16 Latitude: 11.136800 Longitude: 75.955299 glx: -0.358354 gly: -1.432517 glz: -0.290694 wx: 126.314308 wy: 710.813110 wz: 0.809929
+AirportIndex: 17 Latitude: 20.244400 Longitude: 85.817802 glx: -0.102976 gly: -1.408269 glz: -0.520768 wx: 480.435059 wy: 402.864868 wz: 0.791921
+AirportIndex: 18 Latitude: 11.030000 Longitude: 77.043404 glx: -0.331207 gly: -1.439589 glz: -0.287941 wx: 163.532394 wy: 718.796509 wz: 0.808985
+AirportIndex: 19 Latitude: 26.106100 Longitude: 91.585899 glx: 0.037403 gly: -1.350943 glz: -0.662252 wx: 676.646729 wy: 164.616913 wz: 0.795833
+AirportIndex: 20 Latitude: 22.721800 Longitude: 75.801102 glx: -0.340510 gly: -1.345789 glz: -0.581317 wx: 117.778900 wy: 296.535645 wz: 0.795502
+AirportIndex: 21 Latitude: 26.251101 Longitude: 73.048897 glx: -0.393536 gly: -1.291138 glz: -0.665671 wx: 38.056992 wy: 154.923920 wz: 0.799735
+Log File Closed Successfully
