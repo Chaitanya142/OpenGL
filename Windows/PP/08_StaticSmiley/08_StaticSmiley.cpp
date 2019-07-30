@@ -3,6 +3,7 @@
 
 #include<GL\glew.h>
 #include<gl\GL.h>
+#include"resource.h"
 //#include <time.h>
 
 #include"vmath.h"
@@ -26,9 +27,7 @@ HDC ghdc = NULL;
 HGLRC ghrc = NULL;
 bool gbActiveWindow = false;
 FILE *gpFile = NULL;
-
-GLfloat angleTriangle = 0.0;
-GLfloat angleRectangle = 0.0;
+GLuint texture_smiley;
 
 //Shader Program Objects
 GLint gShaderProgramObject;
@@ -40,16 +39,18 @@ enum {
 	AMC_ATTRIBUTE_TEXCOORD0
 };
 
-GLuint vao_triangle;
 GLuint vao_rectangle;
 
-GLuint vbo_position_triangle;
 GLuint vbo_position_rectangle;
 
-GLuint vbo_color_triangle;
 //GLuint vbo_color_rectangle;
 
+GLuint vbo_texCoord_rectangle;
+
+
 GLuint mvpUniform;
+GLuint samplerUniform;
+
 mat4 perspectiveProjectionMatrix;
 
 //Method Declaration
@@ -241,6 +242,7 @@ int Initialize(void) {
 	//Function Declaration
 	void Resize(int, int);
 	void UnInitialize(void);
+	BOOL LoadTexture(GLuint *texture, TCHAR imageResourceID[]);
 
 	PIXELFORMATDESCRIPTOR pfd;
 	int iPixelFormatIndex;
@@ -283,6 +285,7 @@ int Initialize(void) {
 		DestroyWindow(0);
 	}
 
+
 	//Shader Objects
 	GLint gVertexShaderObject;
 	GLint gFragementShaderObject;
@@ -296,14 +299,18 @@ int Initialize(void) {
 		"#version 430 core " \
 		"\n " \
 		"in vec4 vPosition;" \
-		"in vec4 vColor;" \
+		"in vec2 vTexCoord;" \
 		"uniform mat4 u_mvp_matrix;" \
-		"out vec4 out_color;" \
+		"out vec2 out_TexCoord;" \
 		"void main(void)" \
 		"{" \
 		"gl_Position=u_mvp_matrix * vPosition;" \
-		"out_color=vColor;"\
+		"out_TexCoord=vTexCoord;"\
 		"} ";
+
+	//"in vec4 vColor;" \
+	//"out vec4 out_color;" \
+		//"out_color=vColor;"\
 
 	//Shader object and source code mapping
 	glShaderSource(gVertexShaderObject, 1, &vertextShaderSourceCode, NULL);
@@ -345,12 +352,18 @@ int Initialize(void) {
 	const GLchar* fragementShaderSourceCode =
 		"#version 430 core " \
 		"\n " \
+		"in vec2 out_TexCoord;"
+		"uniform sampler2D u_sampler;"
 		"out vec4 fragColor;"
-		"in vec4 out_color;"\
 		"void main(void)" \
 		"{" \
-		"fragColor=out_color;" \
+		"fragColor=texture(u_sampler,out_TexCoord);" \
 		"} ";
+
+
+	//"in vec4 out_color;"\
+	//"fragColor=out_color;" \
+		
 
 	//Shader object and source code mapping
 	glShaderSource(gFragementShaderObject, 1, &fragementShaderSourceCode, NULL);
@@ -397,8 +410,11 @@ int Initialize(void) {
 		"vPosition");
 
 	glBindAttribLocation(gShaderProgramObject,
+		AMC_ATTRIBUTE_TEXCOORD0,
+		"vTexCoord");
+	/*glBindAttribLocation(gShaderProgramObject,
 		AMC_ATTRIBUTE_COLOR,
-		"vColor");
+		"vColor");*/
 
 	//Link Shader Program
 	glLinkProgram(gShaderProgramObject);
@@ -432,14 +448,10 @@ int Initialize(void) {
 	mvpUniform = glGetUniformLocation(gShaderProgramObject,
 		"u_mvp_matrix");
 
+	samplerUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_sampler");
 
 	//Vertices
-	const GLfloat triangleVertices[] = {
-		0.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f
-	};
-
 	const GLfloat rectangleVertices[] = {
 	1.0f, 1.0f, 0.0f ,
 	-1.0f, 1.0f, 0.0f,
@@ -447,10 +459,11 @@ int Initialize(void) {
 	1.0f, -1.0f, 0.0f
 	};
 
-	const GLfloat triangleColors[] = {
-		1.0f,0.0f,0.0f,
-		0.0f,1.0f,0.0f,
-		0.0f,0.0f,1.0f
+	const GLfloat rectangleTexCoords[] = {
+	1.0f, 1.0f ,
+	0.0f, 1.0f,
+	0.0f, 0.0f,
+	1.0f, 0.0f
 	};
 
 	//const GLfloat rectangleColors[] = {
@@ -460,59 +473,6 @@ int Initialize(void) {
 	//	0.0f,0.0f,1.0f
 	//};
 
-	//Create vao
-	//Save everying in single set
-	glGenVertexArrays(1, &vao_triangle);
-
-	glBindVertexArray(vao_triangle);
-
-
-	//TRIANGLE
-	//Generate Buffer
-	glGenBuffers(1, &vbo_position_triangle);
-	//Bind Generated Buffer
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_triangle);
-	//Fill Buffer
-	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(triangleVertices),
-		triangleVertices,
-		GL_STATIC_DRAW);
-	//Set Vertex Attrib Pointer
-	glVertexAttribPointer(AMC_ATTRIBUTE_POSITION,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		0,
-		NULL);
-	//Enable Vertex Attrib Array
-	glEnableVertexAttribArray(AMC_ATTRIBUTE_POSITION);
-	//Unbind Buffer
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glGenBuffers(1, &vbo_color_triangle);
-	//Bind Generated Buffer
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_color_triangle);
-	//Fill Buffer
-	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(triangleColors),
-		triangleColors,
-		GL_STATIC_DRAW);
-	//Set Vertex Attrib Pointer
-	glVertexAttribPointer(AMC_ATTRIBUTE_COLOR,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		0,
-		NULL);
-	//Enable Vertex Attrib Array
-	glEnableVertexAttribArray(AMC_ATTRIBUTE_COLOR);
-	//Unbind Buffer
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//Unbind array
-	glBindVertexArray(0);
 
 	//RECTANGLE
 	glGenVertexArrays(1, &vao_rectangle);
@@ -564,8 +524,31 @@ int Initialize(void) {
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//For Single Color
-	glVertexAttrib3f(AMC_ATTRIBUTE_COLOR,
-		0.0f,0.0f,1.0f);
+	//glVertexAttrib3f(AMC_ATTRIBUTE_COLOR,
+	//	0.0f, 0.0f, 1.0f);
+
+
+	//Generate Buffer
+	glGenBuffers(1, &vbo_texCoord_rectangle);
+	//Bind Generated Buffer
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_texCoord_rectangle);
+	//Fill Buffer
+	glBufferData(GL_ARRAY_BUFFER,
+		sizeof(rectangleTexCoords),
+		rectangleTexCoords,
+		GL_STATIC_DRAW);
+	//Set Vertex Attrib Pointer
+	glVertexAttribPointer(AMC_ATTRIBUTE_TEXCOORD0,
+		2,
+		GL_FLOAT,
+		GL_FALSE,
+		0,
+		NULL);
+	//Enable Vertex Attrib Array
+	glEnableVertexAttribArray(AMC_ATTRIBUTE_TEXCOORD0);
+	//Unbind Buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Unbind array
 	glBindVertexArray(0);
@@ -577,10 +560,12 @@ int Initialize(void) {
 
 	//glEnable(GL_CULL_FACE);
 	//glDisable(GL_CULL_FACE);
-	
+
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glEnable(GL_TEXTURE_2D);
+
+	LoadTexture(&texture_smiley, MAKEINTRESOURCE(IDBITMAP_SMILEY));
 
 	perspectiveProjectionMatrix = mat4::identity();
 
@@ -613,45 +598,6 @@ void Display(void) {
 	mat4 translationMatrix;
 	mat4 rotationMatrix;
 
-	//Initialize matrices
-
-	modelViewMatrix = mat4::identity();
-	modelViewProjectionMatrix = mat4::identity();
-	translationMatrix = mat4::identity();
-	rotationMatrix = mat4::identity();
-	//Transformation
-
-	translationMatrix = translate(-1.5f, 0.0f, -6.0f);
-	rotationMatrix = rotate(angleTriangle,0.0f,1.0f,0.0f);
-
-	//Matrix Multiplication
-	modelViewMatrix = translationMatrix * rotationMatrix;
-
-	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
-
-	//Send necessary matrices to shader in resp. Uniforms
-
-	glUniformMatrix4fv(mvpUniform,
-		1,
-		GL_FALSE,
-		modelViewProjectionMatrix);
-
-	//Bind with vao
-
-	glBindVertexArray(vao_triangle);
-
-	//Bind with textures if any
-
-	//Draw
-
-	glDrawArrays(GL_TRIANGLES,
-		0,
-		3);
-
-	//Unbind vao
-
-	glBindVertexArray(0);
-
 	//RECTANGLE
 	//Initialize matrices
 
@@ -662,13 +608,19 @@ void Display(void) {
 
 	//Transformation
 
-	translationMatrix = translate(1.5f, 0.0f, -6.0f);
-	rotationMatrix = rotate(angleRectangle, 1.0f, 0.0f, 0.0f);
+	translationMatrix = translate(0.0f, 0.0f, -6.0f);
+	//rotationMatrix = rotate(angleRectangle, 1.0f, 0.0f, 0.0f);
 
 	//Matrix Multiplication
 	modelViewMatrix = translationMatrix * rotationMatrix;
 
 	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
+
+	//Texture
+
+	glActiveTexture(GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_2D,texture_smiley);
 
 	//Send necessary matrices to shader in resp. Uniforms
 
@@ -676,6 +628,8 @@ void Display(void) {
 		1,
 		GL_FALSE,
 		modelViewProjectionMatrix);
+
+	glUniform1i(samplerUniform,0);
 
 	//Bind with vao
 
@@ -689,8 +643,10 @@ void Display(void) {
 		0,
 		4);
 
-	//Unbind vao
+	//Unbind Texture
+	glBindTexture(GL_TEXTURE_2D, 0);
 
+	//Unbind vao
 	glBindVertexArray(0);
 
 	glUseProgram(0);
@@ -700,12 +656,7 @@ void Display(void) {
 }
 void Update(void)
 {
-	angleTriangle = angleTriangle + 0.2f;
-	if (angleTriangle > 360.0f)
-		angleTriangle = 0.0f;
-	angleRectangle = angleRectangle - 0.2f;
-	if (angleRectangle < -360.0f)
-		angleRectangle = 0.0f;
+
 }
 void UnInitialize(void) {
 	if (bFullScreen == true) {
@@ -721,27 +672,10 @@ void UnInitialize(void) {
 		//ShowCursor(TRUE);
 	}
 
-
-	if (vbo_position_triangle) {
-		glDeleteBuffers(1, &vbo_position_rectangle);
-		vbo_position_triangle = 0;
+	if (vbo_texCoord_rectangle) {
+		glDeleteBuffers(1, &vbo_texCoord_rectangle);
+		vbo_texCoord_rectangle = 0;
 	}
-
-	if (vbo_color_triangle) {
-		glDeleteBuffers(1, &vbo_color_triangle);
-		vbo_color_triangle = 0;
-	}
-
-	if (vao_triangle) {
-		glDeleteVertexArrays(1, &vao_triangle);
-		vao_triangle = 0;
-	}
-	//if (vbo_color_rectangle) {
-	//	glDeleteBuffers(1, &vbo_color_rectangle);
-	//	vbo_color_rectangle = 0;
-	//}
-
-
 	if (vbo_position_rectangle) {
 		glDeleteBuffers(1, &vbo_position_rectangle);
 		vbo_position_rectangle = 0;
@@ -796,7 +730,56 @@ void UnInitialize(void) {
 		fclose(gpFile);
 		gpFile = NULL;
 	}
+	if (texture_smiley) {
+		glDeleteTextures(1, &texture_smiley);
+	}
 }
+
+BOOL LoadTexture(GLuint *texture, TCHAR imageResourceID[]) {
+	HBITMAP hBitMap = NULL;
+	BITMAP bmp;
+	BOOL bStatus = FALSE;
+	hBitMap = (HBITMAP)LoadImage(GetModuleHandle(NULL),
+		imageResourceID,
+		IMAGE_BITMAP,
+		0,
+		0,
+		LR_CREATEDIBSECTION);
+	if (hBitMap) {
+		bStatus = TRUE;
+		GetObject(hBitMap,
+			sizeof(BITMAP),
+			&bmp);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+		glGenTextures(1, texture);
+		glBindTexture(GL_TEXTURE_2D, *texture);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		//gluBuild2DMipmaps(GL_TEXTURE_2D, 3, bmp.bmWidth, bmp.bmHeight, GL_BGR_EXT, GL_UNSIGNED_BYTE, bmp.bmBits);
+
+		glTexImage2D(GL_TEXTURE_2D,
+			0,
+			GL_RGB,
+			bmp.bmWidth,
+			bmp.bmHeight,
+			0,
+			GL_BGR,
+			GL_UNSIGNED_BYTE,
+			bmp.bmBits
+		);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+
+		DeleteObject(hBitMap);
+	}
+
+	return bStatus;
+}
+
 
 //void PrintTime() {
 //	struct tm newtime;
