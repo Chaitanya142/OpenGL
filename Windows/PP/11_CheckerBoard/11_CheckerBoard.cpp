@@ -829,9 +829,6 @@ void LoadTexture() {
 		GL_UNSIGNED_BYTE,
 		checkImage);
 
-	glTexEnvf(GL_TEXTURE_ENV,
-		GL_TEXTURE_ENV_MODE,
-		GL_REPLACE);
 
 }
 
