@@ -15,6 +15,9 @@
 #include</usr/include/SOIL/SOIL.h>
 #include"vmath.h"
 
+#define checkImageWidth 1
+#define checkImageHeight 1
+
 using namespace std;
 using namespace vmath;
 
@@ -40,12 +43,6 @@ GLint *
 glXCreateContextAttribsARBProc glXCreateContextAttribsARB=NULL;
 GLXFBConfig gGLXFBConfig;
 
-#define checkImageWidth 64
-#define checkImageHeight 64
-
-GLubyte checkImage[checkImageWidth][checkImageHeight][4];
-GLuint txtImage;
-
 //Shader Program Objects
 GLint gShaderProgramObject;
 
@@ -56,12 +53,13 @@ enum {
 	AMC_ATTRIBUTE_TEXCOORD0
 };
 
+GLuint texture;
+GLubyte checkImage[checkImageWidth][checkImageHeight][4];
+GLuint procTexture;
+
 GLuint vao_rectangle;
-
 GLuint vbo_position_rectangle;
-
 //GLuint vbo_color_rectangle;
-
 GLuint vbo_texCoord_rectangle;
 
 GLuint mvpUniform;
@@ -69,8 +67,11 @@ GLuint samplerUniform;
 
 mat4 perspectiveProjectionMatrix;
 
+int PressedDigit = 0;
+
 void Update(void);
-void LoadTexture();
+bool LoadTexture(GLuint *texture ,const char *path);
+
 int main(void)
 {
 void CreateWindow(void);
@@ -99,15 +100,61 @@ while(bDone==false){
                 //to get keysym code details type xev in terminal and press enter . press key to get details
                 case KeyPress:
                         keysym=XkbKeycodeToKeysym(gpDisplay,event.xkey.keycode,0,0);
+                        
+                        switch(event.xkey.keycode){
+                            case 87:
+                                PressedDigit = 1;
+                                break;
+                            case 88:
+                                PressedDigit = 2;
+                                break;
+                            case 89:
+                                PressedDigit = 3;
+                                break;
+                            case 83:
+                                PressedDigit = 4;
+                                break;
+                            case 84:
+                            case 85:
+                            case 79:
+                            case 80:
+                            case 81:
+                            case 90:
+                                PressedDigit = 0;
+                                break;
+                        }
+
                         // static char buffer [60];
                         // static std::string s = std::to_string(keysym);
                         // static const char *cstr = s.c_str();
-                        // fputs(cstr, filePointer) ;                   
+                        // fputs(cstr, filePointer) ; 
+                        
                         switch(keysym)
                         {
                         case XK_Escape:
                         bDone=true;
                         break;
+                        case 49:
+                        //case XK_KP_1:
+                            PressedDigit = 1;
+                            break;
+                        case 50:
+                            PressedDigit = 2;
+                            break;
+                        case 51:
+                            PressedDigit = 3;
+                            break;
+                        case 52:
+                            PressedDigit = 4;
+                            break;
+                        case 48:
+                        case 53:
+                        case 54:
+                        case 55:
+                        case 56:
+                        case 57:
+                            PressedDigit = 0;
+                            break;
                         default:
                         break;
                         }
@@ -348,7 +395,6 @@ void UnInitialize()
 	}
 
 GLXContext currentGLXContext=glXGetCurrentContext();
-
 if(currentGLXContext != NULL && currentGLXContext== gGLXContext){
     glXMakeCurrent(gpDisplay,0,0);
 
@@ -356,7 +402,6 @@ if(currentGLXContext != NULL && currentGLXContext== gGLXContext){
         glXDestroyContext(gpDisplay,gGLXContext);
     }
 }
-
 if(gWindow)
 {
         XDestroyWindow(gpDisplay,gWindow);
@@ -378,8 +423,11 @@ if(gGLXContext){
         XFree(gGLXContext);
         gGLXContext=NULL;
 }
-	if (txtImage) {
-		glDeleteTextures(1, &txtImage);
+	if (texture) {
+		glDeleteTextures(1, &texture);
+	}
+	if (procTexture) {
+		glDeleteTextures(1, &procTexture);
 	}
 
 }
@@ -387,6 +435,8 @@ if(gGLXContext){
 void Initialize(void){
     //Function Declaration
         void Resize(int, int);
+		void LoadTexture(GLuint *txtImage);
+		bool LoadTexture(GLuint *texture ,const char *path);
 
         glXCreateContextAttribsARB=(glXCreateContextAttribsARBProc)glXGetProcAddressARB((GLubyte *)"glXCreateContextAttribsARB");
 
@@ -448,6 +498,7 @@ void Initialize(void){
 		UnInitialize();
 		exit(0);
 	}
+
 
 	//Shader Objects
 	GLint gVertexShaderObject;
@@ -612,12 +663,12 @@ void Initialize(void){
 		"u_sampler");
 
 	//Vertices
-	//const GLfloat rectangleVertices[] = {
-	//-2.0f,-1.0f, 0.0f ,
-	//-2.0f, 1.0f, 0.0f,
-	//0.0f, 1.0f, 0.0f,
-	//0.0f, -1.0f, 0.0f
-	//};
+	const GLfloat rectangleVertices[] = {
+	1.0f, 1.0f, 0.0f ,
+	-1.0f, 1.0f, 0.0f,
+	-1.0f, -1.0f, 0.0f,
+	1.0f, -1.0f, 0.0f
+	};
 
 	//const GLfloat rectangleTexCoords[] = {
 	//1.0f, 1.0f ,
@@ -645,14 +696,10 @@ void Initialize(void){
 	glBindBuffer(GL_ARRAY_BUFFER,
 		vbo_position_rectangle);
 	//Fill Buffer
-	//glBufferData(GL_ARRAY_BUFFER,
-	//	sizeof(rectangleVertices),
-	//	rectangleVertices,
-	//	GL_STATIC_DRAW);
 	glBufferData(GL_ARRAY_BUFFER,
-		4*3*sizeof(float),
-		NULL,
-		GL_DYNAMIC_DRAW);
+		sizeof(rectangleVertices),
+		rectangleVertices,
+		GL_STATIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_POSITION,
 		3,
@@ -696,7 +743,6 @@ void Initialize(void){
 	//Bind Generated Buffer
 	glBindBuffer(GL_ARRAY_BUFFER,
 		vbo_texCoord_rectangle);
-
 	//Fill Buffer
 	//glBufferData(GL_ARRAY_BUFFER,
 	//	sizeof(rectangleTexCoords),
@@ -734,7 +780,15 @@ void Initialize(void){
 
 	glEnable(GL_TEXTURE_2D);
 
-	LoadTexture();
+	LoadTexture(&procTexture);
+
+	bool bResult=LoadTexture(&texture,"Smiley.bmp");
+
+    if(bResult==false){
+    printf("ERROR : Failed To Load Texture.\nExiting Now...\n");
+    UnInitialize();
+    exit(1);
+    }
 
 	perspectiveProjectionMatrix = mat4::identity();
 
@@ -747,37 +801,24 @@ void Resize(int width, int height) {
    if (height == 0)
 		height = 1;
 
-	perspectiveProjectionMatrix = perspective(60.0f,
+	perspectiveProjectionMatrix = perspective(45.0f,
 		(GLfloat)width / (GLfloat)height,
-		1.0f,
-		30.0f);
+		0.1f,
+		100.0f);
 
 }
 //Function Display
 void DisplayOpenGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-glUseProgram(gShaderProgramObject);
-
-	GLfloat rectangleVertices[] = {
-	-2.0f,-1.0f, 0.0f ,
-	-2.0f, 1.0f, 0.0f,
-	0.0f, 1.0f, 0.0f,
-	0.0f, -1.0f, 0.0f
-	};
-
-	GLfloat rectangleTexCoords[] = {
-	0.0f,0.0f,
-	0.0f, 1.0f,
-	1.0f, 1.0f,
-	1.0f, 0.0f
-	};
+	glUseProgram(gShaderProgramObject);
 
 	//Declaration of Matrices
 	mat4 modelViewMatrix;
 	mat4 modelViewProjectionMatrix;
 	mat4 translationMatrix;
 	mat4 rotationMatrix;
+	mat4 scaleMatrix;
 
 	//RECTANGLE
 	//Initialize matrices
@@ -786,23 +827,26 @@ glUseProgram(gShaderProgramObject);
 	modelViewProjectionMatrix = mat4::identity();
 	translationMatrix = mat4::identity();
 	rotationMatrix = mat4::identity();
-
+	scaleMatrix= mat4::identity();
 	//Transformation
 
-	translationMatrix = translate(0.0f, 0.0f, -3.6f);
+	translationMatrix = translate(0.0f, 0.0f, -6.0f);
+	scaleMatrix=scale(1.0f,-1.0f,1.0f);
 	//rotationMatrix = rotate(angleRectangle, 1.0f, 0.0f, 0.0f);
 
 	//Matrix Multiplication
-	modelViewMatrix = translationMatrix * rotationMatrix;
+	modelViewMatrix = translationMatrix * rotationMatrix*scaleMatrix;
 
 	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
-
 
 	//Texture
 
 	glActiveTexture(GL_TEXTURE0);
 
-	glBindTexture(GL_TEXTURE_2D, txtImage);
+	if (PressedDigit == 1 || PressedDigit == 2 || PressedDigit == 3 || PressedDigit == 4)
+		glBindTexture(GL_TEXTURE_2D, texture);
+	else
+		glBindTexture(GL_TEXTURE_2D, procTexture);
 
 	//Send necessary matrices to shader in resp. Uniforms
 
@@ -818,15 +862,65 @@ glUseProgram(gShaderProgramObject);
 	glBindVertexArray(vao_rectangle);
 
 	//Bind with textures if any
-	
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_rectangle);
-	glBufferData(GL_ARRAY_BUFFER,
-		4 * 3 * sizeof(float),
-		rectangleVertices,
-		GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
+
+	GLfloat rectangleTexCoords[] = {
+	1.0f, 1.0f ,
+	0.0f, 1.0f,
+	0.0f, 0.0f,
+	1.0f, 0.0f
+	};
+
+	if (PressedDigit == 1) {
+		rectangleTexCoords[0] = 0.5f;
+		rectangleTexCoords[1] = 0.5f;
+		rectangleTexCoords[2] = 0.0f;
+		rectangleTexCoords[3] = 0.5f;
+		rectangleTexCoords[4] = 0.0f;
+		rectangleTexCoords[5] = 0.0f;
+		rectangleTexCoords[6] = 0.5f;
+		rectangleTexCoords[7] = 0.0f;
+	}
+	else if (PressedDigit == 2) {
+		rectangleTexCoords[0] = 1.0f;
+		rectangleTexCoords[1] = 1.0f;
+		rectangleTexCoords[2] = 0.0f;
+		rectangleTexCoords[3] = 1.0f;
+		rectangleTexCoords[4] = 0.0f;
+		rectangleTexCoords[5] = 0.0f;
+		rectangleTexCoords[6] = 1.0f;
+		rectangleTexCoords[7] = 0.0f;
+	}
+	else if (PressedDigit == 3) {
+		rectangleTexCoords[0] = 2.0f;
+		rectangleTexCoords[1] = 2.0f;
+		rectangleTexCoords[2] = 0.0f;
+		rectangleTexCoords[3] = 2.0f;
+		rectangleTexCoords[4] = 0.0f;
+		rectangleTexCoords[5] = 0.0f;
+		rectangleTexCoords[6] = 2.0f;
+		rectangleTexCoords[7] = 0.0f;
+	}
+	else if (PressedDigit == 4) {
+		rectangleTexCoords[0] = 0.5f;
+		rectangleTexCoords[1] = 0.5f;
+		rectangleTexCoords[2] = 0.5f;
+		rectangleTexCoords[3] = 0.5f;
+		rectangleTexCoords[4] = 0.5f;
+		rectangleTexCoords[5] = 0.5f;
+		rectangleTexCoords[6] = 0.5f;
+		rectangleTexCoords[7] = 0.5f;
+	}
+	else {
+		rectangleTexCoords[0] = 1.0f;
+		rectangleTexCoords[1] = 1.0f;
+		rectangleTexCoords[2] = 0.0f;
+		rectangleTexCoords[3] = 1.0f;
+		rectangleTexCoords[4] = 0.0f;
+		rectangleTexCoords[5] = 0.0f;
+		rectangleTexCoords[6] = 1.0f;
+		rectangleTexCoords[7] = 0.0f;
+	}
+
 	glBindBuffer(GL_ARRAY_BUFFER,
 		vbo_texCoord_rectangle);
 	glBufferData(GL_ARRAY_BUFFER,
@@ -836,32 +930,6 @@ glUseProgram(gShaderProgramObject);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Draw
-
-	glDrawArrays(GL_TRIANGLE_FAN,
-		0,
-		4);
-
-	//2nd Rectangle
-	rectangleVertices[0] = 1.0f;
-	rectangleVertices[1] = -1.0f;
-	rectangleVertices[2] = 0.0f;
-	rectangleVertices[3] = 1.0f;
-	rectangleVertices[4] = 1.0f;
-	rectangleVertices[5] = 0.0f;
-	rectangleVertices[6] = 2.41421f;
-	rectangleVertices[7] = 1.0f;
-	rectangleVertices[8] = -1.41421f;
-	rectangleVertices[9] = 2.41421f;
-	rectangleVertices[10] = -1.0f;
-	rectangleVertices[11] = -1.41421f;
-
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_rectangle);
-	glBufferData(GL_ARRAY_BUFFER,
-		4 * 3 * sizeof(float),
-		rectangleVertices,
-		GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glDrawArrays(GL_TRIANGLE_FAN,
 		0,
@@ -881,12 +949,54 @@ void Update(void)
 {
 	
 }
-void LoadTexture() {
+bool LoadTexture(GLuint *texture ,const char *path){
+    bool bResult=false;
+    int imageWidth,imageHeight;
+    unsigned char* imgData=SOIL_load_image(path,
+    &imageWidth,
+    &imageHeight,
+    0,
+    SOIL_LOAD_RGB);
+
+    if(imgData==NULL){
+        bResult=false;
+        return bResult;
+    }else{
+        bResult=true;
+    }
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+	glGenTextures(1, texture);
+	glBindTexture(GL_TEXTURE_2D, *texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	//gluBuild2DMipmaps(GL_TEXTURE_2D, 3 , imageWidth, imageHeight, GL_RGB, GL_UNSIGNED_BYTE, imgData);  
+
+		glTexImage2D(GL_TEXTURE_2D,
+		0,
+		GL_RGB,
+		imageWidth,
+		imageHeight,
+		0,
+		GL_RGB,
+		GL_UNSIGNED_BYTE,
+		imgData);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+    SOIL_free_image_data(imgData);
+    
+    return bResult;
+}
+
+void LoadTexture(GLuint *txtImage) {
 	void MakeCheckImage();
 	MakeCheckImage();
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &txtImage);
-	glBindTexture(GL_TEXTURE_2D, txtImage);
+	glGenTextures(1, txtImage);
+	glBindTexture(GL_TEXTURE_2D, *txtImage);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -913,7 +1023,7 @@ void MakeCheckImage() {
 	int i, j, c;
 	for (i = 0; i < checkImageHeight; i++) {
 		for (j = 0; j < checkImageWidth; j++) {
-			c = (((i & 0x8) == 0) ^ ((j & 0x8) == 0)) * 255;
+			c = 255;
 			checkImage[i][j][0] = (GLubyte)c;
 			checkImage[i][j][1] = (GLubyte)c;
 			checkImage[i][j][2] = (GLubyte)c;

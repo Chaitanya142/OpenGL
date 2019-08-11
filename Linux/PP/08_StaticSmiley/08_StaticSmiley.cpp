@@ -40,12 +40,6 @@ GLint *
 glXCreateContextAttribsARBProc glXCreateContextAttribsARB=NULL;
 GLXFBConfig gGLXFBConfig;
 
-#define checkImageWidth 64
-#define checkImageHeight 64
-
-GLubyte checkImage[checkImageWidth][checkImageHeight][4];
-GLuint txtImage;
-
 //Shader Program Objects
 GLint gShaderProgramObject;
 
@@ -55,6 +49,8 @@ enum {
 	AMC_ATTRIBUTE_NORMAL,
 	AMC_ATTRIBUTE_TEXCOORD0
 };
+
+GLuint texture_smiley;
 
 GLuint vao_rectangle;
 
@@ -70,7 +66,8 @@ GLuint samplerUniform;
 mat4 perspectiveProjectionMatrix;
 
 void Update(void);
-void LoadTexture();
+bool LoadTexture(GLuint *texture ,const char *path);
+
 int main(void)
 {
 void CreateWindow(void);
@@ -305,6 +302,7 @@ void UnInitialize()
         ToggleFullScreen();
     }
 
+
 	if (vbo_texCoord_rectangle) {
 		glDeleteBuffers(1, &vbo_texCoord_rectangle);
 		vbo_texCoord_rectangle = 0;
@@ -348,7 +346,6 @@ void UnInitialize()
 	}
 
 GLXContext currentGLXContext=glXGetCurrentContext();
-
 if(currentGLXContext != NULL && currentGLXContext== gGLXContext){
     glXMakeCurrent(gpDisplay,0,0);
 
@@ -356,7 +353,6 @@ if(currentGLXContext != NULL && currentGLXContext== gGLXContext){
         glXDestroyContext(gpDisplay,gGLXContext);
     }
 }
-
 if(gWindow)
 {
         XDestroyWindow(gpDisplay,gWindow);
@@ -378,9 +374,10 @@ if(gGLXContext){
         XFree(gGLXContext);
         gGLXContext=NULL;
 }
-	if (txtImage) {
-		glDeleteTextures(1, &txtImage);
-	}
+if(texture_smiley) {
+		glDeleteTextures(1, &texture_smiley);
+}
+
 
 }
 
@@ -577,7 +574,7 @@ void Initialize(void){
 		AMC_ATTRIBUTE_COLOR,
 		"vColor");*/
 
-		//Link Shader Program
+	//Link Shader Program
 	glLinkProgram(gShaderProgramObject);
 
 	//Error Checking
@@ -612,19 +609,19 @@ void Initialize(void){
 		"u_sampler");
 
 	//Vertices
-	//const GLfloat rectangleVertices[] = {
-	//-2.0f,-1.0f, 0.0f ,
-	//-2.0f, 1.0f, 0.0f,
-	//0.0f, 1.0f, 0.0f,
-	//0.0f, -1.0f, 0.0f
-	//};
+	const GLfloat rectangleVertices[] = {
+	1.0f, 1.0f, 0.0f ,
+	-1.0f, 1.0f, 0.0f,
+	-1.0f, -1.0f, 0.0f,
+	1.0f, -1.0f, 0.0f
+	};
 
-	//const GLfloat rectangleTexCoords[] = {
-	//1.0f, 1.0f ,
-	//0.0f, 1.0f,
-	//0.0f, 0.0f,
-	//1.0f, 0.0f
-	//};
+	const GLfloat rectangleTexCoords[] = {
+	1.0f, 1.0f ,
+	0.0f, 1.0f,
+	0.0f, 0.0f,
+	1.0f, 0.0f
+	};
 
 	//const GLfloat rectangleColors[] = {
 	//	0.0f,0.0f,1.0f,
@@ -645,14 +642,10 @@ void Initialize(void){
 	glBindBuffer(GL_ARRAY_BUFFER,
 		vbo_position_rectangle);
 	//Fill Buffer
-	//glBufferData(GL_ARRAY_BUFFER,
-	//	sizeof(rectangleVertices),
-	//	rectangleVertices,
-	//	GL_STATIC_DRAW);
 	glBufferData(GL_ARRAY_BUFFER,
-		4*3*sizeof(float),
-		NULL,
-		GL_DYNAMIC_DRAW);
+		sizeof(rectangleVertices),
+		rectangleVertices,
+		GL_STATIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_POSITION,
 		3,
@@ -691,23 +684,17 @@ void Initialize(void){
 	//glVertexAttrib3f(AMC_ATTRIBUTE_COLOR,
 	//	0.0f, 0.0f, 1.0f);
 
+
 	//Generate Buffer
 	glGenBuffers(1, &vbo_texCoord_rectangle);
 	//Bind Generated Buffer
 	glBindBuffer(GL_ARRAY_BUFFER,
 		vbo_texCoord_rectangle);
-
 	//Fill Buffer
-	//glBufferData(GL_ARRAY_BUFFER,
-	//	sizeof(rectangleTexCoords),
-	//	rectangleTexCoords,
-	//	GL_STATIC_DRAW);
-
 	glBufferData(GL_ARRAY_BUFFER,
-		8 * sizeof(float),
-		NULL,
-		GL_DYNAMIC_DRAW);
-
+		sizeof(rectangleTexCoords),
+		rectangleTexCoords,
+		GL_STATIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_TEXCOORD0,
 		2,
@@ -727,14 +714,17 @@ void Initialize(void){
 	glDepthFunc(GL_LEQUAL);
 	glClearDepth(1.0f);
 
-	//glEnable(GL_CULL_FACE);
-	//glDisable(GL_CULL_FACE);
-
+	glEnable(GL_TEXTURE_2D);
+	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	glEnable(GL_TEXTURE_2D);
+	bool bResult=LoadTexture(&texture_smiley,"Smiley.bmp");
 
-	LoadTexture();
+    if(bResult==false){
+    printf("ERROR : Failed To Load Texture.\nExiting Now...\n");
+    UnInitialize();
+    exit(1);
+    }
 
 	perspectiveProjectionMatrix = mat4::identity();
 
@@ -747,37 +737,24 @@ void Resize(int width, int height) {
    if (height == 0)
 		height = 1;
 
-	perspectiveProjectionMatrix = perspective(60.0f,
+	perspectiveProjectionMatrix = perspective(45.0f,
 		(GLfloat)width / (GLfloat)height,
-		1.0f,
-		30.0f);
+		0.1f,
+		100.0f);
 
 }
 //Function Display
 void DisplayOpenGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-glUseProgram(gShaderProgramObject);
-
-	GLfloat rectangleVertices[] = {
-	-2.0f,-1.0f, 0.0f ,
-	-2.0f, 1.0f, 0.0f,
-	0.0f, 1.0f, 0.0f,
-	0.0f, -1.0f, 0.0f
-	};
-
-	GLfloat rectangleTexCoords[] = {
-	0.0f,0.0f,
-	0.0f, 1.0f,
-	1.0f, 1.0f,
-	1.0f, 0.0f
-	};
+	glUseProgram(gShaderProgramObject);
 
 	//Declaration of Matrices
 	mat4 modelViewMatrix;
 	mat4 modelViewProjectionMatrix;
 	mat4 translationMatrix;
 	mat4 rotationMatrix;
+	mat4 scaleMatrix;
 
 	//RECTANGLE
 	//Initialize matrices
@@ -786,23 +763,23 @@ glUseProgram(gShaderProgramObject);
 	modelViewProjectionMatrix = mat4::identity();
 	translationMatrix = mat4::identity();
 	rotationMatrix = mat4::identity();
-
+	scaleMatrix =mat4::identity();
 	//Transformation
 
-	translationMatrix = translate(0.0f, 0.0f, -3.6f);
-	//rotationMatrix = rotate(angleRectangle, 1.0f, 0.0f, 0.0f);
+	translationMatrix = translate(0.0f, 0.0f, -6.0f);
+	scaleMatrix=scale(1.0f,-1.0f,1.0f);
+	//rotationMatrix = rotate(0.0f, 90.0f, 0.0f);
 
 	//Matrix Multiplication
-	modelViewMatrix = translationMatrix * rotationMatrix;
+	modelViewMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 
 	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
-
 
 	//Texture
 
 	glActiveTexture(GL_TEXTURE0);
 
-	glBindTexture(GL_TEXTURE_2D, txtImage);
+	glBindTexture(GL_TEXTURE_2D,texture_smiley);
 
 	//Send necessary matrices to shader in resp. Uniforms
 
@@ -811,57 +788,15 @@ glUseProgram(gShaderProgramObject);
 		GL_FALSE,
 		modelViewProjectionMatrix);
 
-	glUniform1i(samplerUniform, 0);
+	glUniform1i(samplerUniform,0);
 
 	//Bind with vao
 
 	glBindVertexArray(vao_rectangle);
 
 	//Bind with textures if any
-	
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_rectangle);
-	glBufferData(GL_ARRAY_BUFFER,
-		4 * 3 * sizeof(float),
-		rectangleVertices,
-		GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_texCoord_rectangle);
-	glBufferData(GL_ARRAY_BUFFER,
-		8 * sizeof(float),
-		rectangleTexCoords,
-		GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Draw
-
-	glDrawArrays(GL_TRIANGLE_FAN,
-		0,
-		4);
-
-	//2nd Rectangle
-	rectangleVertices[0] = 1.0f;
-	rectangleVertices[1] = -1.0f;
-	rectangleVertices[2] = 0.0f;
-	rectangleVertices[3] = 1.0f;
-	rectangleVertices[4] = 1.0f;
-	rectangleVertices[5] = 0.0f;
-	rectangleVertices[6] = 2.41421f;
-	rectangleVertices[7] = 1.0f;
-	rectangleVertices[8] = -1.41421f;
-	rectangleVertices[9] = 2.41421f;
-	rectangleVertices[10] = -1.0f;
-	rectangleVertices[11] = -1.41421f;
-
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_rectangle);
-	glBufferData(GL_ARRAY_BUFFER,
-		4 * 3 * sizeof(float),
-		rectangleVertices,
-		GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glDrawArrays(GL_TRIANGLE_FAN,
 		0,
@@ -881,44 +816,44 @@ void Update(void)
 {
 	
 }
-void LoadTexture() {
-	void MakeCheckImage();
-	MakeCheckImage();
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &txtImage);
-	glBindTexture(GL_TEXTURE_2D, txtImage);
+bool LoadTexture(GLuint *texture ,const char *path){
+    bool bResult=false;
+    int imageWidth,imageHeight;
+    unsigned char* imgData=SOIL_load_image(path,
+    &imageWidth,
+    &imageHeight,
+    0,
+    SOIL_LOAD_RGB);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    if(imgData==NULL){
+        bResult=false;
+        return bResult;
+    }else{
+        bResult=true;
+    }
 
-	glTexImage2D(GL_TEXTURE_2D,
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+	glGenTextures(1, texture);
+	glBindTexture(GL_TEXTURE_2D, *texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	//gluBuild2DMipmaps(GL_TEXTURE_2D, 3 , imageWidth, imageHeight, GL_RGB, GL_UNSIGNED_BYTE, imgData);  
+
+		glTexImage2D(GL_TEXTURE_2D,
 		0,
-		GL_RGBA,
-		checkImageWidth,
-		checkImageHeight,
+		GL_RGB,
+		imageWidth,
+		imageHeight,
 		0,
-		GL_RGBA,
+		GL_RGB,
 		GL_UNSIGNED_BYTE,
-		checkImage);
+		imgData);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-}
-
-void MakeCheckImage() {
-	int i, j, c;
-	for (i = 0; i < checkImageHeight; i++) {
-		for (j = 0; j < checkImageWidth; j++) {
-			c = (((i & 0x8) == 0) ^ ((j & 0x8) == 0)) * 255;
-			checkImage[i][j][0] = (GLubyte)c;
-			checkImage[i][j][1] = (GLubyte)c;
-			checkImage[i][j][2] = (GLubyte)c;
-			checkImage[i][j][3] = 255;
-
-		}
-	}
+    SOIL_free_image_data(imgData);
+    
+    return bResult;
 }
