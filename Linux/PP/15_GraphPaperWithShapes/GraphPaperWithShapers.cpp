@@ -40,11 +40,9 @@ GLint *
 glXCreateContextAttribsARBProc glXCreateContextAttribsARB=NULL;
 GLXFBConfig gGLXFBConfig;
 
-GLfloat anglePyramid = 0.0;
-GLfloat angleCube = 0.0;
-
 //Shader Program Objects
 GLint gShaderProgramObject;
+
 enum {
 	AMC_ATTRIBUTE_POSITION = 0,
 	AMC_ATTRIBUTE_COLOR,
@@ -52,14 +50,13 @@ enum {
 	AMC_ATTRIBUTE_TEXCOORD0
 };
 
-GLuint vao_pyramid;
-GLuint vao_cube;
+GLuint vao;
 
-GLuint vbo_position_pyramid;
-GLuint vbo_position_cube;
+GLuint vbo_position_lines;
+GLuint vbo_color_lines;
 
-GLuint vbo_color_pyramid;
-GLuint vbo_color_cube;
+GLuint vbo_position_point;
+GLuint vbo_color_point;
 
 GLuint mvpUniform;
 mat4 perspectiveProjectionMatrix;
@@ -300,33 +297,19 @@ void UnInitialize()
         ToggleFullScreen();
     }
 
-		if (vbo_position_pyramid) {
-		glDeleteBuffers(1, &vbo_position_pyramid);
-		vbo_position_pyramid = 0;
+	if (vbo_position_lines) {
+		glDeleteBuffers(1, &vbo_position_lines);
+		vbo_position_lines = 0;
 	}
 
-	if (vbo_color_pyramid) {
-		glDeleteBuffers(1, &vbo_color_pyramid);
-		vbo_color_pyramid = 0;
+	if (vbo_color_lines) {
+		glDeleteBuffers(1, &vbo_color_lines);
+		vbo_color_lines = 0;
 	}
 
-	if (vao_pyramid) {
-		glDeleteVertexArrays(1, &vao_pyramid);
-		vao_pyramid = 0;
-	}
-	if (vbo_color_cube) {
-		glDeleteBuffers(1, &vbo_color_cube);
-		vbo_color_cube = 0;
-	}
-
-
-	if (vbo_position_cube) {
-		glDeleteBuffers(1, &vbo_position_cube);
-		vbo_position_cube = 0;
-	}
-	if (vao_cube) {
-		glDeleteVertexArrays(1, &vao_cube);
-		vao_cube = 0;
+	if (vao) {
+		glDeleteVertexArrays(1, &vao);
+		vao = 0;
 	}
 
 	if (gShaderProgramObject) {
@@ -358,16 +341,14 @@ void UnInitialize()
 		glUseProgram(0);
 	}
 
-GLXContext currentGLXContext=glXGetCurrentContext();
-
-if(currentGLXContext != NULL && currentGLXContext== gGLXContext){
+    GLXContext currentGLXContext=glXGetCurrentContext();
+    if(currentGLXContext != NULL && currentGLXContext== gGLXContext){
     glXMakeCurrent(gpDisplay,0,0);
 
     if(gGLXContext){
         glXDestroyContext(gpDisplay,gGLXContext);
     }
 }
-
 if(gWindow)
 {
         XDestroyWindow(gpDisplay,gWindow);
@@ -604,109 +585,24 @@ void Initialize(void){
 		"u_mvp_matrix");
 
 
-	//Vertices
-	const GLfloat pyramidVertices[] = {
-		0.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,
-		0.0f, 1.0f, 0.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		0.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, 1.0f
-	};
-
-	const GLfloat cubeVertices[] = {
-		1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, 1.0f, -1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,
-		-1.0f, -1.0f, -1.0f
-	};
-
-	const GLfloat pyramidColors[] = {
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f
-	};
-
-	const GLfloat cubeColors[] = {
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f
-	};
-
 	//Create vao
 	//Save everying in single set
-	glGenVertexArrays(1, &vao_pyramid);
+	glGenVertexArrays(1, &vao);
 
-	glBindVertexArray(vao_pyramid);
+	glBindVertexArray(vao);
 
 
-	//TRIANGLE
+	//Line
 	//Generate Buffer
-	glGenBuffers(1, &vbo_position_pyramid);
+	glGenBuffers(1, &vbo_position_lines);
 	//Bind Generated Buffer
 	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_pyramid);
+		vbo_position_lines);
 	//Fill Buffer
 	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(pyramidVertices),
-		pyramidVertices,
-		GL_STATIC_DRAW);
+		6 * sizeof(float),
+		NULL,
+		GL_DYNAMIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_POSITION,
 		3,
@@ -719,15 +615,15 @@ void Initialize(void){
 	//Unbind Buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glGenBuffers(1, &vbo_color_pyramid);
+	glGenBuffers(1, &vbo_color_lines);
 	//Bind Generated Buffer
 	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_color_pyramid);
+		vbo_color_lines);
 	//Fill Buffer
 	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(pyramidColors),
-		pyramidColors,
-		GL_STATIC_DRAW);
+		6 * sizeof(float),
+		NULL,
+		GL_DYNAMIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_COLOR,
 		3,
@@ -743,21 +639,19 @@ void Initialize(void){
 	//Unbind array
 	glBindVertexArray(0);
 
-	//RECTANGLE
-	glGenVertexArrays(1, &vao_cube);
-
-	glBindVertexArray(vao_cube);
-
+	
+	
+	//POINT
 	//Generate Buffer
-	glGenBuffers(1, &vbo_position_cube);
+	glGenBuffers(1, &vbo_position_point);
 	//Bind Generated Buffer
 	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_cube);
+		vbo_position_point);
 	//Fill Buffer
 	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(cubeVertices),
-		cubeVertices,
-		GL_STATIC_DRAW);
+		3 * sizeof(float),
+		NULL,
+		GL_DYNAMIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_POSITION,
 		3,
@@ -770,16 +664,15 @@ void Initialize(void){
 	//Unbind Buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	//Generate Buffer
-	glGenBuffers(1, &vbo_color_cube);
+	glGenBuffers(1, &vbo_color_point);
 	//Bind Generated Buffer
 	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_color_cube);
+		vbo_color_point);
 	//Fill Buffer
 	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(cubeColors),
-		cubeColors,
-		GL_STATIC_DRAW);
+		3 * sizeof(float),
+		NULL,
+		GL_DYNAMIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_COLOR,
 		3,
@@ -793,12 +686,15 @@ void Initialize(void){
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	//Unbind array
 	glBindVertexArray(0);
+
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glClearDepth(1.0f);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	glEnable(GL_TEXTURE_2D);
 
 	perspectiveProjectionMatrix = mat4::identity();
 
@@ -813,14 +709,28 @@ void Resize(int width, int height) {
 
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 
+	//printf("%d %d \n",width,height);
 	perspectiveProjectionMatrix = perspective(45.0f,
-		(GLfloat)width / (GLfloat)height,
+		(float)width / (float)height,
 		0.1f,
 		100.0f);
 
 }
 //Function Display
 void DisplayOpenGL(void) {
+	float count = -1;
+	//Vertices
+
+	void DrawTriangle(float);
+	void DrawInCircle(float x1, float y1, float z1,
+		float x2, float y2, float z2,
+		float x3, float y3, float z3
+	);
+	void DrawGraph(GLfloat offset);
+	void DrawCircle(GLfloat radius);
+	void DrawRectangle(GLfloat width, GLfloat height);
+	void DrawCircleAroundRectangle(GLfloat width, GLfloat height);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(gShaderProgramObject);
@@ -830,9 +740,7 @@ void DisplayOpenGL(void) {
 	mat4 modelViewProjectionMatrix;
 	mat4 translationMatrix;
 	mat4 rotationMatrix;
-	mat4 scaleMatrix;
 
-	//Pyramid
 	//Initialize matrices
 
 	modelViewMatrix = mat4::identity();
@@ -841,8 +749,7 @@ void DisplayOpenGL(void) {
 	rotationMatrix = mat4::identity();
 	//Transformation
 
-	translationMatrix = translate(-1.5f, 0.0f, -6.0f);
-	rotationMatrix = rotate(anglePyramid, 0.0f, 1.0f, 0.0f);
+	translationMatrix = translate(0.0f, 0.0f, -3.0f);
 
 	//Matrix Multiplication
 	modelViewMatrix = translationMatrix * rotationMatrix;
@@ -858,89 +765,433 @@ void DisplayOpenGL(void) {
 
 	//Bind with vao
 
-	glBindVertexArray(vao_pyramid);
+	glBindVertexArray(vao);
 
 	//Bind with textures if any
 
-	//Draw
+	DrawGraph(0.01f);
+	
+	DrawTriangle(0.5f);
+	
+	DrawInCircle(0.0f, 0.5f, 0.0f,
+	-0.5f, -0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f);
 
-	glDrawArrays(GL_TRIANGLES,
-		0,
-		12);
+	DrawRectangle(1.0f, 1.0f);	
+	DrawCircleAroundRectangle(1.0f, 1.0f);
 
-	//Unbind vao
-
-	glBindVertexArray(0);
-
-	//CUBE
-	//Initialize matrices
-
-	modelViewMatrix = mat4::identity();
-	modelViewProjectionMatrix = mat4::identity();
-	translationMatrix = mat4::identity();
-	rotationMatrix = mat4::identity();
-	scaleMatrix = mat4::identity();
-
-	//Transformation
-
-	translationMatrix = translate(1.5f, 0.0f, -6.0f);
-	scaleMatrix = scale(0.75f, 0.75f, 0.75f);
-	rotationMatrix = rotate(angleCube,angleCube,angleCube);
-
-	//Matrix Multiplication
-
-	modelViewMatrix = translationMatrix * scaleMatrix * rotationMatrix;
-
-
-	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
-
-	//Send necessary matrices to shader in resp. Uniforms
-
-	glUniformMatrix4fv(mvpUniform,
-		1,
-		GL_FALSE,
-		modelViewProjectionMatrix);
-
-	//Bind with vao
-
-	glBindVertexArray(vao_cube);
-
-	//Bind with textures if any
-
-	//Draw
-	//6Faces
-	glDrawArrays(GL_TRIANGLE_FAN,
-		0,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		4,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		8,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		12,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		16,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		20,
-		4);
 	//Unbind vao
 
 	glBindVertexArray(0);
 
 	glUseProgram(0);
-	
+
 	glXSwapBuffers(gpDisplay,gWindow);
 }
 void Update(void)
 {
-	anglePyramid = anglePyramid + 0.2f;
-	if (anglePyramid > 360.0f)
-		anglePyramid = 0.0f;
-	angleCube = angleCube + 0.2f;
-	if (angleCube > 360.0f)
-		angleCube = 0.0f;
+
+}
+void DrawGraph(GLfloat offset) {
+
+	float count;
+	GLfloat lineVertices[6];
+
+	GLfloat lineColor[] = {
+		0.0f,0.0f,1.0f,
+		0.0f,0.0f,1.0f
+	};
+
+	for (count = -1; count <= 1.01f; count = count + offset) {
+
+		lineVertices[0] = count;
+		lineVertices[1] = -1.0f;
+		lineVertices[2] = 0.0f;
+		lineVertices[3] = count;
+		lineVertices[4] = 1.0f;
+		lineVertices[5] = 0.0f;
+
+		glBindBuffer(GL_ARRAY_BUFFER,
+			vbo_position_lines);
+		glBufferData(GL_ARRAY_BUFFER,
+			3 * 2 * sizeof(float),
+			lineVertices,
+			GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER,
+			vbo_color_lines);
+		glBufferData(GL_ARRAY_BUFFER,
+			3 * 2 * sizeof(float),
+			lineColor,
+			GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		//Draw
+
+		glDrawArrays(GL_LINES,
+			0,
+			2);
+
+		lineVertices[0] = -1.0f;
+		lineVertices[1] = count;
+		lineVertices[2] = 0.0f;
+		lineVertices[3] = 1.0;
+		lineVertices[4] = count;
+		lineVertices[5] = 0.0f;
+
+		glBindBuffer(GL_ARRAY_BUFFER,
+			vbo_position_lines);
+		glBufferData(GL_ARRAY_BUFFER,
+			3 * 2 * sizeof(float),
+			lineVertices,
+			GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER,
+			vbo_color_lines);
+		glBufferData(GL_ARRAY_BUFFER,
+			3 * 2 * sizeof(float),
+			lineColor,
+			GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		//Draw
+
+		glDrawArrays(GL_LINES,
+			0,
+			2);
+	}
+}
+
+
+void DrawTriangle(float offset)
+{
+	GLfloat lineVertices[6];
+
+	GLfloat lineColor[] = {
+		1.0f,1.0f,0.0f,
+		1.0f,1.0f,0.0f
+	};
+
+	lineVertices[0] = 0.0f;
+	lineVertices[1] = offset;
+	lineVertices[2] = 0.0f;
+	lineVertices[3] = -offset;
+	lineVertices[4] = -offset;
+	lineVertices[5] = 0.0f;
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_position_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineVertices,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineColor,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Draw
+
+	glDrawArrays(GL_LINES,
+		0,
+		2);
+
+	lineVertices[0] = -offset;
+	lineVertices[1] = -offset;
+	lineVertices[2] = 0.0f;
+	lineVertices[3] = offset;
+	lineVertices[4] = -offset;
+	lineVertices[5] = 0.0f;
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_position_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineVertices,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineColor,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Draw
+
+	glDrawArrays(GL_LINES,
+		0,
+		2);
+
+	lineVertices[0] = offset;
+	lineVertices[1] = -offset;
+	lineVertices[2] = 0.0f;
+	lineVertices[3] = 0.0f;
+	lineVertices[4] = offset;
+	lineVertices[5] = 0.0f;
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_position_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineVertices,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineColor,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Draw
+
+	glDrawArrays(GL_LINES,
+		0,
+		2);
+
+}
+
+void DrawInCircle(float x1, float y1, float z1,
+	float x2, float y2, float z2,
+	float x3, float y3, float z3
+)
+{
+	void DrawCircle(GLfloat radius);
+	float count = -1;
+	int noCount = 2000;
+	GLfloat angle = 0;
+
+	float distP1P2 = sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) + (z2 - z1)*(z2 - z1));
+	float distP2P3 = sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2) + (z3 - z2)*(z3 - z2));
+	float distP3P1 = sqrt((x1 - x3)*(x1 - x3) + (y1 - y3)*(y1 - y3) + (z1 - z3)*(z1 - z3));
+
+	float semiPerimeter = (distP1P2 + distP2P3 + distP3P1) / 2;
+
+	float radius = sqrt((semiPerimeter - distP1P2)*(semiPerimeter - distP2P3)*(semiPerimeter - distP3P1) / semiPerimeter);
+
+	float Ox = (x3 * distP1P2 + x1 * distP2P3 + x2 * distP3P1) / (semiPerimeter * 2);
+	float Oy = (y3 * distP1P2 + y1 * distP2P3 + y2 * distP3P1) / (semiPerimeter * 2);
+	float Oz = (z3 * distP1P2 + z1 * distP2P3 + z2 * distP3P1) / (semiPerimeter * 2);
+
+	float pointVertices[3];
+	GLfloat pointColors[] = {
+		1.0f,1.0f,0.0f,
+		1.0f,1.0f,0.0f
+	};
+
+	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
+
+		pointVertices[0] = cos(angle)*radius+Ox;
+		pointVertices[1] = sin(angle)*radius+Oy;
+		pointVertices[2] = 0.0f+Oz;
+
+		glBindBuffer(GL_ARRAY_BUFFER,
+			vbo_position_lines);
+		glBufferData(GL_ARRAY_BUFFER,
+			3 * sizeof(float),
+			pointVertices,
+			GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER,
+			vbo_color_lines);
+		glBufferData(GL_ARRAY_BUFFER,
+			3 * sizeof(float),
+			pointColors,
+			GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		//Draw
+
+		glDrawArrays(GL_POINTS,
+			0,
+			1);
+	}
+}
+
+void DrawCircle(GLfloat radius) {
+	GLfloat angle = 0;
+
+	float pointVertices[3];
+	GLfloat pointColors[] = {
+		1.0f,1.0f,0.0f,
+		1.0f,1.0f,0.0f
+	};
+
+	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
+
+		pointVertices[0] = cos(angle)*radius;
+		pointVertices[1] = sin(angle)*radius;
+		pointVertices[2] = 0.0f;
+
+		glBindBuffer(GL_ARRAY_BUFFER,
+			vbo_position_lines);
+		glBufferData(GL_ARRAY_BUFFER,
+			3 * sizeof(float),
+			pointVertices,
+			GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER,
+			vbo_color_lines);
+		glBufferData(GL_ARRAY_BUFFER,
+			3 * sizeof(float),
+			pointColors,
+			GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		//Draw
+
+		glDrawArrays(GL_POINTS,
+			0,
+			1);
+	}
+
+}
+
+void DrawRectangle(GLfloat width, GLfloat height) {
+
+	GLfloat lineVertices[6];
+
+	GLfloat lineColor[] = {
+		1.0f,1.0f,0.0f,
+		1.0f,1.0f,0.0f
+	};
+
+	lineVertices[0] = width / 2;
+	lineVertices[1] = height / 2;
+	lineVertices[2] = 0.0f;
+	lineVertices[3] = -width / 2;
+	lineVertices[4] = height / 2;
+	lineVertices[5] = 0.0f;
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_position_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineVertices,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineColor,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Draw
+
+	glDrawArrays(GL_LINES,
+		0,
+		2);
+
+	lineVertices[0] = -width / 2;
+	lineVertices[1] = height / 2;
+	lineVertices[2] = 0.0f;
+	lineVertices[3] = -width / 2;
+	lineVertices[4] = -height / 2;
+	lineVertices[5] = 0.0f;
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_position_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineVertices,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineColor,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Draw
+
+	glDrawArrays(GL_LINES,
+		0,
+		2);
+
+	lineVertices[0] = -width / 2;
+	lineVertices[1] = -height / 2;
+	lineVertices[2] = 0.0f;
+	lineVertices[3] = width / 2;
+	lineVertices[4] = -height / 2;
+	lineVertices[5] = 0.0f;
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_position_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineVertices,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineColor,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Draw
+
+	glDrawArrays(GL_LINES,
+		0,
+		2);
+
+
+	lineVertices[0] = width / 2;
+	lineVertices[1] = -height / 2;
+	lineVertices[2] = 0.0f;
+	lineVertices[3] = width / 2;
+	lineVertices[4] = height / 2;
+	lineVertices[5] = 0.0f;
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_position_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineVertices,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_lines);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * 2 * sizeof(float),
+		lineColor,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Draw
+
+	glDrawArrays(GL_LINES,
+		0,
+		2);
+
+}
+
+void DrawCircleAroundRectangle(GLfloat width, GLfloat height) {
+
+	float radius = sqrt(width / 2 * width / 2 + height / 2 * height / 2);
+	DrawCircle(radius);
+
 }

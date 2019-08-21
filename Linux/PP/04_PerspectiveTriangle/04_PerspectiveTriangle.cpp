@@ -620,6 +620,8 @@ void Resize(int width, int height) {
    if (height == 0)
 		height = 1;
 
+	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+
 	perspectiveProjectionMatrix = perspective(45.0f,
 		(GLfloat)width / (GLfloat)height,
 		0.1f,

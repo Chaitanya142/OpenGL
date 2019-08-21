@@ -28,6 +28,8 @@ int giWindowHeight=600;
 GLXContext gGLXContext;
 bool bDone=false;
 FILE *gpFile ; 
+int displayMode = 0;
+
 
 typedef GLXContext(* glXCreateContextAttribsARBProc)(
 Display *,
@@ -40,11 +42,9 @@ GLint *
 glXCreateContextAttribsARBProc glXCreateContextAttribsARB=NULL;
 GLXFBConfig gGLXFBConfig;
 
-GLfloat anglePyramid = 0.0;
-GLfloat angleCube = 0.0;
-
 //Shader Program Objects
 GLint gShaderProgramObject;
+
 enum {
 	AMC_ATTRIBUTE_POSITION = 0,
 	AMC_ATTRIBUTE_COLOR,
@@ -52,14 +52,10 @@ enum {
 	AMC_ATTRIBUTE_TEXCOORD0
 };
 
-GLuint vao_pyramid;
-GLuint vao_cube;
+GLuint vao_triangle;
 
-GLuint vbo_position_pyramid;
-GLuint vbo_position_cube;
-
-GLuint vbo_color_pyramid;
-GLuint vbo_color_cube;
+GLuint vbo_position_triangle;
+GLuint vbo_color_triangle;
 
 GLuint mvpUniform;
 mat4 perspectiveProjectionMatrix;
@@ -91,21 +87,87 @@ while(bDone==false){
                 case MapNotify:
                 break;
 
-                //to get keysym code details type xev in terminal and press enter . press key to get details
-                case KeyPress:
+               case KeyPress:
                         keysym=XkbKeycodeToKeysym(gpDisplay,event.xkey.keycode,0,0);
+                        
+                        switch(event.xkey.keycode){
+                            case 90:                                
+                                displayMode=0;
+                                break;
+                            case 87:
+                                displayMode=1;
+                                break;
+                            case 88:
+                                displayMode=2;
+                                break;
+                            case 89:
+                                displayMode=3;
+                                break;
+                            case 83:
+                                displayMode=4;
+                                break;
+                            case 84:
+                                displayMode=5;
+                                break;
+                            case 85:
+                                displayMode=6;
+                                break;
+                            case 79:
+                                displayMode=7;
+                                break;
+                            case 80:
+                                displayMode=8;
+                                break; 
+                            case 81:
+                                displayMode=9;
+                                break;
+
+                        }
+
                         // static char buffer [60];
                         // static std::string s = std::to_string(keysym);
                         // static const char *cstr = s.c_str();
-                        // fputs(cstr, filePointer) ;                   
+                        // fputs(cstr, filePointer) ; 
+                        
                         switch(keysym)
                         {
                         case XK_Escape:
                         bDone=true;
                         break;
+                        case 48:
+                            displayMode=0;
+                            break;
+                        case 49:
+                            displayMode=1;
+                            break;
+                        case 50:
+                            displayMode=2;
+                            break;
+                        case 51:
+                            displayMode=3;
+                            break;
+                        case 52:
+                            displayMode=4;
+                            break;
+                        case 53:
+                            displayMode=5;
+                            break;
+                        case 54:
+                            displayMode=6;
+                            break;
+                        case 55:
+                            displayMode=7;
+                            break;
+                        case 56:
+                            displayMode=8;
+                            break;
+                        case 57:
+                            displayMode=9;
+                            break;
                         default:
                         break;
                         }
+                        Resize(winWidth, winHeight);
                         XLookupString(&event.xkey,keys,sizeof(keys),NULL,NULL);
                         switch(keys[0])
                         {
@@ -300,33 +362,18 @@ void UnInitialize()
         ToggleFullScreen();
     }
 
-		if (vbo_position_pyramid) {
-		glDeleteBuffers(1, &vbo_position_pyramid);
-		vbo_position_pyramid = 0;
+	if (vbo_color_triangle) {
+		glDeleteBuffers(1, &vbo_color_triangle);
+		vbo_color_triangle = 0;
 	}
-
-	if (vbo_color_pyramid) {
-		glDeleteBuffers(1, &vbo_color_pyramid);
-		vbo_color_pyramid = 0;
+	if (vbo_position_triangle) {
+		glDeleteBuffers(1, &vbo_position_triangle);
+		vbo_position_triangle = 0;
 	}
-
-	if (vao_pyramid) {
-		glDeleteVertexArrays(1, &vao_pyramid);
-		vao_pyramid = 0;
-	}
-	if (vbo_color_cube) {
-		glDeleteBuffers(1, &vbo_color_cube);
-		vbo_color_cube = 0;
-	}
-
-
-	if (vbo_position_cube) {
-		glDeleteBuffers(1, &vbo_position_cube);
-		vbo_position_cube = 0;
-	}
-	if (vao_cube) {
-		glDeleteVertexArrays(1, &vao_cube);
-		vao_cube = 0;
+	
+	if (vao_triangle) {
+		glDeleteVertexArrays(1, &vao_triangle);
+		vao_triangle = 0;
 	}
 
 	if (gShaderProgramObject) {
@@ -359,7 +406,6 @@ void UnInitialize()
 	}
 
 GLXContext currentGLXContext=glXGetCurrentContext();
-
 if(currentGLXContext != NULL && currentGLXContext== gGLXContext){
     glXMakeCurrent(gpDisplay,0,0);
 
@@ -367,7 +413,6 @@ if(currentGLXContext != NULL && currentGLXContext== gGLXContext){
         glXDestroyContext(gpDisplay,gGLXContext);
     }
 }
-
 if(gWindow)
 {
         XDestroyWindow(gpDisplay,gWindow);
@@ -603,109 +648,34 @@ void Initialize(void){
 	mvpUniform = glGetUniformLocation(gShaderProgramObject,
 		"u_mvp_matrix");
 
-
-	//Vertices
-	const GLfloat pyramidVertices[] = {
+	const GLfloat triangleVertices[] = {
 		0.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,
-		0.0f, 1.0f, 0.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		0.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, 1.0f
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f
 	};
 
-	const GLfloat cubeVertices[] = {
-		1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, 1.0f, -1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,
-		-1.0f, -1.0f, -1.0f
-	};
-
-	const GLfloat pyramidColors[] = {
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f
-	};
-
-	const GLfloat cubeColors[] = {
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f
+	const GLfloat triangleColors[] = {
+	1.0f,0.0f,0.0f,
+	0.0f,1.0f,0.0f,
+	0.0f,0.0f,1.0f
 	};
 
 	//Create vao
 	//Save everying in single set
-	glGenVertexArrays(1, &vao_pyramid);
+	glGenVertexArrays(1, &vao_triangle);
 
-	glBindVertexArray(vao_pyramid);
-
+	glBindVertexArray(vao_triangle);
 
 	//TRIANGLE
 	//Generate Buffer
-	glGenBuffers(1, &vbo_position_pyramid);
+	glGenBuffers(1, &vbo_position_triangle);
 	//Bind Generated Buffer
 	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_pyramid);
+		vbo_position_triangle);
 	//Fill Buffer
 	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(pyramidVertices),
-		pyramidVertices,
+		sizeof(triangleVertices),
+		triangleVertices,
 		GL_STATIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_POSITION,
@@ -718,15 +688,15 @@ void Initialize(void){
 	glEnableVertexAttribArray(AMC_ATTRIBUTE_POSITION);
 	//Unbind Buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glGenBuffers(1, &vbo_color_pyramid);
+	
+	glGenBuffers(1, &vbo_color_triangle);
 	//Bind Generated Buffer
 	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_color_pyramid);
+		vbo_color_triangle);
 	//Fill Buffer
 	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(pyramidColors),
-		pyramidColors,
+		sizeof(triangleColors),
+		triangleColors,
 		GL_STATIC_DRAW);
 	//Set Vertex Attrib Pointer
 	glVertexAttribPointer(AMC_ATTRIBUTE_COLOR,
@@ -743,62 +713,14 @@ void Initialize(void){
 	//Unbind array
 	glBindVertexArray(0);
 
-	//RECTANGLE
-	glGenVertexArrays(1, &vao_cube);
-
-	glBindVertexArray(vao_cube);
-
-	//Generate Buffer
-	glGenBuffers(1, &vbo_position_cube);
-	//Bind Generated Buffer
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_position_cube);
-	//Fill Buffer
-	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(cubeVertices),
-		cubeVertices,
-		GL_STATIC_DRAW);
-	//Set Vertex Attrib Pointer
-	glVertexAttribPointer(AMC_ATTRIBUTE_POSITION,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		0,
-		NULL);
-	//Enable Vertex Attrib Array
-	glEnableVertexAttribArray(AMC_ATTRIBUTE_POSITION);
-	//Unbind Buffer
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//Generate Buffer
-	glGenBuffers(1, &vbo_color_cube);
-	//Bind Generated Buffer
-	glBindBuffer(GL_ARRAY_BUFFER,
-		vbo_color_cube);
-	//Fill Buffer
-	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(cubeColors),
-		cubeColors,
-		GL_STATIC_DRAW);
-	//Set Vertex Attrib Pointer
-	glVertexAttribPointer(AMC_ATTRIBUTE_COLOR,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		0,
-		NULL);
-	//Enable Vertex Attrib Array
-	glEnableVertexAttribArray(AMC_ATTRIBUTE_COLOR);
-	//Unbind Buffer
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//Unbind array
-	glBindVertexArray(0);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glClearDepth(1.0f);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	glEnable(GL_TEXTURE_2D);
 
 	perspectiveProjectionMatrix = mat4::identity();
 
@@ -811,7 +733,39 @@ void Resize(int width, int height) {
    if (height == 0)
 		height = 1;
 
-	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+        	switch (displayMode)
+	{
+	case 0:
+		glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+		break;
+	case 1:
+		glViewport(0, 0, (GLsizei)width / 2, (GLsizei)height / 2);
+		break;
+	case 2:
+		glViewport((GLsizei)width / 2, 0, (GLsizei)width / 2, (GLsizei)height / 2);
+		break;
+	case 3:
+		glViewport((GLsizei)width / 2, (GLsizei)height / 2, (GLsizei)width / 2, (GLsizei)height / 2);
+		break;
+	case 4:
+		glViewport(0, (GLsizei)height / 2, (GLsizei)width / 2, (GLsizei)height / 2);
+		break;
+	case 5:
+		glViewport(0, 0, (GLsizei)width / 2, (GLsizei)height);
+		break;
+	case 6:
+		glViewport((GLsizei)width / 2, 0, (GLsizei)width / 2, (GLsizei)height);
+		break;
+	case 7:
+		glViewport(0, 0, (GLsizei)width, (GLsizei)height / 2);
+		break;
+	case 8:
+		glViewport(0, (GLsizei)height / 2, (GLsizei)width, (GLsizei)height / 2);
+		break;
+	case 9:
+		glViewport((GLsizei)width / 4, (GLsizei)height / 4, (GLsizei)width / 2, (GLsizei)height / 2);
+		break;
+	}
 
 	perspectiveProjectionMatrix = perspective(45.0f,
 		(GLfloat)width / (GLfloat)height,
@@ -828,24 +782,17 @@ void DisplayOpenGL(void) {
 	//Declaration of Matrices
 	mat4 modelViewMatrix;
 	mat4 modelViewProjectionMatrix;
-	mat4 translationMatrix;
-	mat4 rotationMatrix;
-	mat4 scaleMatrix;
 
-	//Pyramid
 	//Initialize matrices
 
 	modelViewMatrix = mat4::identity();
 	modelViewProjectionMatrix = mat4::identity();
-	translationMatrix = mat4::identity();
-	rotationMatrix = mat4::identity();
+
 	//Transformation
 
-	translationMatrix = translate(-1.5f, 0.0f, -6.0f);
-	rotationMatrix = rotate(anglePyramid, 0.0f, 1.0f, 0.0f);
+	modelViewMatrix = translate(0.0f, 0.0f, -3.0f);
 
 	//Matrix Multiplication
-	modelViewMatrix = translationMatrix * rotationMatrix;
 
 	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
 
@@ -858,7 +805,7 @@ void DisplayOpenGL(void) {
 
 	//Bind with vao
 
-	glBindVertexArray(vao_pyramid);
+	glBindVertexArray(vao_triangle);
 
 	//Bind with textures if any
 
@@ -866,81 +813,17 @@ void DisplayOpenGL(void) {
 
 	glDrawArrays(GL_TRIANGLES,
 		0,
-		12);
+		3);
 
-	//Unbind vao
-
-	glBindVertexArray(0);
-
-	//CUBE
-	//Initialize matrices
-
-	modelViewMatrix = mat4::identity();
-	modelViewProjectionMatrix = mat4::identity();
-	translationMatrix = mat4::identity();
-	rotationMatrix = mat4::identity();
-	scaleMatrix = mat4::identity();
-
-	//Transformation
-
-	translationMatrix = translate(1.5f, 0.0f, -6.0f);
-	scaleMatrix = scale(0.75f, 0.75f, 0.75f);
-	rotationMatrix = rotate(angleCube,angleCube,angleCube);
-
-	//Matrix Multiplication
-
-	modelViewMatrix = translationMatrix * scaleMatrix * rotationMatrix;
-
-
-	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
-
-	//Send necessary matrices to shader in resp. Uniforms
-
-	glUniformMatrix4fv(mvpUniform,
-		1,
-		GL_FALSE,
-		modelViewProjectionMatrix);
-
-	//Bind with vao
-
-	glBindVertexArray(vao_cube);
-
-	//Bind with textures if any
-
-	//Draw
-	//6Faces
-	glDrawArrays(GL_TRIANGLE_FAN,
-		0,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		4,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		8,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		12,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		16,
-		4);
-	glDrawArrays(GL_TRIANGLE_FAN,
-		20,
-		4);
 	//Unbind vao
 
 	glBindVertexArray(0);
 
 	glUseProgram(0);
-	
+
 	glXSwapBuffers(gpDisplay,gWindow);
 }
 void Update(void)
 {
-	anglePyramid = anglePyramid + 0.2f;
-	if (anglePyramid > 360.0f)
-		anglePyramid = 0.0f;
-	angleCube = angleCube + 0.2f;
-	if (angleCube > 360.0f)
-		angleCube = 0.0f;
+
 }
