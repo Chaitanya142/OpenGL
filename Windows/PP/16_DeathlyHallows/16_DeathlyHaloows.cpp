@@ -38,7 +38,8 @@ enum {
 	AMC_ATTRIBUTE_TEXCOORD0
 };
 
-GLuint vao;
+GLuint vao_line;
+GLuint vao_point;
 
 GLuint vbo_position_lines;
 GLuint vbo_color_lines;
@@ -430,11 +431,11 @@ int Initialize(void) {
 		"u_mvp_matrix");
 
 
-	//Create vao
+	//Create vao_line
 	//Save everying in single set
-	glGenVertexArrays(1, &vao);
+	glGenVertexArrays(1, &vao_line);
 
-	glBindVertexArray(vao);
+	glBindVertexArray(vao_line);
 
 
 	//Line
@@ -484,7 +485,11 @@ int Initialize(void) {
 	//Unbind array
 	glBindVertexArray(0);
 
+	//Create vao_line
+	//Save everying in single set
+	glGenVertexArrays(1, &vao_point);
 
+	glBindVertexArray(vao_point);
 
 	//POINT
 	//Generate Buffer
@@ -529,9 +534,9 @@ int Initialize(void) {
 	glEnableVertexAttribArray(AMC_ATTRIBUTE_COLOR);
 	//Unbind Buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	//Unbind array
 	glBindVertexArray(0);
-
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -610,24 +615,26 @@ void Display(void) {
 
 	//Bind with vao
 
-	glBindVertexArray(vao);
+	glBindVertexArray(vao_line);
 
 	//Bind with textures if any
 
 	glLineWidth(3.0f);
 	glPointSize(3.0f);
 
+	DrawLine(0.0f, 1.0f, 0.0f,
+		0.0f, -1.0f, 0.0f);
+
 	DrawTriangle(1.0f);
+
+	//Unbind vao
+	glBindVertexArray(0);
+
+	glBindVertexArray(vao_point);
 
 	DrawInCircle(0.0f, 1.0f, 0.0f,
 		-1.0f, -1.0f, 0.0f,
 		1.0f, -1.0f, 0.0f);
-
-	DrawLine(0.0f, 1.0f, 0.0f,
-		0.0f, -1.0f, 0.0f);
-
-
-	//Unbind vao
 
 	glBindVertexArray(0);
 
@@ -656,7 +663,6 @@ void UnInitialize(void) {
 		//ShowCursor(TRUE);
 	}
 
-
 	if (vbo_position_lines) {
 		glDeleteBuffers(1, &vbo_position_lines);
 		vbo_position_lines = 0;
@@ -667,9 +673,24 @@ void UnInitialize(void) {
 		vbo_color_lines = 0;
 	}
 
-	if (vao) {
-		glDeleteVertexArrays(1, &vao);
-		vao = 0;
+	if (vbo_position_point) {
+		glDeleteBuffers(1, &vbo_position_point);
+		vbo_position_point = 0;
+	}
+
+	if (vbo_color_point) {
+		glDeleteBuffers(1, &vbo_color_point);
+		vbo_color_point = 0;
+	}
+
+	if (vao_line) {
+		glDeleteVertexArrays(1, &vao_line);
+		vao_line = 0;
+	}
+
+	if (vao_point) {
+		glDeleteVertexArrays(1, &vao_point);
+		vao_point = 0;
 	}
 
 	if (gShaderProgramObject) {
@@ -824,7 +845,6 @@ void DrawInCircle(float x1, float y1, float z1,
 	float x3, float y3, float z3
 )
 {
-	void DrawCircle(GLfloat radius);
 	float count = -1;
 	int noCount = 2000;
 	GLfloat angle = 0;
@@ -843,9 +863,16 @@ void DrawInCircle(float x1, float y1, float z1,
 
 	float pointVertices[3];
 	GLfloat pointColors[] = {
-		1.0f,1.0f,1.0f,
 		1.0f,1.0f,1.0f
 	};
+	
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_point);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * sizeof(float),
+		pointColors,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
 
@@ -854,18 +881,10 @@ void DrawInCircle(float x1, float y1, float z1,
 		pointVertices[2] = 0.0f + Oz;
 
 		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_position_lines);
+			vbo_position_point);
 		glBufferData(GL_ARRAY_BUFFER,
 			3 * sizeof(float),
 			pointVertices,
-			GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_color_lines);
-		glBufferData(GL_ARRAY_BUFFER,
-			3 * sizeof(float),
-			pointColors,
 			GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -876,46 +895,46 @@ void DrawInCircle(float x1, float y1, float z1,
 			1);
 	}
 }
-
-void DrawCircle(GLfloat radius) {
-	GLfloat angle = 0;
-
-	float pointVertices[3];
-	GLfloat pointColors[] = {
-		1.0f,1.0f,1.0f,
-		1.0f,1.0f,1.0f
-	};
-
-	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
-
-		pointVertices[0] = cos(angle)*radius;
-		pointVertices[1] = sin(angle)*radius;
-		pointVertices[2] = 0.0f;
-
-		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_position_lines);
-		glBufferData(GL_ARRAY_BUFFER,
-			3 * sizeof(float),
-			pointVertices,
-			GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_color_lines);
-		glBufferData(GL_ARRAY_BUFFER,
-			3 * sizeof(float),
-			pointColors,
-			GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		//Draw
-
-		glDrawArrays(GL_POINTS,
-			0,
-			1);
-	}
-
-}
+//
+//void DrawCircle(GLfloat radius) {
+//	GLfloat angle = 0;
+//
+//	float pointVertices[3];
+//	GLfloat pointColors[] = {
+//		1.0f,1.0f,1.0f,
+//		1.0f,1.0f,1.0f
+//	};
+//
+//	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
+//
+//		pointVertices[0] = cos(angle)*radius;
+//		pointVertices[1] = sin(angle)*radius;
+//		pointVertices[2] = 0.0f;
+//
+//		glBindBuffer(GL_ARRAY_BUFFER,
+//			vbo_position_lines);
+//		glBufferData(GL_ARRAY_BUFFER,
+//			3 * sizeof(float),
+//			pointVertices,
+//			GL_DYNAMIC_DRAW);
+//		glBindBuffer(GL_ARRAY_BUFFER, 0);
+//
+//		glBindBuffer(GL_ARRAY_BUFFER,
+//			vbo_color_lines);
+//		glBufferData(GL_ARRAY_BUFFER,
+//			3 * sizeof(float),
+//			pointColors,
+//			GL_DYNAMIC_DRAW);
+//		glBindBuffer(GL_ARRAY_BUFFER, 0);
+//
+//		//Draw
+//
+//		glDrawArrays(GL_POINTS,
+//			0,
+//			1);
+//	}
+//
+//}
 
 
 void DrawLine(float x1,float y1,float z1,
