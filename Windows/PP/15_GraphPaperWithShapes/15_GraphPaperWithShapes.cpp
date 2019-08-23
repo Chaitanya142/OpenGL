@@ -38,7 +38,9 @@ enum {
 	AMC_ATTRIBUTE_TEXCOORD0
 };
 
-GLuint vao;
+GLuint vao_line;
+GLuint vao_point;
+
 
 GLuint vbo_position_lines;
 GLuint vbo_color_lines;
@@ -430,11 +432,11 @@ int Initialize(void) {
 		"u_mvp_matrix");
 
 
-	//Create vao
+	//Create vao_line
 	//Save everying in single set
-	glGenVertexArrays(1, &vao);
+	glGenVertexArrays(1, &vao_line);
 
-	glBindVertexArray(vao);
+	glBindVertexArray(vao_line);
 
 
 	//Line
@@ -484,8 +486,14 @@ int Initialize(void) {
 	//Unbind array
 	glBindVertexArray(0);
 
+	//Create vao_line
+	//Save everying in single set
+	glGenVertexArrays(1, &vao_point);
+
+	glBindVertexArray(vao_point);
 	
-	
+
+
 	//POINT
 	//Generate Buffer
 	glGenBuffers(1, &vbo_position_point);
@@ -529,6 +537,7 @@ int Initialize(void) {
 	glEnableVertexAttribArray(AMC_ATTRIBUTE_COLOR);
 	//Unbind Buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
 	//Unbind array
 	glBindVertexArray(0);
 
@@ -614,165 +623,31 @@ void Display(void) {
 		GL_FALSE,
 		modelViewProjectionMatrix);
 
-	//Bind with vao
+	//Bind with vao_line
 
-	glBindVertexArray(vao);
+	glBindVertexArray(vao_line);
 
 	//Bind with textures if any
-
-
-	//for (count = -1; count <= 1.01f; count = count + 0.05f) {
-
-	//	lineVertices[0] = count;
-	//	lineVertices[1] = -1.0f;
-	//	lineVertices[2] = 0.0f;
-	//	lineVertices[3] = count;
-	//	lineVertices[4] = 1.0f;
-	//	lineVertices[5] = 0.0f;
-
-	//	glBindBuffer(GL_ARRAY_BUFFER,
-	//		vbo_position_lines);
-	//	glBufferData(GL_ARRAY_BUFFER,
-	//		3 * 2 * sizeof(float),
-	//		lineVertices,
-	//		GL_DYNAMIC_DRAW);
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//	glBindBuffer(GL_ARRAY_BUFFER,
-	//		vbo_color_lines);
-	//	glBufferData(GL_ARRAY_BUFFER,
-	//		3 * 2 * sizeof(float),
-	//		lineColor,
-	//		GL_DYNAMIC_DRAW);
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//	//Draw
-
-	//	glDrawArrays(GL_LINES,
-	//		0,
-	//		2);
-
-
-	//	lineVertices[0] = -1.0f;
-	//	lineVertices[1] = count;
-	//	lineVertices[2] = 0.0f;
-	//	lineVertices[3] = 1.0;
-	//	lineVertices[4] = count;
-	//	lineVertices[5] = 0.0f;
-
-	//	glBindBuffer(GL_ARRAY_BUFFER,
-	//		vbo_position_lines);
-	//	glBufferData(GL_ARRAY_BUFFER,
-	//		3 * 2 * sizeof(float),
-	//		lineVertices,
-	//		GL_DYNAMIC_DRAW);
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//	glBindBuffer(GL_ARRAY_BUFFER,
-	//		vbo_color_lines);
-	//	glBufferData(GL_ARRAY_BUFFER,
-	//		3 * 2 * sizeof(float),
-	//		lineColor,
-	//		GL_DYNAMIC_DRAW);
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//	//Draw
-
-	//	glDrawArrays(GL_LINES,
-	//		0,
-	//		2);
-
-	//}
-
-	//lineVertices[0] = -1.0f;
-	//lineVertices[1] = 0.0f;
-	//lineVertices[2] = 0.0f;
-	//lineVertices[3] = 1.0;
-	//lineVertices[4] = 0.0f;
-	//lineVertices[5] = 0.0f;
-
-	//lineColor[0] = 1.0f;
-	//lineColor[1] = 0.0f;
-	//lineColor[2] = 0.0f;
-	//lineColor[3] = 1.0;
-	//lineColor[4] = 0.0f;
-	//lineColor[5] = 0.0f;
-
-	//glBindBuffer(GL_ARRAY_BUFFER,
-	//	vbo_position_lines);
-	//glBufferData(GL_ARRAY_BUFFER,
-	//	3 * 2 * sizeof(float),
-	//	lineVertices,
-	//	GL_DYNAMIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//glBindBuffer(GL_ARRAY_BUFFER,
-	//	vbo_color_lines);
-	//glBufferData(GL_ARRAY_BUFFER,
-	//	3 * 2 * sizeof(float),
-	//	lineColor,
-	//	GL_DYNAMIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	////Draw
-
-	//glDrawArrays(GL_LINES,
-	//	0,
-	//	2);
-
-	//lineVertices[0] = 0.0f;
-	//lineVertices[1] = -1.0f;
-	//lineVertices[2] = 0.0f;
-	//lineVertices[3] = 0.0;
-	//lineVertices[4] = 1.0f;
-	//lineVertices[5] = 0.0f;
-
-	//lineColor[0] = 0.0f;
-	//lineColor[1] = 1.0f;
-	//lineColor[2] = 0.0f;
-	//lineColor[3] = 0.0;
-	//lineColor[4] = 1.0f;
-	//lineColor[5] = 0.0f;
-
-	//glBindBuffer(GL_ARRAY_BUFFER,
-	//	vbo_position_lines);
-	//glBufferData(GL_ARRAY_BUFFER,
-	//	3 * 2 * sizeof(float),
-	//	lineVertices,
-	//	GL_DYNAMIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//glBindBuffer(GL_ARRAY_BUFFER,
-	//	vbo_color_lines);
-	//glBufferData(GL_ARRAY_BUFFER,
-	//	3 * 2 * sizeof(float),
-	//	lineColor,
-	//	GL_DYNAMIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	////Draw
-
-	//glDrawArrays(GL_LINES,
-	//	0,
-	//	2);
-
 
 	DrawGraph(0.01f);
 	
 	DrawTriangle(0.5f);
 	
-	DrawInCircle(0.0f, 0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f);
-
 	DrawRectangle(1.0f, 1.0f);
-	
-	DrawCircleAroundRectangle(1.0f, 1.0f);
-
-
-	//Unbind vao
+	//Unbind vao_line
 
 	glBindVertexArray(0);
+
+	glBindVertexArray(vao_point);
+
+	DrawInCircle(0.0f, 0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f);
+
+	DrawCircleAroundRectangle(1.0f, 1.0f);
+
+	glBindVertexArray(0);
+
 
 	glUseProgram(0);
 
@@ -808,11 +683,15 @@ void UnInitialize(void) {
 		vbo_color_lines = 0;
 	}
 
-	if (vao) {
-		glDeleteVertexArrays(1, &vao);
-		vao = 0;
+	if (vao_line) {
+		glDeleteVertexArrays(1, &vao_line);
+		vao_line = 0;
 	}
 
+	if (vao_point) {
+		glDeleteVertexArrays(1, &vao_point);
+		vao_point = 0;
+	}
 	if (gShaderProgramObject) {
 		GLsizei shaderCount;
 		GLsizei shaderNumber;
@@ -1056,9 +935,16 @@ void DrawInCircle(float x1, float y1, float z1,
 
 	float pointVertices[3];
 	GLfloat pointColors[] = {
-		1.0f,1.0f,0.0f,
 		1.0f,1.0f,0.0f
 	};
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_point);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * sizeof(float),
+		pointColors,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
 
@@ -1067,18 +953,10 @@ void DrawInCircle(float x1, float y1, float z1,
 		pointVertices[2] = 0.0f+Oz;
 
 		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_position_lines);
+			vbo_position_point);
 		glBufferData(GL_ARRAY_BUFFER,
 			3 * sizeof(float),
 			pointVertices,
-			GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_color_lines);
-		glBufferData(GL_ARRAY_BUFFER,
-			3 * sizeof(float),
-			pointColors,
 			GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -1095,9 +973,17 @@ void DrawCircle(GLfloat radius) {
 
 	float pointVertices[3];
 	GLfloat pointColors[] = {
-		1.0f,1.0f,0.0f,
 		1.0f,1.0f,0.0f
 	};
+
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_color_point);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * sizeof(float),
+		pointColors,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
 	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
 
@@ -1106,18 +992,10 @@ void DrawCircle(GLfloat radius) {
 		pointVertices[2] = 0.0f;
 
 		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_position_lines);
+			vbo_position_point);
 		glBufferData(GL_ARRAY_BUFFER,
 			3 * sizeof(float),
 			pointVertices,
-			GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_color_lines);
-		glBufferData(GL_ARRAY_BUFFER,
-			3 * sizeof(float),
-			pointColors,
 			GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
