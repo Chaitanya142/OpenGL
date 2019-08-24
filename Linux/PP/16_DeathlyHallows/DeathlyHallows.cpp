@@ -923,97 +923,118 @@ void DrawInCircle(float x1, float y1, float z1,
 	float x3, float y3, float z3
 )
 {
-	float count = -1;
-	int noCount = 2000;
-	GLfloat angle = 0;
+	static float ArrInCirclePos[(unsigned int)((2 * 3.1415) / 0.001) * 3];
+	static float ArrInCircleColor[(unsigned int)((2 * 3.1415) / 0.001) * 3];
 
-	float distP1P2 = sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) + (z2 - z1)*(z2 - z1));
-	float distP2P3 = sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2) + (z3 - z2)*(z3 - z2));
-	float distP3P1 = sqrt((x1 - x3)*(x1 - x3) + (y1 - y3)*(y1 - y3) + (z1 - z3)*(z1 - z3));
+	int isArrInCircleInit = 0;
 
-	float semiPerimeter = (distP1P2 + distP2P3 + distP3P1) / 2;
+	if (isArrInCircleInit == 0) {
 
-	float radius = sqrt((semiPerimeter - distP1P2)*(semiPerimeter - distP2P3)*(semiPerimeter - distP3P1) / semiPerimeter);
+		float count = -1;
+		int noCount = 2000;
+		GLfloat angle = 0;
 
-	float Ox = (x3 * distP1P2 + x1 * distP2P3 + x2 * distP3P1) / (semiPerimeter * 2);
-	float Oy = (y3 * distP1P2 + y1 * distP2P3 + y2 * distP3P1) / (semiPerimeter * 2);
-	float Oz = (z3 * distP1P2 + z1 * distP2P3 + z2 * distP3P1) / (semiPerimeter * 2);
+		float distP1P2 = sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) + (z2 - z1)*(z2 - z1));
+		float distP2P3 = sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2) + (z3 - z2)*(z3 - z2));
+		float distP3P1 = sqrt((x1 - x3)*(x1 - x3) + (y1 - y3)*(y1 - y3) + (z1 - z3)*(z1 - z3));
 
-	float pointVertices[3];
-	GLfloat pointColors[] = {
-		1.0f,1.0f,1.0f
-	};
-	
+		float semiPerimeter = (distP1P2 + distP2P3 + distP3P1) / 2;
+
+		float radius = sqrt((semiPerimeter - distP1P2)*(semiPerimeter - distP2P3)*(semiPerimeter - distP3P1) / semiPerimeter);
+
+		float Ox = (x3 * distP1P2 + x1 * distP2P3 + x2 * distP3P1) / (semiPerimeter * 2);
+		float Oy = (y3 * distP1P2 + y1 * distP2P3 + y2 * distP3P1) / (semiPerimeter * 2);
+		float Oz = (z3 * distP1P2 + z1 * distP2P3 + z2 * distP3P1) / (semiPerimeter * 2);
+
+		int indexPos = 0;
+		int indexColor = 0;
+
+		for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
+			ArrInCirclePos[indexPos++] = cos(angle)*radius + Ox;
+			ArrInCirclePos[indexPos++] = sin(angle)*radius + Oy;
+			ArrInCirclePos[indexPos++] = 0.0f + Oz;
+
+			ArrInCircleColor[indexColor++] = 1.0f;
+			ArrInCircleColor[indexColor++] = 1.0f;
+			ArrInCircleColor[indexColor++] = 1.0f;
+		}
+		isArrInCircleInit = 1;
+	}
+
+
 	glBindBuffer(GL_ARRAY_BUFFER,
 		vbo_color_point);
 	glBufferData(GL_ARRAY_BUFFER,
-		3 * sizeof(float),
-		pointColors,
+		3 * sizeof(float)*((2 * 3.1415) / 0.001),
+		ArrInCircleColor,
 		GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
+	glBindBuffer(GL_ARRAY_BUFFER,
+		vbo_position_point);
+	glBufferData(GL_ARRAY_BUFFER,
+		3 * sizeof(float)*((2 * 3.1415) / 0.001),
+		ArrInCirclePos,
+		GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		pointVertices[0] = cos(angle)*radius + Ox;
-		pointVertices[1] = sin(angle)*radius + Oy;
-		pointVertices[2] = 0.0f + Oz;
+	//Draw
 
-		glBindBuffer(GL_ARRAY_BUFFER,
-			vbo_position_point);
-		glBufferData(GL_ARRAY_BUFFER,
-			3 * sizeof(float),
-			pointVertices,
-			GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDrawArrays(GL_POINTS,
+		0,
+		((2 * 3.1415) / 0.001));
 
-		//Draw
 
-		glDrawArrays(GL_POINTS,
-			0,
-			1);
-	}
+	//float count = -1;
+	//int noCount = 2000;
+	//GLfloat angle = 0;
+
+	//float distP1P2 = sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) + (z2 - z1)*(z2 - z1));
+	//float distP2P3 = sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2) + (z3 - z2)*(z3 - z2));
+	//float distP3P1 = sqrt((x1 - x3)*(x1 - x3) + (y1 - y3)*(y1 - y3) + (z1 - z3)*(z1 - z3));
+
+	//float semiPerimeter = (distP1P2 + distP2P3 + distP3P1) / 2;
+
+	//float radius = sqrt((semiPerimeter - distP1P2)*(semiPerimeter - distP2P3)*(semiPerimeter - distP3P1) / semiPerimeter);
+
+	//float Ox = (x3 * distP1P2 + x1 * distP2P3 + x2 * distP3P1) / (semiPerimeter * 2);
+	//float Oy = (y3 * distP1P2 + y1 * distP2P3 + y2 * distP3P1) / (semiPerimeter * 2);
+	//float Oz = (z3 * distP1P2 + z1 * distP2P3 + z2 * distP3P1) / (semiPerimeter * 2);
+
+	//float pointVertices[3];
+	//GLfloat pointColors[] = {
+	//	1.0f,1.0f,0.0f
+	//};
+
+	//glBindBuffer(GL_ARRAY_BUFFER,
+	//	vbo_color_point);
+	//glBufferData(GL_ARRAY_BUFFER,
+	//	3 * sizeof(float),
+	//	pointColors,
+	//	GL_DYNAMIC_DRAW);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
+
+	//	pointVertices[0] = cos(angle)*radius+Ox;
+	//	pointVertices[1] = sin(angle)*radius+Oy;
+	//	pointVertices[2] = 0.0f+Oz;
+
+	//	glBindBuffer(GL_ARRAY_BUFFER,
+	//		vbo_position_point);
+	//	glBufferData(GL_ARRAY_BUFFER,
+	//		3 * sizeof(float),
+	//		pointVertices,
+	//		GL_DYNAMIC_DRAW);
+	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//	//Draw
+
+	//	glDrawArrays(GL_POINTS,
+	//		0,
+	//		1);
+	//}
 }
-//
-//void DrawCircle(GLfloat radius) {
-//	GLfloat angle = 0;
-//
-//	float pointVertices[3];
-//	GLfloat pointColors[] = {
-//		1.0f,1.0f,1.0f,
-//		1.0f,1.0f,1.0f
-//	};
-//
-//	for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
-//
-//		pointVertices[0] = cos(angle)*radius;
-//		pointVertices[1] = sin(angle)*radius;
-//		pointVertices[2] = 0.0f;
-//
-//		glBindBuffer(GL_ARRAY_BUFFER,
-//			vbo_position_lines);
-//		glBufferData(GL_ARRAY_BUFFER,
-//			3 * sizeof(float),
-//			pointVertices,
-//			GL_DYNAMIC_DRAW);
-//		glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//		glBindBuffer(GL_ARRAY_BUFFER,
-//			vbo_color_lines);
-//		glBufferData(GL_ARRAY_BUFFER,
-//			3 * sizeof(float),
-//			pointColors,
-//			GL_DYNAMIC_DRAW);
-//		glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//		//Draw
-//
-//		glDrawArrays(GL_POINTS,
-//			0,
-//			1);
-//	}
-//
-//}
-
 
 void DrawLine(float x1,float y1,float z1,
 	float x2,float y2,float z2) {
