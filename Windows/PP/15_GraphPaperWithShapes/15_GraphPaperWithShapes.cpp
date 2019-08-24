@@ -917,7 +917,7 @@ void DrawInCircle(float x1, float y1, float z1,
 	static float ArrInCirclePos[(unsigned int)((2 * 3.1415) / 0.001) * 3];
 	static float ArrInCircleColor[(unsigned int)((2 * 3.1415) / 0.001) * 3];
 
-	int isArrInCircleInit = 0;
+	static int isArrInCircleInit = 0;
 
 	if (isArrInCircleInit == 0) {
 		
@@ -1031,33 +1031,33 @@ void DrawInCircle(float x1, float y1, float z1,
 void DrawCircle(GLfloat radius) {
 	GLfloat angle = 0;
 
-	static float ArrInCirclePos[(unsigned int)((2 * 3.1415) / 0.001) * 3];
-	static float ArrInCircleColor[(unsigned int)((2 * 3.1415) / 0.001) * 3];
+	static float ArrCirclePos[(unsigned int)((2 * 3.1415) / 0.001) * 3];
+	static float ArrCircleColor[(unsigned int)((2 * 3.1415) / 0.001) * 3];
 
-	int isCircleInit = 0;
+	static int isCircleInit=1;
 
-	if (isCircleInit == 0) {
+	if (isCircleInit == 1) {
 		int indexPos = 0;
 		int indexColor = 0;
 
 		for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
-			ArrInCirclePos[indexPos++] = cos(angle)*radius;
-			ArrInCirclePos[indexPos++] = sin(angle)*radius;
-			ArrInCirclePos[indexPos++] = 0.0f;
+			ArrCirclePos[indexPos++] = cos(angle)*radius;
+			ArrCirclePos[indexPos++] = sin(angle)*radius;
+			ArrCirclePos[indexPos++] = 0.0f;
 
-			ArrInCircleColor[indexColor++] = 1.0f;
-			ArrInCircleColor[indexColor++] = 1.0f;
-			ArrInCircleColor[indexColor++] = 0.0f;
+			ArrCircleColor[indexColor++] = 1.0f;
+			ArrCircleColor[indexColor++] = 1.0f;
+			ArrCircleColor[indexColor++] = 0.0f;
 
-			int isCircleInit = 1;
 		}
+		isCircleInit = 2;
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER,
 		vbo_color_point);
 	glBufferData(GL_ARRAY_BUFFER,
 		3 * sizeof(float)*((2 * 3.1415) / 0.001),
-		ArrInCircleColor,
+		ArrCircleColor,
 		GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
@@ -1065,7 +1065,7 @@ void DrawCircle(GLfloat radius) {
 		vbo_position_point);
 	glBufferData(GL_ARRAY_BUFFER,
 		3 * sizeof(float)*((2 * 3.1415) / 0.001),
-		ArrInCirclePos,
+		ArrCirclePos,
 		GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
