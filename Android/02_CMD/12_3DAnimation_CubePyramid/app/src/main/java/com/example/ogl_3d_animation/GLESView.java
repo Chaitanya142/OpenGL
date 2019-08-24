@@ -175,18 +175,20 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		float[] modelViewProjectionMatrix=new float[16];
 		float[] translationMatrix=new float[16];
 		float[] rotationMatrix=new float[16];
-		
+		float[] scaleMatrix=new float[16];
+
 		//Initialize matrices
 		Matrix.setIdentityM(modelViewMatrix,0);
 		Matrix.setIdentityM(modelViewProjectionMatrix,0);
 		Matrix.setIdentityM(translationMatrix,0);
 		Matrix.setIdentityM(rotationMatrix,0);
+		Matrix.setIdentityM(scaleMatrix,0);
 
 		//Transformation
 
 		Matrix.translateM(translationMatrix,0,
 		-1.5f, 0.0f, -6.0f);
-		Matrix.rotateM(rotationMatrix,0,
+		Matrix.setRotateM(rotationMatrix,0,
 		anglePyramid,0.0f, 1.0f, 0.0f);
 
 		//Matrix Multiplication
@@ -228,24 +230,32 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		Matrix.setIdentityM(modelViewProjectionMatrix,0);
 		Matrix.setIdentityM(translationMatrix,0);
 		Matrix.setIdentityM(rotationMatrix,0);
+		Matrix.setIdentityM(scaleMatrix,0);
 
 		//Transformation
 
 		Matrix.translateM(translationMatrix,0,
 		1.5f, 0.0f, -6.0f);
-		Matrix.rotateM(rotationMatrix,0,
+	
+		Matrix.setRotateM(rotationMatrix,0,
 		angleCube,1.0f, 1.0f, 1.0f);
 
+		Matrix.scaleM(scaleMatrix,0,
+		0.75f,0.75f,0.75f);
 		//Matrix Multiplication
 
 		Matrix.multiplyMM(modelViewMatrix,0,
 		translationMatrix,0,
 		rotationMatrix,0);
 
+		Matrix.multiplyMM(modelViewMatrix,0,
+		modelViewMatrix,0,
+		scaleMatrix,0);
+
 		Matrix.multiplyMM(modelViewProjectionMatrix,0,
 		perspectiveProjectionMatrix,0,
 		modelViewMatrix,0);
-		
+
 		//Send necessary matrices to shader in resp. Uniforms
 	
 		GLES32.glUniformMatrix4fv(mvpUniform,
