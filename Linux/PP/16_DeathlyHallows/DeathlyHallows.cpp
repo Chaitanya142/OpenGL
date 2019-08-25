@@ -926,7 +926,7 @@ void DrawInCircle(float x1, float y1, float z1,
 	static float ArrInCirclePos[(unsigned int)((2 * 3.1415) / 0.001) * 3];
 	static float ArrInCircleColor[(unsigned int)((2 * 3.1415) / 0.001) * 3];
 
-	int isArrInCircleInit = 0;
+	static int isArrInCircleInit = 0;
 
 	if (isArrInCircleInit == 0) {
 
