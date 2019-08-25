@@ -20,7 +20,7 @@ import java.nio.FloatBuffer;
 
 import android.opengl.Matrix;
 
-import java.lang.Math; 
+import java.lang.Math;
 
 public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, OnGestureListener, OnDoubleTapListener {
 	private static Context context;
@@ -34,13 +34,12 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 	private int[] vao_line = new int[1];
 	private int[] vao_point = new int[1];
 
-
 	private int[] vbo_position_lines = new int[1];
 	private int[] vbo_color_lines = new int[1];
 
 	private int[] vbo_position_point = new int[1];
 	private int[] vbo_color_point = new int[1];
-	
+
 	private int mvpUniform;
 
 	private float[] perspectiveProjectionMatrix = new float[16];
@@ -149,8 +148,8 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 	private FloatBuffer colorBuffer;
 
 	private void Display() {
-		
-		float count=-1.0f;	
+
+		float count = -1.0f;
 
 		GLES32.glClear(GLES32.GL_COLOR_BUFFER_BIT | GLES32.GL_DEPTH_BUFFER_BIT);
 
@@ -162,7 +161,7 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		float[] translationMatrix = new float[16];
 		float[] rotationMatrix = new float[16];
 
-			// Initialize matrices
+		// Initialize matrices
 		Matrix.setIdentityM(modelViewMatrix, 0);
 		Matrix.setIdentityM(modelViewProjectionMatrix, 0);
 		Matrix.setIdentityM(translationMatrix, 0);
@@ -191,7 +190,7 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		// Draw
 
 		DrawGraph(0.01f);
-	
+
 		DrawTriangle(0.5f);
 
 		DrawRectangle(1.0f, 1.0f);
@@ -199,11 +198,9 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		GLES32.glBindVertexArray(0);
 
 		GLES32.glBindVertexArray(vao_point[0]);
-		
-		DrawInCircle(0.0f, 0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f);
-			
+
+		DrawInCircle(0.0f, 0.5f, 0.0f, -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f);
+
 		DrawCircleAroundRectangle(1.0f, 1.0f);
 
 		GLES32.glBindVertexArray(0);
@@ -337,7 +334,7 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		// Save everying in single set
 		GLES32.glGenVertexArrays(1, vao_line, 0);
 		GLES32.glBindVertexArray(vao_line[0]);
-												//Line
+		// Line
 		// Position
 		// Generate Buffer
 		GLES32.glGenBuffers(1, vbo_position_lines, 0);
@@ -345,7 +342,7 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
 		// Fill Buffer
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 2 * 3  * 4, null, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 2 * 3 * 4, null, GLES32.GL_DYNAMIC_DRAW);
 
 		// Set Vertex Attrib Pointer
 		GLES32.glVertexAttribPointer(GLESMicros.AMC_ATTRIBUTE_POSITION, 3, GLES32.GL_FLOAT, false, 0, 0);
@@ -376,7 +373,7 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		// Unbind array
 		GLES32.glBindVertexArray(0);
 
-										//Points
+		// Points
 		// Position
 		// Create vao_line
 		// Save everying in single set
@@ -388,7 +385,7 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_point[0]);
 
 		// Fill Buffer
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 1 * 3 * 4, null, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, (int)(3 * 4 * ((2 * 3.1415) / 0.001)), null, GLES32.GL_DYNAMIC_DRAW);
 
 		// Set Vertex Attrib Pointer
 		GLES32.glVertexAttribPointer(GLESMicros.AMC_ATTRIBUTE_POSITION, 3, GLES32.GL_FLOAT, false, 0, 0);
@@ -407,7 +404,7 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_point[0]);
 
 		// Fill Buffer
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 1 * 3 * 4, null, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, (int)(3 * 4 * ((2 * 3.1415) / 0.001)), null, GLES32.GL_DYNAMIC_DRAW);
 
 		// Set Vertex Attrib Pointer
 		GLES32.glVertexAttribPointer(GLESMicros.AMC_ATTRIBUTE_COLOR, 3, GLES32.GL_FLOAT, false, 0, 0);
@@ -482,115 +479,99 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		}
 	}
 
-
 	private void DrawGraph(float offset) {
-		float count=-1.0f;
-		float[] lineVertices=new float[6];
+		float count = -1.0f;
+		float[] lineVertices = new float[6];
 
-		float lineColor[] = {
-			0.0f,0.0f,1.0f,
-			0.0f,0.0f,1.0f
-		};
+		float lineColor[] = { 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f };
 
 		for (count = -1.0f; count <= 1.01f; count = count + offset) {
-			
+
 			lineVertices[0] = count;
 			lineVertices[1] = -1.0f;
 			lineVertices[2] = 0.0f;
 			lineVertices[3] = count;
 			lineVertices[4] = 1.0f;
 			lineVertices[5] = 0.0f;
-	
+
 			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-			byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+			byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 			byteBuffer.order(ByteOrder.nativeOrder());
-			positionBuffer=byteBuffer.asFloatBuffer();
+			positionBuffer = byteBuffer.asFloatBuffer();
 			positionBuffer.put(lineVertices);
 			positionBuffer.position(0);
-	
+
 			GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, positionBuffer, GLES32.GL_DYNAMIC_DRAW);
-	
+
 			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
-	
-	
+
 			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
-	
-			byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+
+			byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 			byteBuffer.order(ByteOrder.nativeOrder());
-			colorBuffer=byteBuffer.asFloatBuffer();
+			colorBuffer = byteBuffer.asFloatBuffer();
 			colorBuffer.put(lineColor);
 			colorBuffer.position(0);
-	
-			GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
-	
+
+			GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+
 			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
-	
-			GLES32.glDrawArrays(GLES32.GL_LINES,
-			0,
-			2);
-	
+
+			GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
+
 			lineVertices[0] = -1.0f;
 			lineVertices[1] = count;
 			lineVertices[2] = 0.0f;
 			lineVertices[3] = 1.0f;
 			lineVertices[4] = count;
 			lineVertices[5] = 0.0f;
-	
+
 			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-			byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+			byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 			byteBuffer.order(ByteOrder.nativeOrder());
-			positionBuffer=byteBuffer.asFloatBuffer();
+			positionBuffer = byteBuffer.asFloatBuffer();
 			positionBuffer.put(lineVertices);
 			positionBuffer.position(0);
-	
+
 			GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, positionBuffer, GLES32.GL_DYNAMIC_DRAW);
-	
+
 			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
-	
-	
+
 			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
-	
-			byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+
+			byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 			byteBuffer.order(ByteOrder.nativeOrder());
-			colorBuffer=byteBuffer.asFloatBuffer();
+			colorBuffer = byteBuffer.asFloatBuffer();
 			colorBuffer.put(lineColor);
 			colorBuffer.position(0);
-	
-			GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
-	
+
+			GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+
 			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
-	
-			GLES32.glDrawArrays(GLES32.GL_LINES,
-			0,
-			2);
+
+			GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
 		}
 	}
-	
-	
-	private void DrawTriangle(float offset)
-	{
-		float[] lineVertices=new float[6];
 
-		float lineColor[] = {
-			1.0f,1.0f,0.0f,
-			1.0f,1.0f,0.0f
-		};
-	
+	private void DrawTriangle(float offset) {
+		float[] lineVertices = new float[6];
+
+		float lineColor[] = { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f };
+
 		lineVertices[0] = 0.0f;
 		lineVertices[1] = offset;
 		lineVertices[2] = 0.0f;
 		lineVertices[3] = -offset;
 		lineVertices[4] = -offset;
 		lineVertices[5] = 0.0f;
-	
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		positionBuffer=byteBuffer.asFloatBuffer();
+		positionBuffer = byteBuffer.asFloatBuffer();
 		positionBuffer.put(lineVertices);
 		positionBuffer.position(0);
 
@@ -598,35 +579,32 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
+		colorBuffer = byteBuffer.asFloatBuffer();
 		colorBuffer.put(lineColor);
 		colorBuffer.position(0);
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-		GLES32.glDrawArrays(GLES32.GL_LINES,
-		0,
-		2);
-	
+		GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
+
 		lineVertices[0] = -offset;
 		lineVertices[1] = -offset;
 		lineVertices[2] = 0.0f;
 		lineVertices[3] = offset;
 		lineVertices[4] = -offset;
 		lineVertices[5] = 0.0f;
-	
+
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		positionBuffer=byteBuffer.asFloatBuffer();
+		positionBuffer = byteBuffer.asFloatBuffer();
 		positionBuffer.put(lineVertices);
 		positionBuffer.position(0);
 
@@ -634,22 +612,19 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
+		colorBuffer = byteBuffer.asFloatBuffer();
 		colorBuffer.put(lineColor);
 		colorBuffer.position(0);
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-		GLES32.glDrawArrays(GLES32.GL_LINES,
-		0,
-		2);
+		GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
 
 		lineVertices[0] = offset;
 		lineVertices[1] = -offset;
@@ -657,12 +632,12 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		lineVertices[3] = 0.0f;
 		lineVertices[4] = offset;
 		lineVertices[5] = 0.0f;
-	
+
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		positionBuffer=byteBuffer.asFloatBuffer();
+		positionBuffer = byteBuffer.asFloatBuffer();
 		positionBuffer.put(lineVertices);
 		positionBuffer.position(0);
 
@@ -670,157 +645,164 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
+		colorBuffer = byteBuffer.asFloatBuffer();
 		colorBuffer.put(lineColor);
 		colorBuffer.position(0);
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-		GLES32.glDrawArrays(GLES32.GL_LINES,
-		0,
-		2);
+		GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
 
 	}
-	
-	private void DrawInCircle(float x1, float y1, float z1,
-		float x2, float y2, float z2,
-		float x3, float y3, float z3
-	)
-	{
-		float count = -1;
-		int noCount = 2000;
-		float angle = 0;
 
-		float distP1P2 = (float)Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) + (z2 - z1)*(z2 - z1));
-		float distP2P3 = (float)Math.sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2) + (z3 - z2)*(z3 - z2));
-		float distP3P1 = (float)Math.sqrt((x1 - x3)*(x1 - x3) + (y1 - y3)*(y1 - y3) + (z1 - z3)*(z1 - z3));
+	private int isArrInCircleInit = 0;
+
+	private float[] ArrInCirclePos = new float[(int) (((2 * 3.1415) / 0.001) * 3)+3];
+	private float[] ArrInCircleColor = new float[(int) (((2 * 3.1415) / 0.001) * 3)+3];
 	
-		float semiPerimeter = (distP1P2 + distP2P3 + distP3P1) / 2;
-	
-		float radius = (float)Math.sqrt((semiPerimeter - distP1P2)*(semiPerimeter - distP2P3)*(semiPerimeter - distP3P1) / semiPerimeter);
-	
-		float Ox = (x3 * distP1P2 + x1 * distP2P3 + x2 * distP3P1) / (semiPerimeter * 2);
-		float Oy = (y3 * distP1P2 + y1 * distP2P3 + y2 * distP3P1) / (semiPerimeter * 2);
-		float Oz = (z3 * distP1P2 + z1 * distP2P3 + z2 * distP3P1) / (semiPerimeter * 2);
-	
-		float[] pointVertices=new float[3];
-		float pointColors[] = {
-			1.0f,1.0f,0.0f
-		};
-		
+	private void DrawInCircle(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3,
+			float z3) {
+
+
+		if (isArrInCircleInit == 0) {
+
+			float angle = 0;
+
+			float distP1P2 = (float) Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
+			float distP2P3 = (float) Math.sqrt((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2) + (z3 - z2) * (z3 - z2));
+			float distP3P1 = (float) Math.sqrt((x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3) + (z1 - z3) * (z1 - z3));
+
+			float semiPerimeter = (distP1P2 + distP2P3 + distP3P1) / 2;
+
+			float radius = (float) Math.sqrt((semiPerimeter - distP1P2) * (semiPerimeter - distP2P3) * (semiPerimeter - distP3P1)
+					/ semiPerimeter);
+
+			float Ox = (x3 * distP1P2 + x1 * distP2P3 + x2 * distP3P1) / (semiPerimeter * 2);
+			float Oy = (y3 * distP1P2 + y1 * distP2P3 + y2 * distP3P1) / (semiPerimeter * 2);
+			float Oz = (z3 * distP1P2 + z1 * distP2P3 + z2 * distP3P1) / (semiPerimeter * 2);
+
+			int indexPos = 0;
+			int indexColor = 0;
+
+			for (angle = 0.0f; angle < 2 * 3.1415; angle = angle + 0.001f) {
+				ArrInCirclePos[indexPos++] = (float) Math.cos(angle) * radius + Ox;
+				ArrInCirclePos[indexPos++] = (float) Math.sin(angle) * radius + Oy;
+				ArrInCirclePos[indexPos++] = 0.0f + Oz;
+
+				ArrInCircleColor[indexColor++] = 1.0f;
+				ArrInCircleColor[indexColor++] = 1.0f;
+				ArrInCircleColor[indexColor++] = 0.0f;
+			}
+			isArrInCircleInit = 1;
+		}
+
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_point[0]);
-	
-		byteBuffer=ByteBuffer.allocateDirect(pointColors.length*4);
+
+		byteBuffer = ByteBuffer.allocateDirect(ArrInCircleColor.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
-		colorBuffer.put(pointColors);
+		colorBuffer = byteBuffer.asFloatBuffer();
+		colorBuffer.put(ArrInCircleColor);
 		colorBuffer.position(0);
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  1 * 3 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, (int)(3 * 4 * ((2 * 3.1415) / 0.001)), colorBuffer,
+				GLES32.GL_DYNAMIC_DRAW);
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-		for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
-	
-			pointVertices[0] = (float)Math.cos(angle)*radius+Ox;
-			pointVertices[1] = (float)Math.sin(angle)*radius+Oy;
-			pointVertices[2] = 0.0f+Oz;
+		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_point[0]);
 
-			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_point[0]);
+		byteBuffer = ByteBuffer.allocateDirect(ArrInCirclePos.length * 4);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		positionBuffer = byteBuffer.asFloatBuffer();
+		positionBuffer.put(ArrInCirclePos);
+		positionBuffer.position(0);
 
-			byteBuffer=ByteBuffer.allocateDirect(pointVertices.length*4);
-			byteBuffer.order(ByteOrder.nativeOrder());
-			positionBuffer=byteBuffer.asFloatBuffer();
-			positionBuffer.put(pointVertices);
-			positionBuffer.position(0);
-	
-			GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 1 * 3 * 4, positionBuffer, GLES32.GL_DYNAMIC_DRAW);
-	
-			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
-	
-			GLES32.glDrawArrays(GLES32.GL_POINTS,
-			0,
-			1);
-	
-		}
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, (int)(3 * 4 * ((2 * 3.1415) / 0.001)), positionBuffer,
+				GLES32.GL_DYNAMIC_DRAW);
+
+		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
+
+		GLES32.glDrawArrays(GLES32.GL_POINTS, 0, (int)((2 * 3.1415) / 0.001));
+
 	}
-	
+
+	private int isArrCircleInit = 0;
+	private float[] ArrCirclePos = new float[(int) (((2 * 3.1415) / 0.001) * 3)+3];
+	private float[] ArrCircleColor = new float[(int) (((2 * 3.1415) / 0.001) * 3)+3];
+
 	private void DrawCircle(float radius) {
-		float angle = 0;
-	
-		float[] pointVertices=new float[3];
-		float pointColors[] = {
-			1.0f,1.0f,0.0f
-		};
 
-			
-		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_point[0]);
-	
-		byteBuffer=ByteBuffer.allocateDirect(pointColors.length*4);
-		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
-		colorBuffer.put(pointColors);
-		colorBuffer.position(0);
+		if (isArrCircleInit == 0) {
+			float angle = 0;
+			int indexPos = 0;
+			int indexColor = 0;
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  1 * 3 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+			for (angle = 0.0f; angle < 2 * 3.1415; angle = angle + 0.001f) {
+				ArrCirclePos[indexPos++] = (float) Math.cos(angle) * radius ;
+				ArrCirclePos[indexPos++] = (float) Math.sin(angle) * radius ;
+				ArrCirclePos[indexPos++] = 0.0f ;
 
-		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
-
-	
-
-		for (angle = 0.0f; angle < 2 * 3.14159265; angle = angle + 0.001f) {
-	
-			pointVertices[0] = (float)Math.cos(angle)*radius;
-			pointVertices[1] = (float)Math.sin(angle)*radius;
-			pointVertices[2] = 0.0f;
-	
-			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_point[0]);
-
-			byteBuffer=ByteBuffer.allocateDirect(pointVertices.length*4);
-			byteBuffer.order(ByteOrder.nativeOrder());
-			positionBuffer=byteBuffer.asFloatBuffer();
-			positionBuffer.put(pointVertices);
-			positionBuffer.position(0);
-	
-			GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 1 * 3 * 4, positionBuffer, GLES32.GL_DYNAMIC_DRAW);
-	
-			GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
-
-			GLES32.glDrawArrays(GLES32.GL_POINTS,
-			0,
-			1);
+				ArrCircleColor[indexColor++] = 1.0f;
+				ArrCircleColor[indexColor++] = 1.0f;
+				ArrCircleColor[indexColor++] = 0.0f;
+			}
+			isArrCircleInit = 1;
 		}
-	
+
+		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_point[0]);
+
+		byteBuffer = ByteBuffer.allocateDirect(ArrCircleColor.length * 4);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		colorBuffer = byteBuffer.asFloatBuffer();
+		colorBuffer.put(ArrCircleColor);
+		colorBuffer.position(0);
+
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, (int)(3 * 4 * ((2 * 3.1415) / 0.001)), colorBuffer,
+				GLES32.GL_DYNAMIC_DRAW);
+
+		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
+
+		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_point[0]);
+
+		byteBuffer = ByteBuffer.allocateDirect(ArrCirclePos.length * 4);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		positionBuffer = byteBuffer.asFloatBuffer();
+		positionBuffer.put(ArrCirclePos);
+		positionBuffer.position(0);
+
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, (int)(3 * 4 * ((2 * 3.1415) / 0.001)), positionBuffer,
+				GLES32.GL_DYNAMIC_DRAW);
+
+		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
+
+		GLES32.glDrawArrays(GLES32.GL_POINTS, 0, (int)((2 * 3.1415) / 0.001));
+
 	}
-	
+
 	private void DrawRectangle(float width, float height) {
-	
-		float[] lineVertices=new float[6];
-	
-		float lineColor[] = {
-			1.0f,1.0f,0.0f,
-			1.0f,1.0f,0.0f
-		};
-	
+
+		float[] lineVertices = new float[6];
+
+		float lineColor[] = { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f };
+
 		lineVertices[0] = width / 2;
 		lineVertices[1] = height / 2;
 		lineVertices[2] = 0.0f;
 		lineVertices[3] = -width / 2;
 		lineVertices[4] = height / 2;
 		lineVertices[5] = 0.0f;
-	
+
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		positionBuffer=byteBuffer.asFloatBuffer();
+		positionBuffer = byteBuffer.asFloatBuffer();
 		positionBuffer.put(lineVertices);
 		positionBuffer.position(0);
 
@@ -828,35 +810,32 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
+		colorBuffer = byteBuffer.asFloatBuffer();
 		colorBuffer.put(lineColor);
 		colorBuffer.position(0);
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-		GLES32.glDrawArrays(GLES32.GL_LINES,
-		0,
-		2);
-	
+		GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
+
 		lineVertices[0] = -width / 2;
 		lineVertices[1] = height / 2;
 		lineVertices[2] = 0.0f;
 		lineVertices[3] = -width / 2;
 		lineVertices[4] = -height / 2;
 		lineVertices[5] = 0.0f;
-	
+
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		positionBuffer=byteBuffer.asFloatBuffer();
+		positionBuffer = byteBuffer.asFloatBuffer();
 		positionBuffer.put(lineVertices);
 		positionBuffer.position(0);
 
@@ -864,35 +843,32 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
+		colorBuffer = byteBuffer.asFloatBuffer();
 		colorBuffer.put(lineColor);
 		colorBuffer.position(0);
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-		GLES32.glDrawArrays(GLES32.GL_LINES,
-		0,
-		2);
-	
+		GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
+
 		lineVertices[0] = -width / 2;
 		lineVertices[1] = -height / 2;
 		lineVertices[2] = 0.0f;
 		lineVertices[3] = width / 2;
 		lineVertices[4] = -height / 2;
 		lineVertices[5] = 0.0f;
-	
+
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		positionBuffer=byteBuffer.asFloatBuffer();
+		positionBuffer = byteBuffer.asFloatBuffer();
 		positionBuffer.put(lineVertices);
 		positionBuffer.position(0);
 
@@ -900,35 +876,32 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
+		colorBuffer = byteBuffer.asFloatBuffer();
 		colorBuffer.put(lineColor);
 		colorBuffer.position(0);
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-		GLES32.glDrawArrays(GLES32.GL_LINES,
-		0,
-		2);
-	
+		GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
+
 		lineVertices[0] = width / 2;
 		lineVertices[1] = -height / 2;
 		lineVertices[2] = 0.0f;
 		lineVertices[3] = width / 2;
 		lineVertices[4] = height / 2;
 		lineVertices[5] = 0.0f;
-	
+
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_position_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineVertices.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineVertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		positionBuffer=byteBuffer.asFloatBuffer();
+		positionBuffer = byteBuffer.asFloatBuffer();
 		positionBuffer.put(lineVertices);
 		positionBuffer.position(0);
 
@@ -936,31 +909,27 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, vbo_color_lines[0]);
 
-		byteBuffer=ByteBuffer.allocateDirect(lineColor.length*4);
+		byteBuffer = ByteBuffer.allocateDirect(lineColor.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		colorBuffer=byteBuffer.asFloatBuffer();
+		colorBuffer = byteBuffer.asFloatBuffer();
 		colorBuffer.put(lineColor);
 		colorBuffer.position(0);
 
-		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER,  3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
+		GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, 3 * 2 * 4, colorBuffer, GLES32.GL_DYNAMIC_DRAW);
 
 		GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0);
 
-		GLES32.glDrawArrays(GLES32.GL_LINES,
-		0,
-		2);
-	
+		GLES32.glDrawArrays(GLES32.GL_LINES, 0, 2);
+
 	}
-	
+
 	private void DrawCircleAroundRectangle(float width, float height) {
-	
-		float radius = (float)Math.sqrt(width / 2 * width / 2 + height / 2 * height / 2);
+
+		float radius = (float) Math.sqrt(width / 2 * width / 2 + height / 2 * height / 2);
 		DrawCircle(radius);
-	
+
 	}
-	
 
 }
