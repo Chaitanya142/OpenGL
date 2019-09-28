@@ -595,6 +595,11 @@ void Display(void) {
 
 	modelViewMatrix = modelViewMatrix * rotationMatrix;
 
+	rotationMatrix = mat4::identity();
+	rotationMatrix = rotate((GLfloat)day, 0.0f, 0.0f, 1.0f);
+
+	modelViewMatrix = modelViewMatrix * rotationMatrix;
+
 	modelViewProjectionMatrix = mat4::identity();
 	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
 
