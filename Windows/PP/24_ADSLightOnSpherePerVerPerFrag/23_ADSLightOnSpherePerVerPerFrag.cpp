@@ -32,7 +32,8 @@ FILE *gpFile = NULL;
 GLfloat angleSphere = 0.0;
 
 //Shader Program Objects
-GLint gShaderProgramObject;
+GLint gShaderProgramObject_PF;
+GLint gShaderProgramObject_PV;
 
 enum {
 	AMC_ATTRIBUTE_POSITION = 0,
@@ -49,12 +50,18 @@ GLuint vbo_sphere_normal;
 
 //GLuint vbo_color_cube;
 
-GLuint mvUniform;
+GLuint mUniform;
+GLuint vUniform;
 GLuint pUniform;
 GLuint lKeyIsPressedUniform;
 GLuint ldUniform;
 GLuint kdUniform;
+GLuint laUniform;
+GLuint kaUniform;
+GLuint lsUniform;
+GLuint ksUniform;
 GLuint lightPositionUniform;
+GLuint shininessUniform;
 
 mat4 perspectiveProjectionMatrix;
 
@@ -67,6 +74,20 @@ float sphere_textures[764];
 unsigned short sphere_elements[2280];
 int gNumVertices;
 int gNumElements;
+
+float lightAmbient[4];
+float lightDiffuse[4];
+float lightSpecular[4];
+float lightPosition[4];
+
+float materialAmbient[4];
+float materialDiffuse[4];
+float materialSpecular[4];
+float materialShininess;
+
+int perVertexOrFragement = 0;//0 Vertex 1 Fragment
+
+void getUniformLocation(GLint gShaderProgramObject);
 
 //Method Declaration
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -201,7 +222,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		{
 		case 'F':
 		case 'f':
-			ToggleFullScreen();
+			getUniformLocation(gShaderProgramObject_PF);
+			perVertexOrFragement = 1;
+			break;
+		case 'v':
+		case 'V':
+			getUniformLocation(gShaderProgramObject_PV);
+			perVertexOrFragement = 0;
 			break;
 		case 'l':
 		case 'L':
@@ -210,14 +237,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 			else
 				gb_Lighting = 0;
 			break;
-	/*	case 'a':
-		case 'A':
-			if (gb_Animation == 0)
-				gb_Animation = 1;
-			else
-				gb_Animation = 0;
-			break;*/
+
 		case VK_ESCAPE:
+			ToggleFullScreen();
+			break;
+		case 'e':
+		case 'E':
 			DestroyWindow(hwnd);
 			break;
 		}
@@ -318,63 +343,65 @@ int Initialize(void) {
 	gNumVertices = getNumberOfSphereVertices();
 
 	//Shader Objects
-	GLint gVertexShaderObject;
-	GLint gFragementShaderObject;
+	GLint gVertexShaderObject_PF;
+	GLint gFragementShaderObject_PF;
 
 	//Vertex Shader
 	//Define Shader Object
-	gVertexShaderObject = glCreateShader(GL_VERTEX_SHADER);
+	gVertexShaderObject_PF = glCreateShader(GL_VERTEX_SHADER);
 
 	//Vertex Shader Code
-	const GLchar* vertextShaderSourceCode =
+	const GLchar* vertextShaderSourceCode_PF =
 		"#version 430 core " \
 		"\n " \
 		"in vec4 vPosition;" \
 		"in vec3 vNormal;" \
-		"uniform mat4 u_mv_matrix;" \
+		"uniform mat4 u_m_matrix;" \
+		"uniform mat4 u_v_matrix;" \
 		"uniform mat4 u_p_matrix;" \
 		"uniform int u_lkeyispressed;" \
-		"uniform vec3 u_ld;" \
-		"uniform vec3 u_kd;" \
 		"uniform vec4 u_lightposition;" \
-		"out vec3 diffusecolor;" \
+		"out vec3 tnorm;"\
+		"out vec3 lightDirection;"\
+		"out vec3 reflectionVector;"\
+		"out vec3 viewerVector;"\
 		"void main(void)" \
 		"{" \
-		"gl_Position=u_p_matrix*u_mv_matrix * vPosition;" \
+		"gl_Position=u_p_matrix*u_v_matrix*u_m_matrix * vPosition;" \
 		"if(u_lkeyispressed==1)"\
 		"{"\
-		"vec4 eyecoordinates=u_mv_matrix*vPosition;"\
-		"mat3 normalmatrix=mat3(transpose(inverse(u_mv_matrix)));"\
-		"vec3 tnorm=normalize(normalmatrix*vNormal);"\
-		"vec3 s=normalize(vec3(u_lightposition)-eyecoordinates.xyz);"\
-		"diffusecolor=u_ld*u_kd*max(dot(s,tnorm),0.0);"\
-		"};"\
-		"} ";
+		"vec4 eyecoordinates=u_v_matrix*u_m_matrix*vPosition;"\
+		"tnorm=mat3(u_v_matrix*u_m_matrix)*vNormal;"\
+		"lightDirection=vec3(u_lightposition-eyecoordinates);"\
+		"reflectionVector=reflect(-lightDirection,tnorm);"\
+		"viewerVector=vec3(-eyecoordinates);"\
+		"}"\
+		"}";
 
 	//Shader object and source code mapping
-	glShaderSource(gVertexShaderObject, 1, &vertextShaderSourceCode, NULL);
+	glShaderSource(gVertexShaderObject_PF, 1, &vertextShaderSourceCode_PF, NULL);
 
 	//Compile Shader
-	glCompileShader(gVertexShaderObject);
+	glCompileShader(gVertexShaderObject_PF);
 
 	//Error Checking
 	GLint iShaderCompileStatus = 0;
 	GLint iInfoLogLength = 0;
 	GLchar * szInfoLog = NULL;
 
-	glGetShaderiv(gVertexShaderObject, GL_COMPILE_STATUS, &iShaderCompileStatus);
+	glGetShaderiv(gVertexShaderObject_PF, GL_COMPILE_STATUS, &iShaderCompileStatus);
 
 	if (iShaderCompileStatus == GL_FALSE) {
-		glGetShaderiv(gVertexShaderObject, GL_INFO_LOG_LENGTH, &iInfoLogLength);
+		glGetShaderiv(gVertexShaderObject_PF, GL_INFO_LOG_LENGTH, &iInfoLogLength);
 		if (iInfoLogLength > 0) {
 			szInfoLog = (GLchar *)malloc(iInfoLogLength);
 			if (szInfoLog != NULL) {
 				GLsizei written;
-				glGetShaderInfoLog(gVertexShaderObject,
+				glGetShaderInfoLog(gVertexShaderObject_PF,
 					iInfoLogLength,
 					&written,
 					szInfoLog);
-				fprintf_s(gpFile, "Vertex Shader Compilation Log %s\n", szInfoLog);
+				fprintf_s(gpFile, "Vertex Shader PF Compilation Log %s\n", szInfoLog);
 				free(szInfoLog);
 				UnInitialize();
 				DestroyWindow(0);
@@ -385,47 +412,67 @@ int Initialize(void) {
 
 	//Fragement Shader
 	//Define Shader Object
-	gFragementShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
+	gFragementShaderObject_PF = glCreateShader(GL_FRAGMENT_SHADER);
 
 	//Fragement Shader Code
-	const GLchar* fragementShaderSourceCode =
+	const GLchar* fragementShaderSourceCode_PF =
 		"#version 430 core " \
 		"\n " \
 		"out vec4 fragColor;"
-		"in vec3 diffusecolor;" \
+		"uniform vec3 u_ld;" \
+		"uniform vec3 u_kd;" \
+		"uniform vec3 u_la;" \
+		"uniform vec3 u_ka;" \
+		"uniform vec3 u_ls;" \
+		"uniform vec3 u_ks;" \
+		"uniform float u_shininess;" \
 		"uniform int u_lkeyispressed;" \
+		"in vec3 tnorm;"\
+		"in vec3 lightDirection;"\
+		"in vec3 reflectionVector;"\
+		"in vec3 viewerVector;"\
 		"void main(void)" \
 		"{" \
+		"vec3 phongADSLight;"\
 		"if(u_lkeyispressed==1)"\
 		"{"\
-		"fragColor=vec4(diffusecolor,1.0f);"\
+		"vec3 tnorm_normalize=normalize(tnorm);"\
+		"vec3 lightDirection_normalize=normalize(lightDirection);"\
+		"vec3 reflectionVector_normalize=normalize(reflectionVector);"\
+		"vec3 viewerVector_normalize=normalize(viewerVector);"\
+		"float tn_dot_ld=max(dot(lightDirection_normalize,tnorm_normalize),0.0);"\
+		"vec3 ambient=u_la*u_ka;"\
+		"vec3 diffuse=u_ld*u_kd*tn_dot_ld;"
+		"vec3 specular=u_ls*u_ks*pow(max(dot(reflectionVector_normalize,viewerVector_normalize),0.0),u_shininess);"\
+		"phongADSLight=ambient+diffuse+specular;"\
 		"}"\
 		"else"\
 		"{"\
-		"fragColor=vec4(1.0f,1.0f,1.0f,1.0f);"
+		"phongADSLight=vec3(1.0f,1.0f,1.0f);"\
 		"}"\
+		"fragColor=vec4(phongADSLight,1.0f);"\
 		"} ";
 
 	//Shader object and source code mapping
-	glShaderSource(gFragementShaderObject, 1, &fragementShaderSourceCode, NULL);
+	glShaderSource(gFragementShaderObject_PF, 1, &fragementShaderSourceCode_PF, NULL);
 
 	//Compile Shader
-	glCompileShader(gFragementShaderObject);
+	glCompileShader(gFragementShaderObject_PF);
 
 	//Error Checking
 	iShaderCompileStatus = 0;
 	iInfoLogLength = 0;
 	szInfoLog = NULL;
 
-	glGetShaderiv(gFragementShaderObject, GL_COMPILE_STATUS, &iShaderCompileStatus);
+	glGetShaderiv(gFragementShaderObject_PF, GL_COMPILE_STATUS, &iShaderCompileStatus);
 
 	if (iShaderCompileStatus == GL_FALSE) {
-		glGetShaderiv(gFragementShaderObject, GL_INFO_LOG_LENGTH, &iInfoLogLength);
+		glGetShaderiv(gFragementShaderObject_PF, GL_INFO_LOG_LENGTH, &iInfoLogLength);
 		if (iInfoLogLength > 0) {
 			szInfoLog = (GLchar *)malloc(iInfoLogLength);
 			if (szInfoLog != NULL) {
 				GLsizei written;
-				glGetShaderInfoLog(gFragementShaderObject,
+				glGetShaderInfoLog(gFragementShaderObject_PF,
 					iInfoLogLength,
 					&written,
 					szInfoLog);
@@ -439,36 +486,36 @@ int Initialize(void) {
 	}
 
 	//Program Object
-	gShaderProgramObject = glCreateProgram();
+	gShaderProgramObject_PF = glCreateProgram();
 	//Attach Shaders
-	glAttachShader(gShaderProgramObject, gVertexShaderObject);
-	glAttachShader(gShaderProgramObject, gFragementShaderObject);
+	glAttachShader(gShaderProgramObject_PF, gVertexShaderObject_PF);
+	glAttachShader(gShaderProgramObject_PF, gFragementShaderObject_PF);
 
 	//Prelinking
 	//Binding to attribute
-	glBindAttribLocation(gShaderProgramObject,
+	glBindAttribLocation(gShaderProgramObject_PF,
 		AMC_ATTRIBUTE_POSITION,
 		"vPosition");
 
-	glBindAttribLocation(gShaderProgramObject,
+	glBindAttribLocation(gShaderProgramObject_PF,
 		AMC_ATTRIBUTE_NORMAL,
 		"vNormal");
 
 	//Link Shader Program
-	glLinkProgram(gShaderProgramObject);
+	glLinkProgram(gShaderProgramObject_PF);
 
 	//Error Checking
 	GLint iShaderLinkStatus = 0;
 
-	glGetProgramiv(gShaderProgramObject, GL_LINK_STATUS, &iShaderLinkStatus);
+	glGetProgramiv(gShaderProgramObject_PF, GL_LINK_STATUS, &iShaderLinkStatus);
 
 	if (iShaderLinkStatus == GL_FALSE) {
-		glGetProgramiv(gShaderProgramObject, GL_INFO_LOG_LENGTH, &iInfoLogLength);
+		glGetProgramiv(gShaderProgramObject_PF, GL_INFO_LOG_LENGTH, &iInfoLogLength);
 		if (iInfoLogLength > 0) {
 			szInfoLog = (GLchar *)malloc(iInfoLogLength);
 			if (szInfoLog != NULL) {
 				GLsizei written;
-				glGetProgramInfoLog(gShaderProgramObject,
+				glGetProgramInfoLog(gShaderProgramObject_PF,
 					iInfoLogLength,
 					&written,
 					szInfoLog);
@@ -481,22 +528,187 @@ int Initialize(void) {
 		}
 	}
 
+	if (perVertexOrFragement == 1) {
+		getUniformLocation(gShaderProgramObject_PF);
+	}
 
-	//Post Linking
-	//Retriving Uniform Location
-	mvUniform = glGetUniformLocation(gShaderProgramObject,
-		"u_mv_matrix");
-	pUniform = glGetUniformLocation(gShaderProgramObject,
-		"u_p_matrix");
-	lKeyIsPressedUniform = glGetUniformLocation(gShaderProgramObject,
-		"u_lkeyispressed");
-	ldUniform = glGetUniformLocation(gShaderProgramObject,
-		"u_ld");
-	kdUniform = glGetUniformLocation(gShaderProgramObject,
-		"u_kd");
-	lightPositionUniform = glGetUniformLocation(gShaderProgramObject,
-		"u_lightposition");
+	//--------------------------------------------------------------------------------------------------------------//
 
+
+//Shader Objects
+	GLint gVertexShaderObject_PV;
+	GLint gFragementShaderObject_PV;
+
+	//Vertex Shader
+	//Define Shader Object
+	gVertexShaderObject_PV = glCreateShader(GL_VERTEX_SHADER);
+
+	//Vertex Shader Code
+	const GLchar* vertextShaderSourceCode_PV =
+		"#version 430 core " \
+		"\n " \
+		"in vec4 vPosition;" \
+		"in vec3 vNormal;" \
+		"uniform mat4 u_m_matrix;" \
+		"uniform mat4 u_v_matrix;" \
+		"uniform mat4 u_p_matrix;" \
+		"uniform int u_lkeyispressed;" \
+		"uniform vec3 u_ld;" \
+		"uniform vec3 u_kd;" \
+		"uniform vec3 u_la;" \
+		"uniform vec3 u_ka;" \
+		"uniform vec3 u_ls;" \
+		"uniform vec3 u_ks;" \
+		"uniform float u_shininess;" \
+		"uniform vec4 u_lightposition;" \
+		"out vec3 phongADSLight;" \
+		"void main(void)" \
+		"{" \
+		"gl_Position=u_p_matrix*u_v_matrix*u_m_matrix * vPosition;" \
+		"if(u_lkeyispressed==1)"\
+		"{"\
+		"vec4 eyecoordinates=u_v_matrix*u_m_matrix*vPosition;"\
+		"vec3 tnorm=normalize(mat3(u_v_matrix*u_m_matrix)*vNormal);"\
+		"vec3 lightDirection=normalize(vec3(u_lightposition-eyecoordinates));"\
+		"float tn_dot_ld=max(dot(lightDirection,tnorm),0.0);"\
+		"vec3 reflectionVector=reflect(-lightDirection,tnorm);"\
+		"vec3 viewerVector=normalize(vec3(-eyecoordinates));"\
+		"vec3 ambient=u_la*u_ka;"\
+		"vec3 diffuse=u_ld*u_kd*tn_dot_ld;"
+		"vec3 specular=u_ls*u_ks*pow(max(dot(reflectionVector,viewerVector),0.0),u_shininess);"\
+		"phongADSLight=ambient+diffuse+specular;"\
+		"}"\
+		"else"\
+		"{"\
+		"phongADSLight=vec3(1.0f,1.0f,1.0f);"\
+		"}"\
+		"}";
+
+	//Shader object and source code mapping
+	glShaderSource(gVertexShaderObject_PV, 1, &vertextShaderSourceCode_PV, NULL);
+
+	//Compile Shader
+	glCompileShader(gVertexShaderObject_PV);
+
+	//Error Checking
+	iShaderCompileStatus = 0;
+	iInfoLogLength = 0;
+	szInfoLog = NULL;
+
+	glGetShaderiv(gVertexShaderObject_PV, GL_COMPILE_STATUS, &iShaderCompileStatus);
+
+	if (iShaderCompileStatus == GL_FALSE) {
+		glGetShaderiv(gVertexShaderObject_PV, GL_INFO_LOG_LENGTH, &iInfoLogLength);
+		if (iInfoLogLength > 0) {
+			szInfoLog = (GLchar *)malloc(iInfoLogLength);
+			if (szInfoLog != NULL) {
+				GLsizei written;
+				glGetShaderInfoLog(gVertexShaderObject_PV,
+					iInfoLogLength,
+					&written,
+					szInfoLog);
+				fprintf_s(gpFile, "Vertex Shader PF Compilation Log %s\n", szInfoLog);
+				free(szInfoLog);
+				UnInitialize();
+				DestroyWindow(0);
+				exit(0);
+			}
+		}
+	}
+
+	//Fragement Shader
+	//Define Shader Object
+	gFragementShaderObject_PV = glCreateShader(GL_FRAGMENT_SHADER);
+
+	//Fragement Shader Code
+	const GLchar* fragementShaderSourceCode_PV =
+		"#version 430 core " \
+		"\n " \
+		"out vec4 fragColor;"
+		"in vec3 phongADSLight;" \
+		"void main(void)" \
+		"{" \
+		"fragColor=vec4(phongADSLight,1.0f);"\
+		"} ";
+
+	//Shader object and source code mapping
+	glShaderSource(gFragementShaderObject_PV, 1, &fragementShaderSourceCode_PV, NULL);
+
+	//Compile Shader
+	glCompileShader(gFragementShaderObject_PV);
+
+	//Error Checking
+	iShaderCompileStatus = 0;
+	iInfoLogLength = 0;
+	szInfoLog = NULL;
+
+	glGetShaderiv(gFragementShaderObject_PV, GL_COMPILE_STATUS, &iShaderCompileStatus);
+
+	if (iShaderCompileStatus == GL_FALSE) {
+		glGetShaderiv(gFragementShaderObject_PV, GL_INFO_LOG_LENGTH, &iInfoLogLength);
+		if (iInfoLogLength > 0) {
+			szInfoLog = (GLchar *)malloc(iInfoLogLength);
+			if (szInfoLog != NULL) {
+				GLsizei written;
+				glGetShaderInfoLog(gFragementShaderObject_PV,
+					iInfoLogLength,
+					&written,
+					szInfoLog);
+				fprintf_s(gpFile, "Fragement Shader Compilation Log %s\n", szInfoLog);
+				free(szInfoLog);
+				UnInitialize();
+				DestroyWindow(0);
+				exit(0);
+			}
+		}
+	}
+
+	//Program Object
+	gShaderProgramObject_PV = glCreateProgram();
+	//Attach Shaders
+	glAttachShader(gShaderProgramObject_PV, gVertexShaderObject_PV);
+	glAttachShader(gShaderProgramObject_PV, gFragementShaderObject_PV);
+
+	//Prelinking
+	//Binding to attribute
+	glBindAttribLocation(gShaderProgramObject_PV,
+		AMC_ATTRIBUTE_POSITION,
+		"vPosition");
+
+	glBindAttribLocation(gShaderProgramObject_PV,
+		AMC_ATTRIBUTE_NORMAL,
+		"vNormal");
+
+	//Link Shader Program
+	glLinkProgram(gShaderProgramObject_PV);
+
+	//Error Checking
+	iShaderLinkStatus = 0;
+
+	glGetProgramiv(gShaderProgramObject_PV, GL_LINK_STATUS, &iShaderLinkStatus);
+
+	if (iShaderLinkStatus == GL_FALSE) {
+		glGetProgramiv(gShaderProgramObject_PV, GL_INFO_LOG_LENGTH, &iInfoLogLength);
+		if (iInfoLogLength > 0) {
+			szInfoLog = (GLchar *)malloc(iInfoLogLength);
+			if (szInfoLog != NULL) {
+				GLsizei written;
+				glGetProgramInfoLog(gShaderProgramObject_PV,
+					iInfoLogLength,
+					&written,
+					szInfoLog);
+				fprintf_s(gpFile, "Program Link Log %s\n", szInfoLog);
+				free(szInfoLog);
+				UnInitialize();
+				DestroyWindow(0);
+				exit(0);
+			}
+		}
+	}
+
+	if (perVertexOrFragement == 0) {
+		getUniformLocation(gShaderProgramObject_PV);
+	}
 
 	// vao
 	glGenVertexArrays(1, &vao_sphere);
@@ -532,6 +744,35 @@ int Initialize(void) {
 	// unbind vao
 	glBindVertexArray(0);
 
+	lightAmbient[0] = 0.0f;
+	lightAmbient[1] = 0.0f;
+	lightAmbient[2] = 0.0f;
+	lightAmbient[3] = 0.0f;
+	lightDiffuse[0] = 1.0f;
+	lightDiffuse[1] = 1.0f;
+	lightDiffuse[2] = 1.0f;
+	lightDiffuse[3] = 1.0f;
+	lightSpecular[0] = 1.0f;
+	lightSpecular[1] = 1.0f;
+	lightSpecular[2] = 1.0f;
+	lightSpecular[3] = 1.0f;
+	lightPosition[0] = 100.0f;
+	lightPosition[1] = 100.0f;
+	lightPosition[2] = 100.0f;
+	lightPosition[3] = 100.0f;
+	materialAmbient[0] = 0.0f;
+	materialAmbient[1] = 0.0f;
+	materialAmbient[2] = 0.0f;
+	materialAmbient[3] = 0.0f;
+	materialDiffuse[0] = 1.0f;
+	materialDiffuse[1] = 1.0f;
+	materialDiffuse[2] = 1.0f;
+	materialDiffuse[3] = 1.0f;
+	materialSpecular[0] = 1.0f;
+	materialSpecular[1] = 1.0f;
+	materialSpecular[2] = 1.0f;
+	materialSpecular[3] = 1.0f;
+	materialShininess = 50.0f;
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -567,10 +808,15 @@ void Display(void) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glUseProgram(gShaderProgramObject);
+	if (perVertexOrFragement == 0)
+		glUseProgram(gShaderProgramObject_PV);
+	else
+		glUseProgram(gShaderProgramObject_PF);
+
 
 	//Declaration of Matrices
-	mat4 modelViewMatrix;
+	mat4 modelMatrix;
+	mat4 viewMatrix;
 
 	mat4 translationMatrix;
 	mat4 rotationMatrix;
@@ -579,7 +825,8 @@ void Display(void) {
 	//CUBE
 	//Initialize matrices
 
-	modelViewMatrix = mat4::identity();
+	modelMatrix = mat4::identity();
+	viewMatrix = mat4::identity();
 	translationMatrix = mat4::identity();
 	rotationMatrix = mat4::identity();
 	scaleMatrix = mat4::identity();
@@ -591,25 +838,40 @@ void Display(void) {
 	//rotationMatrix = rotate(angleSphere, angleSphere, angleSphere);
 
 	//Matrix Multiplication
-	modelViewMatrix = translationMatrix * scaleMatrix * rotationMatrix;
+	modelMatrix = translationMatrix * scaleMatrix * rotationMatrix;
 	//perspectiveProjectionMatrix
 
 	//Send necessary matrices to shader in resp. Uniforms
 
-	glUniformMatrix4fv(mvUniform,
+	glUniformMatrix4fv(mUniform,
 		1,
 		GL_FALSE,
-		modelViewMatrix);
+		modelMatrix);
+	glUniformMatrix4fv(vUniform,
+		1,
+		GL_FALSE,
+		viewMatrix);
 	glUniformMatrix4fv(pUniform,
 		1,
 		GL_FALSE,
 		perspectiveProjectionMatrix);
 
+
+
 	if (gb_Lighting) {
 		glUniform1i(lKeyIsPressedUniform, gb_Lighting);
-		glUniform3f(ldUniform, 1.0f, 1.0f, 1.0f);
-		glUniform3f(kdUniform, 0.5f, 0.5, 0.5f);
-		glUniform4f(lightPositionUniform, 0.0f, 0.0, 2.0, 1.0f);
+
+		glUniform3fv(ldUniform, 1, lightDiffuse);
+		glUniform3fv(laUniform, 1, lightAmbient);
+		glUniform3fv(lsUniform, 1, lightSpecular);
+
+		glUniform3fv(kaUniform, 1, materialAmbient);
+		glUniform3fv(kdUniform, 1, materialDiffuse);
+		glUniform3fv(ksUniform, 1, materialSpecular);
+
+		glUniform1f(shininessUniform, materialShininess);
+
+		glUniform4fv(lightPositionUniform, 1, lightPosition);
 	}
 	else {
 		glUniform1i(lKeyIsPressedUniform, gb_Lighting);
@@ -632,11 +894,7 @@ void Display(void) {
 }
 void Update(void)
 {
-	//if (gb_Animation == 1) {
-	//	angleSphere = angleSphere + 0.2f;
-	//	if (angleSphere > 360.0f)
-	//		angleSphere = 0.0f;
-	//}
+
 }
 void UnInitialize(void) {
 	if (bFullScreen == true) {
@@ -670,32 +928,32 @@ void UnInitialize(void) {
 		vbo_sphere_normal = 0;
 	}
 
-	if (gShaderProgramObject) {
+	if (gShaderProgramObject_PF) {
 		GLsizei shaderCount;
 		GLsizei shaderNumber;
-		glUseProgram(gShaderProgramObject);
+		glUseProgram(gShaderProgramObject_PF);
 
-		glGetProgramiv(gShaderProgramObject,
+		glGetProgramiv(gShaderProgramObject_PF,
 			GL_ATTACHED_SHADERS,
 			&shaderCount);
 
 		GLuint * pShaders = (GLuint *)malloc(shaderCount * sizeof(GLuint));
 
 		if (pShaders) {
-			glGetAttachedShaders(gShaderProgramObject,
+			glGetAttachedShaders(gShaderProgramObject_PF,
 				shaderCount,
 				&shaderCount,
 				pShaders);
 
 			for (shaderNumber = 0; shaderNumber < shaderCount; shaderNumber++) {
-				glDetachShader(gShaderProgramObject, pShaders[shaderNumber]);
+				glDetachShader(gShaderProgramObject_PF, pShaders[shaderNumber]);
 				glDeleteShader(pShaders[shaderNumber]);
 				pShaders[shaderNumber] = 0;
 			}
 			free(pShaders);
 		}
-		glDeleteProgram(gShaderProgramObject);
-		gShaderProgramObject = 0;
+		glDeleteProgram(gShaderProgramObject_PF);
+		gShaderProgramObject_PF = 0;
 		glUseProgram(0);
 	}
 
@@ -715,6 +973,35 @@ void UnInitialize(void) {
 		fclose(gpFile);
 		gpFile = NULL;
 	}
+}
+
+void getUniformLocation(GLint gShaderProgramObject) {
+	//Post Linking
+	//Retriving Uniform Location
+	mUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_m_matrix");
+	vUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_v_matrix");
+	pUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_p_matrix");
+	lKeyIsPressedUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_lkeyispressed");
+	ldUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_ld");
+	kdUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_kd");
+	laUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_la");
+	kaUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_ka");
+	lsUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_ls");
+	ksUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_ks");
+	lightPositionUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_lightposition");
+	shininessUniform = glGetUniformLocation(gShaderProgramObject,
+		"u_shininess");
 }
 
 //void PrintTime() {
