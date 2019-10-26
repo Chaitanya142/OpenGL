@@ -790,7 +790,7 @@ void Display(void) {
 			tempArray1[4 * i + 3] = lights[i].lightPosition[3];
 		}
 
-		glUniform4fv(lightPositionUniform, noLights, tempArray);
+		glUniform4fv(lightPositionUniform, noLights, tempArray1);
 
 		glUniform3fv(kaUniform, 1, material.materialAmbient);
 		glUniform3fv(kdUniform, 1, material.materialDiffuse);

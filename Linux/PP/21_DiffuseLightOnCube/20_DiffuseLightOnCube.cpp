@@ -493,7 +493,7 @@ void Initialize(void){
 		"vec4 eyecoordinates=u_mv_matrix*vPosition;"\
 		"mat3 normalmatrix=mat3(transpose(inverse(u_mv_matrix)));"\
 		"vec3 tnorm=normalize(normalmatrix*vNormal);"\
-		"vec3 s=vec3(u_lightposition)-eyecoordinates.xyz;"\
+		"vec3 s=normalize(vec3(u_lightposition)-eyecoordinates.xyz);"\
 		"diffusecolor=u_ld*u_kd*max(dot(s,tnorm),0.0);"\
 		"};"\
 		"} ";
