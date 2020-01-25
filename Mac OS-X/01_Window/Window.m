@@ -72,7 +72,7 @@ view = [[MyView alloc]initWithFrame:win_rect];
 }
 
 -(void) applicationWillTerminate:(NSNotification *)notification
-{
+{ 
 //code
 }
 
