@@ -660,7 +660,7 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //Transformation
 
     translationMatrix = vmath::translate(0.0f, 0.0f, -4.0f);
-    //rotationMatrix = vmath::rotate(angleCube,angleCube,angleCube);
+    //rotationMatrix = vmath::rotate(90.0f,1.0f,0.0f, 0.0f);
     //scaleMatrix=vmath::scale(0.75f,0.75f,0.75f);
     //Matrix Multiplication
     modelMatrix =   translationMatrix * scaleMatrix;

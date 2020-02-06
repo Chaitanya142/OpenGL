@@ -169,6 +169,14 @@ gpFile=NULL;
     GLfloat lineVertices[6];
 
     GLfloat lineColor[6] ;
+    
+    GLfloat XCircle;
+    GLfloat YCircle;
+    
+    GLfloat XTriangle;
+    GLfloat YTriangle;
+    
+    GLfloat YLine;
 }
 
 -(id)initWithFrame:(NSRect)frame;
@@ -246,6 +254,13 @@ GLint swapInt=1;
 
 [[self openGLContext]setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
 
+        XCircle=-3.0f;
+        YCircle=-3.0f;
+       
+        XTriangle=3.0f;
+        YTriangle=-3.0f;
+       
+        YLine=3.0f;
 
     //Vertex Shader
         //Define Shader Object
@@ -563,19 +578,23 @@ CGLLockContext((CGLContextObj)[[self openGLContext]CGLContextObj]);
 
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    vmath::mat4 modelViewMatrix ;
+    vmath::mat4 translationMatrix;
+    vmath::mat4 rotationMatrix;
+    vmath::mat4 modelViewProjectionMatrix;
 
     glUseProgram(gShaderProgramObject);
 
     //Initialize matrices
 
-    vmath::mat4 modelViewMatrix = vmath::mat4::identity();
-        vmath::mat4 translationMatrix = vmath::mat4::identity();
-    vmath::mat4 rotationMatrix = vmath::mat4::identity();
-    vmath::mat4 modelViewProjectionMatrix = vmath::mat4::identity();
+    modelViewMatrix = vmath::mat4::identity();
+    translationMatrix = vmath::mat4::identity();
+    rotationMatrix = vmath::mat4::identity();
+    modelViewProjectionMatrix = vmath::mat4::identity();
 
     //Transformation
 
-    translationMatrix = vmath::translate(0.0f, 0.0f, -6.0f);
+    translationMatrix = vmath::translate(0.0f, YLine, -6.0f);
     rotationMatrix = vmath::rotate(angleRotation,0.0f,1.0f,0.0f);
    //Matrix Multiplication
     modelViewMatrix = translationMatrix * rotationMatrix;
@@ -622,12 +641,45 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         lineColor,
         GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+  
+    glDrawArrays(GL_LINES,
+          0,
+          2);
+    
+    
+    glBindVertexArray(0);
+       
+       //Initialize matrices
+
+          modelViewMatrix = vmath::mat4::identity();
+          translationMatrix = vmath::mat4::identity();
+          rotationMatrix = vmath::mat4::identity();
+          modelViewProjectionMatrix = vmath::mat4::identity();
+
+          //Transformation
+
+          translationMatrix = vmath::translate(XTriangle, YTriangle, -6.0f);
+          rotationMatrix = vmath::rotate(angleRotation,0.0f,1.0f,0.0f);
+         //Matrix Multiplication
+          modelViewMatrix = translationMatrix * rotationMatrix;
+
+          modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
+
+          //Send necessary matrices to shader in resp. Uniforms
+
+          glUniformMatrix4fv(mvpUniform,
+              1,
+              GL_FALSE,
+              modelViewProjectionMatrix);
+
+       
+       
+       glBindVertexArray(vao_line);
+    
 
     //Draw
 
-    glDrawArrays(GL_LINES,
-        0,
-        2);
+    
        float offset=    1.0f;
     lineVertices[0] = 0.0f;
     lineVertices[1] = offset;
@@ -657,7 +709,6 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDrawArrays(GL_LINES,
         0,
         2);
-
  
     lineVertices[0] = -offset;
     lineVertices[1] = -offset;
@@ -719,7 +770,35 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glBindVertexArray(0);
 
+    
+    
+    //Initialize matrices
+
+       modelViewMatrix = vmath::mat4::identity();
+       translationMatrix = vmath::mat4::identity();
+       rotationMatrix = vmath::mat4::identity();
+       modelViewProjectionMatrix = vmath::mat4::identity();
+
+       //Transformation
+
+       translationMatrix = vmath::translate(XCircle, YCircle, -6.0f);
+       rotationMatrix = vmath::rotate(angleRotation,0.0f,1.0f,0.0f);
+      //Matrix Multiplication
+       modelViewMatrix = translationMatrix * rotationMatrix;
+
+       modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
+
+       //Send necessary matrices to shader in resp. Uniforms
+
+       glUniformMatrix4fv(mvpUniform,
+           1,
+           GL_FALSE,
+           modelViewProjectionMatrix);
+
+    
+    
     glBindVertexArray(vao_point);
+    
 
     
     float x1=0.0f;
@@ -805,6 +884,23 @@ CGLUnlockContext((CGLContextObj)[[self openGLContext]CGLContextObj]);
     angleRotation = angleRotation + 0.5f;
     if (angleRotation > 360.0f)
         angleRotation = 0.0f;
+    
+    if(YLine>0){
+        YLine-=0.005f;
+    }
+    if(XTriangle>0){
+        XTriangle-=0.005;
+    }
+    if(YTriangle<0){
+          YTriangle+=0.005;
+      }
+
+    if(XCircle<0){
+        XCircle+=0.005;
+    }
+    if(YCircle<0){
+          YCircle+=0.005;
+      }
     
 }
 

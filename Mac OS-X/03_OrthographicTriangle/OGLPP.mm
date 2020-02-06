@@ -419,11 +419,6 @@ GLint swapInt=1;
         orthographicProjectionMatrix = vmath::mat4::identity();
 
 
-    
-    
-//set bg color
-glClearColor(0.0f,0.0f,1.0f,0.0f);
-
 CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
 
 CVDisplayLinkSetOutputCallback(displayLink,&MyDisplayLinkCallback,self);
