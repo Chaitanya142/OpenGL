@@ -576,7 +576,7 @@ function draw() {
 
     //Draw
 
-    gl.drawArrays(gl.TRIANGLE_FAN,
+    gl.drawArrays(gl.TRIANGLES,
         0,
         12);
 

@@ -50,6 +50,15 @@ GLuint vbo_color_point;
 GLuint mvpUniform;
 mat4 perspectiveProjectionMatrix;
 
+
+GLfloat XCircle = -3.0f;
+GLfloat YCircle = -3.0f;
+
+GLfloat XTriangle = 3.0f;
+GLfloat YTriangle = -3.0f;
+
+GLfloat YLine = 3.0f;
+
 //Method Declaration
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 //void PrintTime();
@@ -598,13 +607,21 @@ void Display(void) {
 	rotationMatrix = mat4::identity();
 	//Transformation
 
-	translationMatrix = translate(0.0f, 0.0f, -5.0f);
-	rotationMatrix = rotate(angleRotation, 0.0f, 1.0f, 0.0f);
+	//translationMatrix = translate(0.0f, 0.0f, -5.0f);
+	//rotationMatrix = rotate(angleRotation, 0.0f, 1.0f, 0.0f);
 
+	////Matrix Multiplication
+	//modelViewMatrix = translationMatrix * rotationMatrix;
+
+	//modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
+
+	translationMatrix = vmath::translate(0.0f, YLine, -6.0f);
+	rotationMatrix = vmath::rotate(angleRotation, 0.0f, 1.0f, 0.0f);
 	//Matrix Multiplication
 	modelViewMatrix = translationMatrix * rotationMatrix;
 
 	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
+
 
 	//Send necessary matrices to shader in resp. Uniforms
 
@@ -625,10 +642,62 @@ void Display(void) {
 	DrawLine(0.0f, 1.0f, 0.0f,
 		0.0f, -1.0f, 0.0f);
 
+	glBindVertexArray(0);
+
+	//Initialize matrices
+
+	modelViewMatrix = vmath::mat4::identity();
+	translationMatrix = vmath::mat4::identity();
+	rotationMatrix = vmath::mat4::identity();
+	modelViewProjectionMatrix = vmath::mat4::identity();
+
+	//Transformation
+
+	translationMatrix = vmath::translate(XTriangle, YTriangle, -6.0f);
+	rotationMatrix = vmath::rotate(angleRotation, 0.0f, 1.0f, 0.0f);
+	//Matrix Multiplication
+	modelViewMatrix = translationMatrix * rotationMatrix;
+
+	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
+
+	//Send necessary matrices to shader in resp. Uniforms
+
+	glUniformMatrix4fv(mvpUniform,
+		1,
+		GL_FALSE,
+		modelViewProjectionMatrix);
+
+	glBindVertexArray(vao_line);
+
+
 	DrawTriangle(1.0f);
 
 	//Unbind vao
 	glBindVertexArray(0);
+
+
+	modelViewMatrix = vmath::mat4::identity();
+	translationMatrix = vmath::mat4::identity();
+	rotationMatrix = vmath::mat4::identity();
+	modelViewProjectionMatrix = vmath::mat4::identity();
+
+	//Transformation
+
+	translationMatrix = vmath::translate(XCircle, YCircle, -6.0f);
+	rotationMatrix = vmath::rotate(angleRotation, 0.0f, 1.0f, 0.0f);
+	//Matrix Multiplication
+	modelViewMatrix = translationMatrix * rotationMatrix;
+
+	modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
+
+	//Send necessary matrices to shader in resp. Uniforms
+
+	glUniformMatrix4fv(mvpUniform,
+		1,
+		GL_FALSE,
+		modelViewProjectionMatrix);
+
+
 
 	glBindVertexArray(vao_point);
 
@@ -648,6 +717,24 @@ void Update(void)
 	angleRotation = angleRotation + 0.2f;
 	if (angleRotation > 360.0f)
 		angleRotation = 0.0f;
+
+	if (YLine > 0) {
+		YLine -= 0.0005f;
+	}
+	if (XTriangle > 0) {
+		XTriangle -= 0.0005;
+	}
+	if (YTriangle < 0) {
+		YTriangle += 0.0005;
+	}
+
+	if (XCircle < 0) {
+		XCircle += 0.0005;
+	}
+	if (YCircle < 0) {
+		YCircle += 0.0005;
+	}
+
 }
 void UnInitialize(void) {
 	if (bFullScreen == true) {

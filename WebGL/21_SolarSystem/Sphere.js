@@ -58,7 +58,7 @@ function makeSphere(sphereMesh, fRadius, iSlices, iStacks,r,g,b,cx=0, cy=0) {
             vertex[0][1] = y * fRadius + cy;
             vertex[0][2] = z * fRadius;
             color[0][0] = r;
-            color[0][1] = b;
+            color[0][1] = g;
             color[0][2] = b;
 
 
@@ -75,7 +75,7 @@ function makeSphere(sphereMesh, fRadius, iSlices, iStacks,r,g,b,cx=0, cy=0) {
             vertex[1][1] = y * fRadius + cy;
             vertex[1][2] = z * fRadius;
             color[1][0] = r;
-            color[1][1] = b;
+            color[1][1] = g;
             color[1][2] = b;
             
             theta = ((j + 1) == iSlices) ? 0.0 : (j + 1) * dtheta;
@@ -96,7 +96,7 @@ function makeSphere(sphereMesh, fRadius, iSlices, iStacks,r,g,b,cx=0, cy=0) {
             vertex[2][1] = y * fRadius + cy;
             vertex[2][2] = z * fRadius;
             color[2][0] = r;
-            color[2][1] = b;
+            color[2][1] = g;
             color[2][2] = b;
 
             x = stheta * srhodrho;
@@ -112,7 +112,7 @@ function makeSphere(sphereMesh, fRadius, iSlices, iStacks,r,g,b,cx=0, cy=0) {
             vertex[3][1] = y * fRadius + cy;
             vertex[3][2] = z * fRadius;
             color[3][0] = r;
-            color[3][1] = b;
+            color[3][1] = g;
             color[3][2] = b;
 
             sphereMesh.addTriangle(vertex, normal, texture,color);

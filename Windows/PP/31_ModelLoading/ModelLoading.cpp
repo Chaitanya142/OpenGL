@@ -692,7 +692,7 @@ void display(void)
 	modelViewMatrix = mat4::identity();
 	modelViewMatrix = translate(0.0f, 0.0f, -6.0f);
 	
-	modelViewMatrix = modelViewMatrix * rotate(90.0f,0.0f,1.0f,0.0f);
+	//modelViewMatrix = modelViewMatrix * rotate(90.0f,0.0f,1.0f,0.0f);
 
 	modelViewProjectionMatrix = mat4::identity();
 

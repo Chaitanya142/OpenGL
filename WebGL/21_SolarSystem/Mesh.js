@@ -194,10 +194,27 @@ function Mesh()
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vbo_index);
         gl.drawElements(gl.TRIANGLES, numElements, gl.UNSIGNED_SHORT, 0);
 
+
         // unbind vao
         gl.bindVertexArray(null);
     }
-    
+ 
+   this.drawLines=function()
+    {
+        // code
+        // bind vao
+        gl.bindVertexArray(vao);
+
+        // draw
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vbo_index);
+		gl.drawElements(gl.LINES, numElements, gl.UNSIGNED_SHORT, 0);
+
+
+        // unbind vao
+        gl.bindVertexArray(null);
+    }
+  
     this.getIndexCount=function()
     {
         // code

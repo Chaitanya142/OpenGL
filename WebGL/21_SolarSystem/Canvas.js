@@ -251,7 +251,7 @@ function init() {
 
     Sun=new Mesh();
     //Sun.setColor(1.0,1.0,1.0);
-    makeSphere(Sun,0.75, 30, 30,1.0,1.0,1.0);
+    makeSphere(Sun,0.75, 30, 30,1.0,1.0,0.0);
 
     Earth=new Mesh();
     //Earth.setColor(0.4,0.9,1.0);
@@ -344,7 +344,8 @@ function draw() {
         false,
         modelViewProjectionMatrix);
 
-    Earth.draw();
+
+    Earth.drawLines();
 
     stack.push(Object.assign({}, modelViewMatrix));
 

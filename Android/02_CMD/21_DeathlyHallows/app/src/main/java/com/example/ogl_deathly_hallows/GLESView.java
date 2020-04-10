@@ -44,6 +44,14 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 	
 	private int mvpUniform;
 
+	float XCircle = -3.0f;
+	float YCircle = -3.0f;
+
+	float XTriangle = 3.0f;
+	float YTriangle = -3.0f;
+
+	float YLine = 3.0f;
+
 	private float[] perspectiveProjectionMatrix = new float[16];
 
 	public GLESView(Context drawingContext) {
@@ -171,7 +179,7 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 
 		// Transformation
 
-		Matrix.translateM(translationMatrix, 0, 0.0f, 0.0f, -5.0f);
+		Matrix.translateM(translationMatrix, 0, 0.0f, YLine, -5.0f);
 
 		Matrix.rotateM(rotationMatrix,0,
 				angleRotation, 0.0f, 1.0f, 0.0f);
@@ -199,9 +207,73 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		DrawLine(0.0f, 1.0f, 0.0f,
 			0.0f, -1.0f, 0.0f);
 
+
+		GLES32.glBindVertexArray(0);
+
+	
+	
+	
+		Matrix.setIdentityM(modelViewMatrix, 0);
+		Matrix.setIdentityM(modelViewProjectionMatrix, 0);
+		Matrix.setIdentityM(translationMatrix, 0);
+		Matrix.setIdentityM(rotationMatrix, 0);
+
+		// Transformation
+
+		Matrix.translateM(translationMatrix, 0,XTriangle, YTriangle, -5.0f);
+
+		Matrix.rotateM(rotationMatrix,0,
+				angleRotation, 0.0f, 1.0f, 0.0f);
+
+		// Matrix Multiplication
+
+		Matrix.multiplyMM(modelViewMatrix, 0, translationMatrix, 0, rotationMatrix, 0);
+
+		Matrix.multiplyMM(modelViewProjectionMatrix, 0, perspectiveProjectionMatrix, 0, modelViewMatrix, 0);
+
+		// Send necessary matrices to shader in resp. Uniforms
+
+		GLES32.glUniformMatrix4fv(mvpUniform, 1, false, modelViewProjectionMatrix, 0);
+
+
+
+
+	
+	
+		GLES32.glBindVertexArray(vao_line[0]);
+
 		DrawTriangle(1.0f);
 
 		GLES32.glBindVertexArray(0);
+
+
+		Matrix.setIdentityM(modelViewMatrix, 0);
+		Matrix.setIdentityM(modelViewProjectionMatrix, 0);
+		Matrix.setIdentityM(translationMatrix, 0);
+		Matrix.setIdentityM(rotationMatrix, 0);
+
+		// Transformation
+
+		Matrix.translateM(translationMatrix, 0, XCircle, YCircle, -5.0f);
+
+		Matrix.rotateM(rotationMatrix,0,
+				angleRotation, 0.0f, 1.0f, 0.0f);
+
+		// Matrix Multiplication
+
+		Matrix.multiplyMM(modelViewMatrix, 0, translationMatrix, 0, rotationMatrix, 0);
+
+		Matrix.multiplyMM(modelViewProjectionMatrix, 0, perspectiveProjectionMatrix, 0, modelViewMatrix, 0);
+
+		// Send necessary matrices to shader in resp. Uniforms
+
+		GLES32.glUniformMatrix4fv(mvpUniform, 1, false, modelViewProjectionMatrix, 0);
+
+
+
+
+
+
 
 		GLES32.glBindVertexArray(vao_point[0]);
 		
@@ -223,6 +295,24 @@ public class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, O
 		angleRotation = angleRotation + 2.0f;
 		if (angleRotation > 360.0f)
 			angleRotation = 0.0f;
+
+			if (YLine > 0) {
+				YLine -= 0.005f;
+			}
+			if (XTriangle > 0) {
+				XTriangle -= 0.005;
+			}
+			if (YTriangle < 0) {
+				YTriangle += 0.005;
+			}
+		
+			if (XCircle < 0) {
+				XCircle += 0.005;
+			}
+			if (YCircle < 0) {
+				YCircle += 0.005;
+			}
+		
 	
 	}
 
