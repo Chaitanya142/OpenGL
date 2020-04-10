@@ -1,0 +1,4 @@
+﻿  Source.cpp
+d:\opengl assignments\assignment\directx\10_3dshapes\10_3dshapes\source.cpp(1010): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\opengl assignments\assignment\directx\10_3dshapes\10_3dshapes\source.cpp(1015): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  10_3DShapes.vcxproj -> D:\OpenGL Assignments\Assignment\DirectX\10_3DShapes\Debug\10_3DShapes.exe

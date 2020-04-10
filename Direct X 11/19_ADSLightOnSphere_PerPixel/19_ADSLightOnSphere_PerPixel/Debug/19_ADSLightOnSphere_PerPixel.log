@@ -1,0 +1,3 @@
+﻿  Source.cpp
+d:\opengl assignments\assignment\directx\19_adslightonsphere_perpixel\19_adslightonsphere_perpixel\source.cpp(986): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  19_ADSLightOnSphere_PerPixel.vcxproj -> D:\OpenGL Assignments\Assignment\DirectX\19_ADSLightOnSphere_PerPixel\Debug\19_ADSLightOnSphere_PerPixel.exe

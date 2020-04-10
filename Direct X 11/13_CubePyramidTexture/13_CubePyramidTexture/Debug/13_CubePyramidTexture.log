@@ -1,0 +1,4 @@
+﻿  Source.cpp
+d:\opengl assignments\assignment\directx\13_cubepyramidtexture\13_cubepyramidtexture\source.cpp(1131): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\opengl assignments\assignment\directx\13_cubepyramidtexture\13_cubepyramidtexture\source.cpp(1136): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  13_CubePyramidTexture.vcxproj -> D:\OpenGL Assignments\Assignment\DirectX\13_CubePyramidTexture\Debug\13_CubePyramidTexture.exe

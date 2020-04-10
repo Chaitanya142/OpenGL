@@ -1,0 +1,3 @@
+﻿  Source.cpp
+d:\opengl assignments\assignment\directx\24_interleavedarray\24_interleavedarray\source.cpp(1072): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  24_InterleavedArray.vcxproj -> D:\OpenGL Assignments\Assignment\DirectX\24_InterleavedArray\Debug\24_InterleavedArray.exe

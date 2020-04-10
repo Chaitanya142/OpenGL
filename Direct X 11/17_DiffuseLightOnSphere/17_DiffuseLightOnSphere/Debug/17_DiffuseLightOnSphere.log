@@ -1,0 +1,7 @@
+﻿  Source.cpp
+d:\opengl assignments\assignment\directx\17_diffuselightonsphere\17_diffuselightonsphere\source.cpp(375): warning C4101: 'Ld': unreferenced local variable
+d:\opengl assignments\assignment\directx\17_diffuselightonsphere\17_diffuselightonsphere\source.cpp(378): warning C4101: 'LKeyIsPressed': unreferenced local variable
+d:\opengl assignments\assignment\directx\17_diffuselightonsphere\17_diffuselightonsphere\source.cpp(377): warning C4101: 'LightPosition': unreferenced local variable
+d:\opengl assignments\assignment\directx\17_diffuselightonsphere\17_diffuselightonsphere\source.cpp(376): warning C4101: 'Kd': unreferenced local variable
+d:\opengl assignments\assignment\directx\17_diffuselightonsphere\17_diffuselightonsphere\source.cpp(887): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  17_DiffuseLightOnSphere.vcxproj -> D:\OpenGL Assignments\Assignment\DirectX\17_DiffuseLightOnSphere\Debug\17_DiffuseLightOnSphere.exe

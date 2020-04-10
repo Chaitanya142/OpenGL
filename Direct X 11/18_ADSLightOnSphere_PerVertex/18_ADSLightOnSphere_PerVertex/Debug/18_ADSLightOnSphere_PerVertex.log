@@ -1,0 +1,3 @@
+﻿  Source.cpp
+d:\opengl assignments\assignment\directx\18_adslightonsphere_pervertex\18_adslightonsphere_pervertex\source.cpp(954): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  18_ADSLightOnSphere_PerVertex.vcxproj -> D:\OpenGL Assignments\Assignment\DirectX\18_ADSLightOnSphere_PerVertex\Debug\18_ADSLightOnSphere_PerVertex.exe

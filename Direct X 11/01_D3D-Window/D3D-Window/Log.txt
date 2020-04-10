@@ -1,0 +1,32 @@
+Log File Is Successfully Opened.
+D3D11CreateDeviceAndSwapChain() Succeeded.
+The Chosed Driver is OfHardware Type.
+The Supported Highest Feature Level Is11.0
+Unknown
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+Initialize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+IDD11Device::CreateRenderTargetView() Succeeded
+Resize() Succeeded.
+Uninitialize() Succedded
+Log File Closed Successfully
+Uninitialize() Succedded
+Log File Closed Successfully

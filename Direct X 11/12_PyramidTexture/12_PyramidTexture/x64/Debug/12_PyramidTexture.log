@@ -1,0 +1,7 @@
+﻿  Source.cpp
+d:\opengl assignments\assignment\directx\12_pyramidtexture\12_pyramidtexture\source.cpp(1131): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\opengl assignments\assignment\directx\12_pyramidtexture\12_pyramidtexture\source.cpp(1136): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Source.obj : error LNK2019: unresolved external symbol "long __cdecl DirectX::CreateWICTextureFromFile(struct ID3D11Device *,struct ID3D11DeviceContext *,wchar_t const *,struct ID3D11Resource * *,struct ID3D11ShaderResourceView * *,unsigned __int64)" (?CreateWICTextureFromFile@DirectX@@YAJPEAUID3D11Device@@PEAUID3D11DeviceContext@@PEB_WPEAPEAUID3D11Resource@@PEAPEAUID3D11ShaderResourceView@@_K@Z) referenced in function "long __cdecl LoadD3DTexture(wchar_t const *,struct ID3D11ShaderResourceView * *)" (?LoadD3DTexture@@YAJPEB_WPEAPEAUID3D11ShaderResourceView@@@Z)
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+DirectXTK.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+D:\OpenGL Assignments\Assignment\DirectX\12_PyramidTexture\x64\Debug\12_PyramidTexture.exe : fatal error LNK1120: 2 unresolved externals

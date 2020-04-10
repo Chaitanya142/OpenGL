@@ -1,0 +1,4 @@
+﻿  Source.cpp
+d:\opengl assignments\assignment\directx\11_cubetexture\11_cubetexture\source.cpp(1131): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\opengl assignments\assignment\directx\11_cubetexture\11_cubetexture\source.cpp(1136): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  11_CubeTexture.vcxproj -> D:\OpenGL Assignments\Assignment\DirectX\11_CubeTexture\Debug\11_CubeTexture.exe

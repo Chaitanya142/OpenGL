@@ -1,0 +1,20 @@
+Log File Is Successfully Opened.
+D3D11CreateDeviceAndSwapChain() Succeeded.
+The Choosed Driver is Of Hardware Type.
+The Supported Highest Feature Level Is 11.0
+D3DCompile() Succeeded For Vertex Shader.
+ID3D11Device::CreateVertexShader() Succeeded.
+D3DCompile() Succeeded For Pixel Shader.
+ID3D11Device::CreatePixelShader() Succeeded.
+ID3D11Device::CreateBuffer() Succeeded For Vertex Buffer.
+ID3D11Device::CreateBuffer() Succeeded For TexCoord Buffer.
+ID3D11Device::CreateBuffer() Succeeded For Vertex Buffer.
+ID3D11Device::CreateBuffer() Succeeded For TexCoord Buffer.
+ID3D11Device::CreateBuffer() Succeeded for Constant Buffer.
+ID3D11Device::CreateInput() Succeeded.
+ID3D11Device::CreateRasterizerState() Succeeded For Culling.
+CreateWICTextureFromFile() Failed For Texture Resource.
+LoadD3DTexture() Failed For Pyramid Texture.
+Initialize() Failed. Exiting Now...
+Uninitialize() Succedded
+Log File Closed Successfully
