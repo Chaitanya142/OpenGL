@@ -1,0 +1,658 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Model\stb_image_aug.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadWav.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SB7\sb7ktx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCloth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLeaf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneHearts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneStarField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneNight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneDay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTerrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCouple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCubemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneAMC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneComputer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneRTR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneRain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Uninitialize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCollage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneStudyRoom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneRipple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IScene.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneInterop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEndCredits.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assimp\.editorconfig">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\color4.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\config.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\material.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\matrix3x3.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\matrix4x4.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\quaternion.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\SmoothingGroups.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\vector2.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="assimp\vector3.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="kernel.cl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="assimp\aabb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ai_assert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\anim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\BaseImporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\BlobIOSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ByteSwapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\cexport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\cfileio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\cimport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\color4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\CreateAnimMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\DefaultIOStream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\DefaultIOSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\DefaultLogger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Exceptional.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Exporter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\fast_atof.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\GenericProperty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Importer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\importerdesc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\IOStream.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\IOStreamBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\IOSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\irrXMLWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\LineSplitter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\LogAux.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Logger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\LogStream.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Macros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\MathFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\matrix3x3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\matrix4x4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\MemoryIOWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\metadata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\NullLogger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ParsingUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\pbrmaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\postprocess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Profiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ProgressHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\qnan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\quaternion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\RemoveComments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SceneCombiner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SGSpatialSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SkeletonMeshBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SmoothingGroups.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SpatialSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StandardShapes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StreamReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StreamWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StringComparison.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StringUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Subdivision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\TinyFormatter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\vector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\XMLTools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ZipArchiveIOSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\shader_m.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\shader_s.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\stb_image_aug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftheader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftmodule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftoption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftstdlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\freetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftadvanc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftbbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftbdf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftbitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftbzip2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftcache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftchapters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftcid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftdriver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\fterrdef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\fterrors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftfntfmt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftgasp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftglyph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftgxval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftgzip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftimage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftincrem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftlcdfil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftlzw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftmac.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftmm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftmodapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftmoderr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftotval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftoutln.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftparams.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftpfr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftrender.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftsizes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftsnames.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftstroke.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftsynth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftsystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\fttrigon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\fttypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftwinfnt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\t1tables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ttnameid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\tttables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\tttags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="freetype-windows-binaries-master\include\ft2build.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vmath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Template.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadWav.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SB7\sb7ktx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\vmath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCloth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneLeaf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneHearts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneStarField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneNight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneDay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTerrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCouple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCubemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneAMC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneComputer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRTR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Uninitialize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCollage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneStudyRoom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRipple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneInterop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEndCredits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="freetype-windows-binaries-master\win32\freetype.dll" />
+    <CopyFileToFolders Include="assimp-vc141-mtd.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="assimp-vc141-mtd.lib" />
+    <Library Include="freetype-windows-binaries-master\win32\freetype.lib" />
+    <Library Include="SOIL.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Template.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\collage.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Agra-j8Gv.ttf" />
+  </ItemGroup>
+</Project>

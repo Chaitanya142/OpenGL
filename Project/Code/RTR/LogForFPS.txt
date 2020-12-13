@@ -1,0 +1,4 @@
+0	48
+0	60
+0	60
+Log File Closed Successfully

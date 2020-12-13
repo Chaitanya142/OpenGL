@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{1CEC9096-CA6D-4F8D-8EC8-890275AC71D1}</ProjectGuid>
+    <RootNamespace>AssimpModelLoading</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <ProjectName>RealTimeRoaming</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\glew-2.1.0\include;.\assimp;.\freetype-windows-binaries-master;.\freetype-windows-binaries-master\include\freetype;.\freetype-windows-binaries-master\include;.\glm;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\include;C:\Program Files (x86)\OCL_SDK_Light\include;C:\Program Files (x86)\IntelSWTools\OpenCL\sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_2_APIS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>.\;.\glew-2.1.0\lib\Release\Win32;.\freetype-windows-binaries-master\win32;C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\lib\Win32;C:\Program Files (x86)\OCL_SDK_Light\lib\x86;C:\Program Files (x86)\IntelSWTools\OpenCL\sdk\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\OpenGL Assignments\Final Project\Assimp\AssimpModelLoading\AssimpModelLoading\assimp;C:\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>D:\OpenGL Assignments\Final Project\Assimp\AssimpModelLoading\AssimpModelLoading;C:\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="SceneEndCredits.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Common.cpp" />
+    <ClCompile Include="IScene.h" />
+    <ClCompile Include="model.cpp" />
+    <ClCompile Include="ModelAnimation.cpp" />
+    <ClCompile Include="SceneAMC.cpp" />
+    <ClCompile Include="SceneCloth.cpp" />
+    <ClCompile Include="SceneCollage.cpp" />
+    <ClCompile Include="SceneComputer.cpp" />
+    <ClCompile Include="SceneCouple.cpp" />
+    <ClCompile Include="SceneCubemap.cpp" />
+    <ClCompile Include="SceneDay.cpp" />
+    <ClCompile Include="SceneHearts.cpp" />
+    <ClCompile Include="SceneInterop.cpp" />
+    <ClCompile Include="SceneLeaf.cpp" />
+    <ClCompile Include="SceneNight.cpp" />
+    <ClCompile Include="SceneRain.cpp" />
+    <ClCompile Include="SceneRTR.cpp" />
+    <ClCompile Include="SceneStarField.cpp" />
+    <ClCompile Include="LoadWav.cpp" />
+    <ClCompile Include="Model\stb_image_aug.c" />
+    <ClCompile Include="SB7\sb7ktx.cpp" />
+    <ClCompile Include="SceneStudyRoom.cpp" />
+    <ClCompile Include="SceneTerrain.cpp" />
+    <ClCompile Include="SceneRipple.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Uninitialize.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="assimp-vc141-mtd.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <None Include="assimp\.editorconfig" />
+    <None Include="assimp\color4.inl" />
+    <None Include="assimp\config.h.in" />
+    <None Include="assimp\material.inl" />
+    <None Include="assimp\matrix3x3.inl" />
+    <None Include="assimp\matrix4x4.inl" />
+    <None Include="assimp\quaternion.inl" />
+    <None Include="assimp\SmoothingGroups.inl" />
+    <None Include="assimp\vector2.inl" />
+    <None Include="assimp\vector3.inl" />
+    <CopyFileToFolders Include="freetype-windows-binaries-master\win32\freetype.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <None Include="kernel.cl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="SceneEndCredits.h" />
+    <ClInclude Include="Source.h" />
+    <ClInclude Include="assimp\aabb.h" />
+    <ClInclude Include="assimp\ai_assert.h" />
+    <ClInclude Include="assimp\anim.h" />
+    <ClInclude Include="assimp\BaseImporter.h" />
+    <ClInclude Include="assimp\Bitmap.h" />
+    <ClInclude Include="assimp\BlobIOSystem.h" />
+    <ClInclude Include="assimp\ByteSwapper.h" />
+    <ClInclude Include="assimp\camera.h" />
+    <ClInclude Include="assimp\cexport.h" />
+    <ClInclude Include="assimp\cfileio.h" />
+    <ClInclude Include="assimp\cimport.h" />
+    <ClInclude Include="assimp\color4.h" />
+    <ClInclude Include="assimp\config.h" />
+    <ClInclude Include="assimp\CreateAnimMesh.h" />
+    <ClInclude Include="assimp\DefaultIOStream.h" />
+    <ClInclude Include="assimp\DefaultIOSystem.h" />
+    <ClInclude Include="assimp\DefaultLogger.hpp" />
+    <ClInclude Include="assimp\Defines.h" />
+    <ClInclude Include="assimp\defs.h" />
+    <ClInclude Include="assimp\Exceptional.h" />
+    <ClInclude Include="assimp\Exporter.hpp" />
+    <ClInclude Include="assimp\fast_atof.h" />
+    <ClInclude Include="assimp\GenericProperty.h" />
+    <ClInclude Include="assimp\Hash.h" />
+    <ClInclude Include="assimp\Importer.hpp" />
+    <ClInclude Include="assimp\importerdesc.h" />
+    <ClInclude Include="assimp\IOStream.hpp" />
+    <ClInclude Include="assimp\IOStreamBuffer.h" />
+    <ClInclude Include="assimp\IOSystem.hpp" />
+    <ClInclude Include="assimp\irrXMLWrapper.h" />
+    <ClInclude Include="assimp\light.h" />
+    <ClInclude Include="assimp\LineSplitter.h" />
+    <ClInclude Include="assimp\LogAux.h" />
+    <ClInclude Include="assimp\Logger.hpp" />
+    <ClInclude Include="assimp\LogStream.hpp" />
+    <ClInclude Include="assimp\Macros.h" />
+    <ClInclude Include="assimp\material.h" />
+    <ClInclude Include="assimp\MathFunctions.h" />
+    <ClInclude Include="assimp\matrix3x3.h" />
+    <ClInclude Include="assimp\matrix4x4.h" />
+    <ClInclude Include="assimp\MemoryIOWrapper.h" />
+    <ClInclude Include="assimp\mesh.h" />
+    <ClInclude Include="assimp\metadata.h" />
+    <ClInclude Include="assimp\NullLogger.hpp" />
+    <ClInclude Include="assimp\ParsingUtils.h" />
+    <ClInclude Include="assimp\pbrmaterial.h" />
+    <ClInclude Include="assimp\postprocess.h" />
+    <ClInclude Include="assimp\Profiler.h" />
+    <ClInclude Include="assimp\ProgressHandler.hpp" />
+    <ClInclude Include="assimp\qnan.h" />
+    <ClInclude Include="assimp\quaternion.h" />
+    <ClInclude Include="assimp\RemoveComments.h" />
+    <ClInclude Include="assimp\scene.h" />
+    <ClInclude Include="assimp\SceneCombiner.h" />
+    <ClInclude Include="assimp\SGSpatialSort.h" />
+    <ClInclude Include="assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="assimp\SmoothingGroups.h" />
+    <ClInclude Include="assimp\SpatialSort.h" />
+    <ClInclude Include="assimp\StandardShapes.h" />
+    <ClInclude Include="assimp\StreamReader.h" />
+    <ClInclude Include="assimp\StreamWriter.h" />
+    <ClInclude Include="assimp\StringComparison.h" />
+    <ClInclude Include="assimp\StringUtils.h" />
+    <ClInclude Include="assimp\Subdivision.h" />
+    <ClInclude Include="assimp\texture.h" />
+    <ClInclude Include="assimp\TinyFormatter.h" />
+    <ClInclude Include="assimp\types.h" />
+    <ClInclude Include="assimp\vector2.h" />
+    <ClInclude Include="assimp\vector3.h" />
+    <ClInclude Include="assimp\version.h" />
+    <ClInclude Include="assimp\Vertex.h" />
+    <ClInclude Include="assimp\XMLTools.h" />
+    <ClInclude Include="assimp\ZipArchiveIOSystem.h" />
+    <ClInclude Include="Main\common.h" />
+    <ClInclude Include="Main\lib.h" />
+    <ClInclude Include="Main\vmath.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="ModelAnimation.h" />
+    <ClInclude Include="SceneAMC.h" />
+    <ClInclude Include="SceneCloth.h" />
+    <ClInclude Include="SceneCollage.h" />
+    <ClInclude Include="SceneComputer.h" />
+    <ClInclude Include="SceneCouple.h" />
+    <ClInclude Include="SceneCubemap.h" />
+    <ClInclude Include="SceneDay.h" />
+    <ClInclude Include="SceneHearts.h" />
+    <ClInclude Include="SceneInterop.h" />
+    <ClInclude Include="SceneLeaf.h" />
+    <ClInclude Include="SceneNight.h" />
+    <ClInclude Include="SceneRain.h" />
+    <ClInclude Include="SceneRTR.h" />
+    <ClInclude Include="SceneStarField.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftconfig.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftheader.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftmodule.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftoption.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\config\ftstdlib.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\freetype.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftadvanc.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftbbox.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftbdf.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftbitmap.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftbzip2.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftcache.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftchapters.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftcid.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftdriver.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\fterrdef.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\fterrors.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftfntfmt.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftgasp.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftglyph.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftgxval.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftgzip.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftimage.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftincrem.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftlcdfil.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftlist.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftlzw.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftmac.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftmm.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftmodapi.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftmoderr.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftotval.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftoutln.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftparams.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftpfr.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftrender.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftsizes.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftsnames.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftstroke.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftsynth.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftsystem.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\fttrigon.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\fttypes.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ftwinfnt.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\t1tables.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\ttnameid.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\tttables.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\freetype\tttags.h" />
+    <ClInclude Include="freetype-windows-binaries-master\include\ft2build.h" />
+    <ClInclude Include="LoadWav.h" />
+    <ClInclude Include="Model\camera.h" />
+    <ClInclude Include="Model\filesystem.h" />
+    <ClInclude Include="Model\mesh.h" />
+    <ClInclude Include="Model\model.h" />
+    <ClInclude Include="Model\shader.h" />
+    <ClInclude Include="Model\shader_m.h" />
+    <ClInclude Include="Model\shader_s.h" />
+    <ClInclude Include="Model\stb_image.h" />
+    <ClInclude Include="Model\stb_image_aug.h" />
+    <ClInclude Include="SB7\sb7ktx.h" />
+    <ClInclude Include="SceneStudyRoom.h" />
+    <ClInclude Include="SceneTerrain.h" />
+    <ClInclude Include="SceneRipple.h" />
+    <ClInclude Include="SOIL2.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Template.h" />
+    <ClInclude Include="Textures.h" />
+    <ClInclude Include="Uninitialize.h" />
+    <ClInclude Include="vmath.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="assimp-vc141-mtd.lib" />
+    <Library Include="freetype-windows-binaries-master\win32\freetype.lib" />
+    <Library Include="SOIL.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Template.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\collage.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Agra-j8Gv.ttf" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

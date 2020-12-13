@@ -1,0 +1,4 @@
+Log File Created Successfully
+D:\OpenGL\14_Project\01_GitRepo\rtr2020\AssimpModelLoading\AssimpModelLoading\DebugGPU - GeForce 940MX
+Initialization Succeeded
+Log File Closed Successfully
